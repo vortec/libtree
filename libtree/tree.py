@@ -266,6 +266,7 @@ def move_node(per, node, new_parent):
                 node= %s
             UNION SELECT %s
         ) AS par
+        ON TRUE
         WHERE
             sub.ancestor = %s
         OR

@@ -11,6 +11,6 @@ config = {
     'postgres': {
         'enabled': False,
         'details': 'dbname=tree user=fkochem',
-        'test_details': 'dbname=tree user=fkochem'
+        'test_details': 'dbname=test_tree user=fkochem'
     }
 }
