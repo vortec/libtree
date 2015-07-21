@@ -9,7 +9,7 @@ junit/
 .tox
 __pycache__
 build
-libtre.egg-info
+libtree.egg-info
 dist/
 junit-*.xml
 coverage.xml
