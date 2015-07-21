@@ -52,12 +52,27 @@ def node2_leaf(per, node2_1_1):
     return create_node(per, node2_1_1, 'node2-leaf')
 
 
+def test_no_root_node(per):
+    with pytest.raises(ValueError):
+        get_root_node(per)
+
+
+def test_non_existing_node(per):
+    with pytest.raises(ValueError):
+        get_node(per, 1)
+
+
 def test_create_node(root, node1, node2, node2_1, node2_1_1):
     assert root.parent is None
     assert node1.parent == root.id
     assert node2.parent == root.id
     assert node2_1.parent == node2.id
     assert node2_1_1.parent == node2_1.id
+
+
+def test_get_root_node(per):
+    root = get_root_node(per)
+    assert root.parent is None
 
 
 def test_get_node(per, node1):
