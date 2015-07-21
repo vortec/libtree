@@ -9,9 +9,9 @@ if config['mysql']['enabled']:
     per = MySQLPersistance(host=conf['host'],
                            user=conf['user'],
                            passwd=conf['password'],
-                           db=conf['test_database'])
+                           db=conf['database'])
 else:
-    per = PostgreSQLPersistance(config['postgres']['test_details'])
+    per = PostgreSQLPersistance(config['postgres']['details'])
 
 root = get_root_node(per)
 vortec = get_node(per, 154128)
