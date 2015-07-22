@@ -160,22 +160,50 @@ def get_children(per, node):
         yield Node(**result)
 
 
+def get_child_ids(per, node):
+    sql = """
+        SELECT
+            id
+        FROM
+            nodes
+        WHERE
+            parent=%s;
+    """
+    per.execute(sql, (int(node), ))
+    for result in per:
+        yield int(result['id'])
+
+
 def delete_node(per, node):
-    raise NotImplementedError
-
-
-def move_node(per, node, new_parent):
     """ non-atomic """
     id = int(node)
-    parent_id = int(new_parent)
 
-    # Update ancestors by comparing the ancestor list of both the node
-    # and the new parent node. Delete all entries that are not in the
-    # parents list, add entries that are not in the nodes list.
-    # Also add the new parents ID and we're set.
-    # Hint for undestanding: Both (the nodes and the parent nodes)
-    # ancestor lists contain the root node, and there might be others,
-    # therefore we dont need to remove and re-add them to the database.
+    old_objects = set(get_descendant_ids(per, id))
+    old_objects.add(id)
+    old_object_ids = ','.join(map(str, old_objects))
+
+    sql = """
+        DELETE FROM
+            ancestor
+        WHERE
+            node IN ({})
+        OR
+            ancestor IN ({});
+    """.format(old_object_ids, old_object_ids)
+    per.execute(sql)
+
+    sql = """
+        DELETE FROM
+            nodes
+        WHERE
+            id IN ({});
+    """.format(old_object_ids)
+    per.execute(sql)
+
+
+def _destroy_ancestor_relations(per, node, include_self=False):
+    """ """
+    id = int(node)
 
     if per.protocol == 'mysql':  # TODO: move into persistance layer
         sql = """
@@ -232,6 +260,22 @@ def move_node(per, node, new_parent):
                 );
         """
     per.execute(sql, (id, id, id))
+
+
+def move_node(per, node, new_parent):
+    """ non-atomic """
+    id = int(node)
+    parent_id = int(new_parent)
+
+    # Update ancestors by comparing the ancestor list of both the node
+    # and the new parent node. Delete all entries that are not in the
+    # parents list, add entries that are not in the nodes list.
+    # Also add the new parents ID and we're set.
+    # Hint for undestanding: Both (the nodes and the parent nodes)
+    # ancestor lists contain the root node, and there might be others,
+    # therefore we dont need to remove and re-add them to the database.
+
+    _destroy_ancestor_relations(per, node)
 
     sql = """
         INSERT INTO

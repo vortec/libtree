@@ -127,9 +127,15 @@ def test_get_children(per, root, node1, node2):
     assert node2.id in ids
 
 
+def test_get_child_ids(per, root, node1, node2):
+    ids = set(get_child_ids(per, root))
+    assert len(ids) == 2
+    assert node1.id in ids
+    assert node2.id in ids
+
+
 def test_move_node(per, root, node1, node2, node2_1, node2_1_1, node2_leaf):
     """
-
         Tree layout before move:
         /  (#1)
           - node1  (#2)
@@ -146,7 +152,6 @@ def test_move_node(per, root, node1, node2, node2_1, node2_1_1, node2_leaf):
               - node2-1-1  (#5)
                 - node2-leaf (#6)
           - node2  (#3)
-
     """
     # We expect node2-1 to be child of node2 and node2-1-1 to be child
     # of node2-1.
@@ -192,3 +197,42 @@ def test_move_node(per, root, node1, node2, node2_1, node2_1_1, node2_leaf):
     # Last but not least, the children function proof what we checked above too
     assert len(set(get_children(per, node1))) == 1
     assert len(set(get_children(per, node2))) == 0
+
+
+def test_delete_node(per, node1, node2_1, node2_1_1, node2_leaf):
+    """
+        Tree layout before delete:
+        /  (#1)
+          - node1  (#2)
+            - node2-1  (#4)
+              - node2-1-1  (#5)
+                - node2-leaf (#6)
+          - node2  (#3)
+
+        Expected tree layout after move:
+        /  (#1)
+          - node1  (#2)
+            - node2-1  (#4)
+          - node2  (#3)
+    """
+
+    delete_node(per, node2_1_1)
+
+    # Deleted node doesn't exist anymore
+    with pytest.raises(ValueError):
+        get_node(per, node2_1_1.id)
+
+    # node2-1 has no children and no descendants
+    assert set(get_child_ids(per, node2_1)) == set()
+    assert set(get_descendant_ids(per, node2_1)) == set()
+
+    # node1 just contains node2-1
+    assert set(get_child_ids(per, node1)) == {node2_1.id}
+    assert set(get_descendant_ids(per, node1)) == {node2_1.id}
+
+    # Ancestor and descendant sets of node2-1-1 and node2-leaf are empty
+    # (or raise error in the future because they don't exist anymore)
+    assert set(get_ancestor_ids(per, node2_1_1)) == set()
+    assert set(get_ancestor_ids(per, node2_leaf)) == set()
+    assert set(get_descendant_ids(per, node2_1_1)) == set()
+    assert set(get_descendant_ids(per, node2_leaf)) == set()
