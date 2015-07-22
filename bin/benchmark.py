@@ -1,6 +1,6 @@
-from config import config
-from persistance import *
-from tree import *
+from libtree.config import config
+from libtree.persistance import *
+from libtree.tree import *
 import os
 from time import time
 

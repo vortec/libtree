@@ -109,6 +109,15 @@ def test_get_children(per, root, node1, node2):
 
 def test_move_node(per, root, node1, node2, node2_1, node2_1_1, node2_leaf):
     """
+
+        Tree layout before move:
+        /  (#1)
+          - node1  (#2)
+          - node2  (#3)
+            - node2-1  (#4)
+              - node2-1-1  (#5)
+                - node2-leaf (#6)
+
         Expected tree layout after move:
 
         /  (#1)

@@ -178,49 +178,7 @@ def move_node(per, node, new_parent):
     # ancestor lists contain the root node, and there might be others,
     # therefore we dont need to remove and re-add them to the database.
 
-    # TODO: dont move node into its own subtree
-
-    if False:
-        node_ancestors = set(get_ancestor_ids(per, id))
-        parent_ancestors = set(get_ancestor_ids(per, parent_id))
-        old_ancestors = node_ancestors - parent_ancestors
-        new_ancestors = parent_ancestors - node_ancestors
-        new_ancestors.add(parent_id)
-
-        delete_ancestors(per, id, old_ancestors)
-        insert_ancestors(per, id, new_ancestors)
-
-        # TODO: find smarter way?
-        for descendant_id in get_descendant_ids(per, node):
-            delete_ancestors(per, descendant_id, old_ancestors)
-            insert_ancestors(per, descendant_id, new_ancestors)
-
-    if True:
-        sql = """
-
-    DELETE FROM
-        ancestor
-    WHERE
-        ancestor
-    IN
-        (SELECT ancestor FROM (SELECT
-            ancestor
-        FROM
-            ancestor
-        WHERE
-            node=%s) AS foo)
-    AND
-        ( node IN
-            (SELECT node FROM (SELECT
-                node
-            FROM
-                ancestor
-            WHERE
-                ancestor=%s) AS bar)
-        OR node = %s);"""
-        per.execute(sql, (id, id, id))
-
-    if False:
+    if per.protocol == 'mysql':  # TODO: move into persistance layer
         sql = """
             DELETE
                 t1.*
@@ -245,54 +203,64 @@ def move_node(per, node, new_parent):
                         )
                 );
         """
-        start = time()
-        per.execute(sql, (id, id, id))
-        print "    ", time() - start  # noqa
-
-    if True:
+    else:
         sql = """
+            DELETE FROM
+                ancestor
+            WHERE
+                ancestor
+            IN
+                (
+                    SELECT
+                        ancestor
+                    FROM
+                        ancestor
+                    WHERE
+                        node=%s
+                )
+            AND
+                node
+            IN
+                (
+                    SELECT
+                        node
+                    FROM
+                        ancestor
+                    WHERE
+                        ancestor=%s
+                    OR
+                        node=%s
+                );
+        """
+    per.execute(sql, (id, id, id))
+
+
+    sql = """
         INSERT INTO
             ancestor
         SELECT
             sub.node, par.ancestor
         FROM
             ancestor AS sub
-        JOIN (
-            SELECT
-                ancestor
-            FROM
-                ancestor
-            WHERE
-                node= %s
-            UNION SELECT %s
-        ) AS par
+        JOIN
+            (
+                SELECT
+                    ancestor
+                FROM
+                    ancestor
+                WHERE
+                    node= %s
+                UNION SELECT %s
+            ) AS par
         ON TRUE
         WHERE
             sub.ancestor = %s
         OR
-            sub.node = %s;"""
-        start = time()
-        per.execute(sql, (parent_id, parent_id, id, id))
-        print "    ", time() - start  # noqa
-
-    if False:
-        sql = """
-            INSERT INTO
-                ancestor
-                (node, ancestor)
-            SELECT
-                %s, ancestor
-            FROM
-                ancestor
-            WHERE
-                node=%s;
-        """
-        start = time()
-        per.execute(sql, (id, parent_id))
-        print "    ", time() - start  # noqa
+            sub.node = %s;
+    """
+    per.execute(sql, (parent_id, parent_id, id, id))
 
     parent_ancestors = set(get_ancestor_ids(per, parent_id))
-    # parent_ancestors = set()
     parent_ancestors.add(parent_id)
     insert_ancestors(per, node, parent_ancestors)
 
@@ -306,5 +274,3 @@ def move_node(per, node, new_parent):
             id=%s;
     """
     per.execute(sql, (int(new_parent), int(node)))
-
-    per.connection.commit()

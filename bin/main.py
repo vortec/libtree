@@ -1,8 +1,8 @@
-from config import config
+from libtree.config import config
 from pdb import set_trace as trace
-from persistance import *
+from libtree.persistance import *
 import os
-from tree import *
+from libtree.tree import *
 
 if config['mysql']['enabled']:
     conf = config['mysql']
