@@ -21,11 +21,11 @@ setup(
 
     # Dependencies
     install_requires=[
-        'mysql==0.0.1',
         'pdbpp==0.8.2'
     ],
 
     extras_require={
+        'mysql': ['mysql==0.0.1'],
         'postgres': ['psycopg2==2.6.1']
     },
 

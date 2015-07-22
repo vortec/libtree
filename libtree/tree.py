@@ -1,5 +1,4 @@
 from node import Node
-from time import time
 
 
 def get_root_node(per):
@@ -233,7 +232,6 @@ def move_node(per, node, new_parent):
                 );
         """
     per.execute(sql, (id, id, id))
-
 
     sql = """
         INSERT INTO
