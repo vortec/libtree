@@ -143,7 +143,7 @@ def get_descendant_ids(per, node):
 
 
 def get_descendants(per, node):
-    raise NotImplementedError("could be billions of objects bro")
+    raise NotImplementedError("could be billions of objects")
 
 
 def get_children(per, node):
