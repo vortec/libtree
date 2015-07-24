@@ -5,36 +5,9 @@ from pdb import set_trace as trace  # noqa
 import pytest
 
 
-protocols = set()
-if config.get('mysql', {}).get('enabled', False):
-    try:
-        import MySQLdb  # noqa
-        protocols.add('mysql')
-    except ImportError:
-        pass
-
-if config.get('postgres', {}).get('enabled', False):
-    try:
-        import psycopg2  # noqa
-        protocols.add('postgres')
-    except ImportError:
-        pass
-
-
-@pytest.fixture(scope='module', params=protocols)
+@pytest.fixture(scope='module')
 def per(request):
-    if request.param == 'mysql':
-        conf = config['mysql']
-        per = MySQLPersistance(host=conf['host'],
-                               user=conf['user'],
-                               passwd=conf['password'],
-                               db=conf['test_database'])
-
-    elif request.param == 'postgres':
-        per = PostgreSQLPersistance(config['postgres']['test_details'])
-
-    else:
-        raise ValueError('Unknown protocol ({!r}).')
+    per = PostgreSQLPersistance(config['postgres']['test_details'])
 
     per.drop_tables()
     per.create_tables()

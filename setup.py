@@ -12,6 +12,7 @@ import os
 import subprocess
 import sys
 
+
 setup(
     name='libtree',
     version='0.0.1',
@@ -21,13 +22,8 @@ setup(
 
     # Dependencies
     install_requires=[
-        'pdbpp==0.8.2'
+        'psycopg2==2.6.1'
     ],
-
-    extras_require={
-        'mysql': ['mysql==0.0.1'],
-        'postgres': ['psycopg2==2.6.1']
-    },
 
     # Various stuff (do not care about those)
     entry_points={},

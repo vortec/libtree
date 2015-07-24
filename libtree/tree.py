@@ -214,60 +214,34 @@ def move_node(per, node, new_parent):
     # ancestor lists contain the root node, and there might be others,
     # therefore we dont need to remove and re-add them to the database.
 
-    if per.protocol == 'mysql':  # TODO: move into persistance layer
-        sql = """
-            DELETE
-                t1.*
-            FROM
-                ancestor AS t1
-            INNER JOIN
-                ancestor AS t2
-            ON
-                t2.ancestor = t1.ancestor
-            INNER JOIN
-                ancestor AS t3
-            ON
-                t3.node = t1.node
-            WHERE
-                (
-                    t2.node=%s
-                    AND
-                        (
-                            t3.ancestor=%s
-                            OR
-                            t1.node=%s
-                        )
-                );
-        """
-    else:
-        sql = """
-            DELETE FROM
-                ancestor
-            WHERE
-                ancestor
-            IN
-                (
-                    SELECT
-                        ancestor
-                    FROM
-                        ancestor
-                    WHERE
-                        node=%s
-                )
-            AND
-                node
-            IN
-                (
-                    SELECT
-                        node
-                    FROM
-                        ancestor
-                    WHERE
-                        ancestor=%s
-                    OR
-                        node=%s
-                );
-        """
+    sql = """
+        DELETE FROM
+            ancestor
+        WHERE
+            ancestor
+        IN
+            (
+                SELECT
+                    ancestor
+                FROM
+                    ancestor
+                WHERE
+                    node=%s
+            )
+        AND
+            node
+        IN
+            (
+                SELECT
+                    node
+                FROM
+                    ancestor
+                WHERE
+                    ancestor=%s
+                OR
+                    node=%s
+            );
+    """
     per.execute(sql, (id, id, id))
 
     sql = """
