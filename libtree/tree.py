@@ -1,6 +1,16 @@
 from libtree.node import Node
 
 
+def print_tree(per, node=None, intend=0):
+    if node is None:
+        node = get_root_node(per)
+
+    print('{} - {} {}'.format(' '*intend, node.id, node.type))
+
+    for child in list(get_children(per, node)):
+        print_tree(per, child, intend=intend+2)
+
+
 def get_root_node(per):
     sql = """
         SELECT

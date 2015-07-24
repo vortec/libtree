@@ -74,6 +74,18 @@ def test_get_node(per, node1):
     assert node.parent == node1.parent
 
 
+def test_print_tree(per, capsys):
+    print_tree(per)
+    out, _ = capsys.readouterr()
+    expected = """ - 1 root
+   - 2 node1
+   - 3 node2
+     - 4 node2-1
+       - 5 node2-1-1
+"""
+    assert out == expected
+
+
 def test_get_node_needs_number(per, root):
     with pytest.raises(TypeError):
         get_node(per, root)

@@ -2,7 +2,7 @@ test:
 	tox
 
 unit:
-	py.test --cov-report term-missing --cov libtree tests
+	py.test -v --cov-report term-missing --cov libtree tests
 
 acceptance:
 	behave tests/features
