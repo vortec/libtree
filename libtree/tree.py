@@ -1,4 +1,4 @@
-from node import Node
+from libtree.node import Node
 
 
 def get_root_node(per):
@@ -20,7 +20,7 @@ def get_root_node(per):
 
 
 def get_node(per, id):
-    if type(id) not in (int, long):
+    if type(id) != int:
         raise TypeError('Need numerical id.')
 
     sql = """
