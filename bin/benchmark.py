@@ -2,32 +2,50 @@ from libtree.config import config
 from libtree.persistance import *
 from libtree.tree import *
 import os
+import statistics
 from time import time
 
-if config['mysql']['enabled']:
-    conf = config['mysql']
-    per = MySQLPersistance(host=conf['host'],
-                           user=conf['user'],
-                           passwd=conf['password'],
-                           db=conf['database'])
-else:
-    per = PostgreSQLPersistance(config['postgres']['details'])
+per = PostgreSQLPersistance(config['postgres']['details'])
+stats = list()
 
-root = get_root_node(per)
-vortec = get_node(per, 154128)
-print len(list(get_descendant_ids(per, vortec)))
-#print vortec.description
-home = get_node(per, 20)
-tmp = get_node(per, 9)
+def populate_tree(per, node, levels, per_level, depth=0):
+    global stats
+    for i in range(0, per_level):
+        start = time()
+        new_node = create_node(per, node, '{}-{}'.format(depth, i+1))
+        duration = time() - start
+        stats.append(duration)
 
-start = time()
-move_node(per, vortec, tmp)
-print time() - start
+        if depth < levels:
+            populate_tree(per, new_node, levels, per_level, depth+1)
 
+def benchmark(per_level, levels):
+    global per, stats
+    stats = list()
+    per.drop_tables()
+    per.create_tables()
+    root = create_node(per, None, 'root')
+    per.commit()
+
+    start = time()
+    populate_tree(per, root, levels, per_level)
+    end = time() - start
+    output = '{} nodes per level, {} levels = {} nodes total, {} seconds'
+    output = output + ' ({} seconds average)'
+    print(output.format(per_level, levels, len(stats), end,
+          statistics.mean(stats)))
+
+benchmark(1, 1)
+benchmark(1, 100)
+benchmark(2, 10)
+benchmark(2, 11)
+benchmark(2, 12)
+#import pdb; pdb.set_trace()
+benchmark(2, 13)
+benchmark(3, 5)
+benchmark(5, 5)
+benchmark(6, 6)
+benchmark(7, 7)
+"""benchmark(8, 8)"""
 per.commit()
-
-start = time()
-move_node(per, vortec, home)
-print time() - start
-
-per.commit()
+#import pdb; pdb.set_trace()
