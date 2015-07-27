@@ -1,3 +1,11 @@
+try:
+    from psycopg2cffi import compat
+except ImportError:
+    pass
+else:
+    compat.register()
+
+
 import psycopg2
 import psycopg2.extras
 
@@ -68,6 +76,8 @@ class PostgreSQLPersistance(object):
               USING btree
               (node);
         """)
+
+    def create_triggers(self):
         self._cursor.execute("""
             CREATE OR REPLACE FUNCTION
               update_ancestors_on_insert()

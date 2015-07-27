@@ -11,6 +11,7 @@ def per(request):
 
     per.drop_tables()
     per.create_tables()
+    per.create_triggers()
     per.flush_tables()
     return per
 

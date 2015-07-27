@@ -8,9 +8,16 @@ except ImportError:
     use_setuptools()
     from setuptools import setup, find_packages, Command
 
+import platform
 import os
 import subprocess
 import sys
+
+
+if platform.python_implementation() == 'PyPy':
+    psycopg2_dependency = 'psycopg2cffi==2.7.1'
+else:
+    psycopg2_dependency = 'psycopg2==2.6.1'
 
 
 setup(
@@ -22,7 +29,7 @@ setup(
 
     # Dependencies
     install_requires=[
-        'psycopg2==2.6.1'
+        psycopg2_dependency
     ],
 
     # Various stuff (do not care about those)
