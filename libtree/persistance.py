@@ -80,7 +80,7 @@ class PostgreSQLPersistance(object):
     def create_triggers(self):
         self._cursor.execute("""
             CREATE OR REPLACE FUNCTION
-              update_ancestors_on_insert()
+              update_ancestors_after_insert()
             RETURNS TRIGGER AS
             $BODY$
             BEGIN
@@ -106,15 +106,15 @@ class PostgreSQLPersistance(object):
             LANGUAGE plpgsql;
         """)
         self._cursor.execute("""
-            CREATE TRIGGER update_ancestors_on_insert
+            CREATE CONSTRAINT TRIGGER update_ancestors_after_insert
             AFTER INSERT
             ON nodes
             FOR EACH ROW
-            EXECUTE PROCEDURE update_ancestors_on_insert()
+            EXECUTE PROCEDURE update_ancestors_after_insert()
         """)
         self._cursor.execute("""
             CREATE OR REPLACE FUNCTION
-              update_ancestors_on_delete()
+              update_ancestors_after_delete()
             RETURNS TRIGGER AS
             $BODY$
             BEGIN
@@ -166,11 +166,95 @@ class PostgreSQLPersistance(object):
             LANGUAGE plpgsql;
         """)
         self._cursor.execute("""
-            CREATE TRIGGER update_ancestors_on_delete
+            CREATE CONSTRAINT TRIGGER update_ancestors_after_delete
             AFTER DELETE
             ON nodes
             FOR EACH ROW
-            EXECUTE PROCEDURE update_ancestors_on_delete()
+            EXECUTE PROCEDURE update_ancestors_after_delete()
+        """)
+        self._cursor.execute("""
+            CREATE OR REPLACE FUNCTION
+                update_ancestors_after_update()
+              RETURNS TRIGGER AS
+              $BODY$
+              BEGIN
+
+                DELETE FROM
+                  ancestor
+                WHERE
+                  ancestor
+                IN
+                  (
+                    SELECT
+                      ancestor
+                    FROM
+                      ancestor
+                    WHERE
+                      node=NEW.id
+                    )
+                AND
+                  node
+                IN
+                  (
+                    SELECT
+                      node
+                    FROM
+                      ancestor
+                    WHERE
+                      ancestor=NEW.id
+                    OR
+                      node=NEW.id
+                    );
+
+                INSERT INTO
+                  ancestor
+                SELECT
+                  sub.node, par.ancestor
+                FROM
+                  ancestor AS sub
+                JOIN
+                  (
+                    SELECT
+                      ancestor
+                    FROM
+                      ancestor
+                    WHERE
+                      node=NEW.parent
+                    UNION SELECT NEW.parent
+                  ) AS par
+                ON TRUE
+                WHERE
+                  sub.ancestor = NEW.id
+                OR
+                  sub.node = NEW.id;
+
+                IF NEW.parent IS NOT NULL THEN
+
+                  INSERT INTO
+                    ancestor
+                    (node, ancestor)
+
+                    SELECT
+                      NEW.id, ancestor
+                    FROM
+                      ancestor
+                    WHERE
+                      node=NEW.parent
+                    UNION
+                      SELECT NEW.id, NEW.parent;
+                END IF;
+
+                RETURN NEW;
+              END;
+              $BODY$
+              LANGUAGE plpgsql;
+        """)
+        self._cursor.execute("""
+            CREATE CONSTRAINT TRIGGER update_ancestors_after_update
+            AFTER UPDATE
+            ON nodes
+            FOR EACH ROW
+            EXECUTE PROCEDURE update_ancestors_after_update()
         """)
 
     def drop_tables(self):
