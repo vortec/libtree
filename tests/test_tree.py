@@ -12,7 +12,6 @@ def per(request):
     per.drop_tables()
     per.create_tables()
     per.create_triggers()
-    per.flush_tables()
     return per
 
 
@@ -201,7 +200,6 @@ def test_delete_node(per, node1, node2_1, node2_1_1, node2_leaf):
             - node2-1  (#4)
           - node2  (#3)
     """
-
     delete_node(per, node2_1_1)
 
     # Deleted node doesn't exist anymore
@@ -210,6 +208,7 @@ def test_delete_node(per, node1, node2_1, node2_1_1, node2_leaf):
 
     # node2-1 has no children and no descendants
     assert set(get_child_ids(per, node2_1)) == set()
+    assert set(get_child_ids(per, node2_1_1)) == set()
     assert set(get_descendant_ids(per, node2_1)) == set()
 
     # node1 just contains node2-1

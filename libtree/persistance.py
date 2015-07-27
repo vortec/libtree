@@ -112,6 +112,66 @@ class PostgreSQLPersistance(object):
             FOR EACH ROW
             EXECUTE PROCEDURE update_ancestors_on_insert()
         """)
+        self._cursor.execute("""
+            CREATE OR REPLACE FUNCTION
+              update_ancestors_on_delete()
+            RETURNS TRIGGER AS
+            $BODY$
+            BEGIN
+
+              DELETE FROM
+                nodes
+              WHERE
+                id IN
+                  (
+                    SELECT
+                      node
+                    FROM
+                      ancestor
+                    WHERE
+                      ancestor=OLD.id
+                  );
+
+              DELETE FROM
+                ancestor
+              WHERE
+                node IN
+                  (
+                    SELECT
+                      node
+                    FROM
+                      ancestor
+                    WHERE
+                      ancestor=OLD.id
+                    UNION
+                      SELECT OLD.id
+                  )
+              OR
+                ancestor IN
+                  (
+                    SELECT
+                      node
+                    FROM
+                      ancestor
+                    WHERE
+                      ancestor=OLD.id
+                    UNION
+                      SELECT OLD.id
+                  );
+
+              RETURN OLD;
+
+            END;
+            $BODY$
+            LANGUAGE plpgsql;
+        """)
+        self._cursor.execute("""
+            CREATE TRIGGER update_ancestors_on_delete
+            AFTER DELETE
+            ON nodes
+            FOR EACH ROW
+            EXECUTE PROCEDURE update_ancestors_on_delete()
+        """)
 
     def drop_tables(self):
         self._cursor.execute("DROP TABLE IF EXISTS nodes;")

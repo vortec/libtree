@@ -51,7 +51,6 @@ def get_node(per, id):
 
 
 def create_node(per, parent, type, position=0, description=''):
-    """ non-atomic """
     parent_id = None
     if parent is not None:
         parent_id = int(parent)
@@ -181,30 +180,14 @@ def get_child_ids(per, node):
 
 
 def delete_node(per, node):
-    """ non-atomic """
     id = int(node)
-
-    old_objects = set(get_descendant_ids(per, id))
-    old_objects.add(id)
-    old_object_ids = ','.join(map(str, old_objects))
-
-    sql = """
-        DELETE FROM
-            ancestor
-        WHERE
-            node IN ({})
-        OR
-            ancestor IN ({});
-    """.format(old_object_ids, old_object_ids)
-    per.execute(sql)
-
     sql = """
         DELETE FROM
             nodes
         WHERE
-            id IN ({});
-    """.format(old_object_ids)
-    per.execute(sql)
+            id=%s;
+    """
+    per.execute(sql, (id, ))
 
 
 def move_node(per, node, new_parent):
