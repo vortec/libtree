@@ -4,20 +4,12 @@ from libtree.persistance import *
 import os
 from libtree.tree import *
 
-if config['mysql']['enabled']:
-    conf = config['mysql']
-    per = MySQLPersistance(host=conf['host'],
-                           user=conf['user'],
-                           passwd=conf['password'],
-                           db=conf['database'])
-else:
-    per = PostgreSQLPersistance(config['postgres']['details'])
-
+per = PostgreSQLPersistance(config['postgres']['details'])
 cache = {}
 
 per.drop_tables()
 per.create_tables()
-db.commit()
+per.commit()
 
 start_path = '/'
 root = create_node(per, None, 'folder', description=start_path)
