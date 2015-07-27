@@ -6,6 +6,7 @@ from time import time
 
 per = PostgreSQLPersistance(config['postgres']['details'])
 stats = list()
+averages = list()
 average = lambda a: sum(a) / len(a)
 
 def populate_tree(per, node, levels, per_level, depth=0):
@@ -20,7 +21,7 @@ def populate_tree(per, node, levels, per_level, depth=0):
             populate_tree(per, new_node, levels, per_level, depth+1)
 
 def benchmark(per_level, levels):
-    global per, stats
+    global per, stats, averages
     stats = list()
     per.drop_tables()
     per.create_tables()
@@ -33,7 +34,9 @@ def benchmark(per_level, levels):
     end = time() - start
     output = '{} nodes per level, {} levels = {} nodes total, {} seconds'
     output = output + ' ({} seconds average)'
-    print(output.format(per_level, levels, len(stats), end, average(stats)))
+    _average = average(stats)
+    averages.append(_average)
+    print(output.format(per_level, levels, len(stats), end, _average))
 
 benchmark(1, 1)
 benchmark(1, 100)
@@ -44,8 +47,11 @@ benchmark(2, 12)
 benchmark(2, 13)
 benchmark(3, 5)
 benchmark(5, 5)
-benchmark(6, 6)
+#benchmark(6, 6)
 #benchmark(7, 7)
 """benchmark(8, 8)"""
 per.commit()
+
+print(averages)
+print("Overall average INSERT speed per node: {}".format(average(averages)))
 #import pdb; pdb.set_trace()
