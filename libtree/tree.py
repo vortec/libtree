@@ -5,7 +5,8 @@ def print_tree(per, node=None, intend=0):
     if node is None:
         node = get_root_node(per)
 
-    print('{} - {} {}'.format(' '*intend, node.id, node.type))  # noqa
+    #print('{} - {} {}'.format(' '*intend, node.id, node.type))  # noqa
+    print('{}{}'.format(' '*intend, node.type))  # noqa
 
     for child in list(get_children(per, node)):
         print_tree(per, child, intend=intend+2)
@@ -66,10 +67,6 @@ def create_node(per, parent, type, position=0, description=''):
     per.execute(sql, (parent_id, type, position, description))
     id = per.get_last_row_id()
     node = Node(id, parent_id, type, position)
-
-    if parent is not None:
-        ancestors = [parent_id] + list(get_ancestor_ids(per, parent_id))
-        insert_ancestors(per, node, ancestors)
 
     return node
 

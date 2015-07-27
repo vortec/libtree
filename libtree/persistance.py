@@ -1,7 +1,6 @@
 import psycopg2
 import psycopg2.extras
 
-
 class PostgreSQLPersistance(object):
     protocol = 'postgres'
 
@@ -67,6 +66,40 @@ class PostgreSQLPersistance(object):
               ON ancestor
               USING btree
               (node);
+        """)
+        self._cursor.execute("""
+            CREATE OR REPLACE FUNCTION
+              update_ancestors_on_insert()
+            RETURNS TRIGGER AS
+            $BODY$
+            BEGIN
+              IF NEW.parent IS NOT NULL THEN
+
+                INSERT INTO
+                  ancestor
+                  (node, ancestor)
+
+                  SELECT
+                    NEW.id, ancestor
+                  FROM
+                    ancestor
+                  WHERE
+                    node=NEW.parent
+                  UNION
+                    SELECT NEW.id, NEW.parent;
+              END IF;
+
+              RETURN NEW;
+            END;
+            $BODY$
+            LANGUAGE plpgsql;
+        """)
+        self._cursor.execute("""
+            CREATE TRIGGER update_ancestors_on_insert
+            AFTER INSERT
+            ON nodes
+            FOR EACH ROW
+            EXECUTE PROCEDURE update_ancestors_on_insert()
         """)
 
     def drop_tables(self):
