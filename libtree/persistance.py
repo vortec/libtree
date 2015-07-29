@@ -121,6 +121,7 @@ class PostgreSQLPersistance(object):
             FOR EACH ROW
             EXECUTE PROCEDURE update_ancestors_after_insert()
         """)
+
         self._cursor.execute("""
             CREATE OR REPLACE FUNCTION
               update_ancestors_after_delete()
@@ -181,6 +182,7 @@ class PostgreSQLPersistance(object):
             FOR EACH ROW
             EXECUTE PROCEDURE update_ancestors_after_delete()
         """)
+
         self._cursor.execute("""
             CREATE OR REPLACE FUNCTION
                 update_ancestors_after_update()
