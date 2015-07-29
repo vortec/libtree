@@ -24,6 +24,19 @@ def per(request):
     return per
 
 
+"""
+Create this structure:
+
+/
+  - node1
+  - node2
+    - node2-1
+      - node2-1-1
+        - node2-leaf
+  - node3
+"""
+
+
 @pytest.fixture(scope='module')
 def root(per):
     return insert_node(per, None, 'root')

@@ -50,6 +50,7 @@ def get_node(per, id):
         return Node(**result)
 
 
+# IDEA: insert_node(position=None, auto_position=True)
 def insert_node(per, parent, type, position=None, description=''):
     parent_id = None
     if parent is not None:
@@ -67,6 +68,9 @@ def insert_node(per, parent, type, position=None, description=''):
     node = Node(id, parent_id, type, position)
 
     return node
+
+# IDEA: def mass_insert()
+# CREATE TEMP SEQUENCE
 
 
 def delete_node(per, node):
