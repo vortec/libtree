@@ -21,26 +21,27 @@ class PostgreSQLPersistance(object):
         self._connection = connection
         self._cursor = cursor
 
-    def __getattr__(self, name, *args):
-        if name in dir(self):
-            target = self
-        else:
-            target = self._cursor
-
-        if len(args) == 1:
-            return getattr(target, name, args[0])
-        else:
-            return getattr(target, name)
-
     def __iter__(self):
         for iter in self._cursor:
             yield iter
 
-    def set_autocommit(self, autocommit):
-        self._connection.autocommit = autocommit
-
     def commit(self):
         return self._connection.commit()
+
+    def rollback(self):
+        return self._connection.rollback()
+
+    def execute(self, *args, **kwargs):
+        return self._cursor.execute(*args, **kwargs)
+
+    def executemany(self, *args, **kwargs):
+        return self._cursor.executemany(*args, **kwargs)
+
+    def fetchone(self):
+        return self._cursor.fetchone()
+
+    def set_autocommit(self, autocommit):
+        self._connection.autocommit = autocommit
 
     def get_last_row_id(self):
         self._cursor.execute("SELECT LASTVAL();")
