@@ -17,7 +17,7 @@ def populate_tree(per, node, levels, per_level, depth=0):
     global stats
     for i in range(0, per_level):
         start = time()
-        new_node = create_node(per, node, '{}-{}'.format(depth, i+1))
+        new_node = insert_node(per, node, '{}-{}'.format(depth, i+1))
         duration = time() - start
         stats.append(duration)
 
@@ -30,7 +30,7 @@ def benchmark(per_level, levels):
     per.drop_tables()
     per.create_tables()
     per.create_triggers()
-    root = create_node(per, None, 'root')
+    root = insert_node(per, None, 'root')
     per.commit()
 
     start = time()

@@ -12,7 +12,7 @@ per.create_tables()
 per.commit()
 
 start_path = '/'
-root = create_node(per, None, 'folder', description=start_path)
+root = insert_node(per, None, 'folder', description=start_path)
 cache[start_path] = root.id
 
 for dirname, folders, files in os.walk(start_path):
@@ -20,14 +20,14 @@ for dirname, folders, files in os.walk(start_path):
         path = os.path.join(dirname, folder)
         #print path
         parent = cache[dirname]
-        node = create_node(per, parent, 'folder', description=path[0:254])
+        node = insert_node(per, parent, 'folder', description=path[0:254])
         cache[path] = node.id
 
     for filex in files:
         path = os.path.join(dirname, filex)
         #print path
         parent = cache[dirname]
-        node = create_node(per, parent, 'file', description=path[0:254])
+        node = insert_node(per, parent, 'file', description=path[0:254])
         cache[path] = node.id
 
     db.commit()

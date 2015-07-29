@@ -17,32 +17,32 @@ def per(request):
 
 @pytest.fixture(scope='module')
 def root(per):
-    return create_node(per, None, 'root')
+    return insert_node(per, None, 'root')
 
 
 @pytest.fixture(scope='module')
 def node1(per, root):
-    return create_node(per, root, 'node1')
+    return insert_node(per, root, 'node1')
 
 
 @pytest.fixture(scope='module')
 def node2(per, root):
-    return create_node(per, root, 'node2')
+    return insert_node(per, root, 'node2')
 
 
 @pytest.fixture(scope='module')
 def node2_1(per, node2):
-    return create_node(per, node2, 'node2-1')
+    return insert_node(per, node2, 'node2-1')
 
 
 @pytest.fixture(scope='module')
 def node2_1_1(per, node2_1):
-    return create_node(per, node2_1, 'node2-1-1')
+    return insert_node(per, node2_1, 'node2-1-1')
 
 
 @pytest.fixture(scope='module')
 def node2_leaf(per, node2_1_1):
-    return create_node(per, node2_1_1, 'node2-leaf')
+    return insert_node(per, node2_1_1, 'node2-leaf')
 
 
 def test_no_root_node(per):
@@ -55,7 +55,7 @@ def test_non_existing_node(per):
         get_node(per, 1)
 
 
-def test_create_node(root, node1, node2, node2_1, node2_1_1):
+def test_insert_node(root, node1, node2, node2_1, node2_1_1):
     assert root.parent is None
     assert node1.parent == root.id
     assert node2.parent == root.id

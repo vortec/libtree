@@ -50,7 +50,7 @@ def get_node(per, id):
         return Node(**result)
 
 
-def create_node(per, parent, type, position=None, description=''):
+def insert_node(per, parent, type, position=None, description=''):
     parent_id = None
     if parent is not None:
         parent_id = int(parent)
