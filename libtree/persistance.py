@@ -13,23 +13,31 @@ import psycopg2.extras
 class PostgreSQLPersistance(object):
     protocol = 'postgres'
 
-    def __init__(self, details):
+    def __init__(self, details, autocommit=False):
         connection = psycopg2.connect(details)
-        connection.autocommit = False
+        connection.autocommit = autocommit
         cursor = connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
         self._connection = connection
         self._cursor = cursor
 
     def __getattr__(self, name, *args):
-        if len(args) == 1:
-            return getattr(self._cursor, name, args[0])
+        if name in dir(self):
+            target = self
         else:
-            return getattr(self._cursor, name)
+            target = self._cursor
+
+        if len(args) == 1:
+            return getattr(target, name, args[0])
+        else:
+            return getattr(target, name)
 
     def __iter__(self):
         for iter in self._cursor:
             yield iter
+
+    def set_autocommit(self, autocommit):
+        self._connection.autocommit = autocommit
 
     def commit(self):
         return self._connection.commit()
