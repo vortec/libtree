@@ -1,5 +1,3 @@
-from .fixtures import per, root, node1, node2, node3  # noqa
-from .fixtures import node2_1, node2_1_1, node2_leaf  # noqa
 from libtree.tree import get_children, get_child_ids
 from pdb import set_trace as trace  # noqa
 

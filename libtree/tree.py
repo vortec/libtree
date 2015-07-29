@@ -195,6 +195,7 @@ def delete_node(per, node):
 
 
 def change_parent(per, node, new_parent):
+    # TODO: dont move into its own subtree
     sql = """
         UPDATE
           nodes
