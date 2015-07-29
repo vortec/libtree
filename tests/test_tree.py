@@ -129,10 +129,22 @@ def test_get_child_ids(per, root, node1, node2, node3):
     assert node3.id in ids
 
 
-#def test_get_children_correct_positioning(per, root, )
+def test_get_children_correct_positioning(per, root, node1, node2, node3):
+    ids = [child.id for child in get_children(per, root)]
+    expected = [node1.id, node2.id, node3.id]
+    assert ids == expected
 
 
-def test_change_parent(per, root, node1, node2, node2_1, node2_1_1, node2_leaf):
+def test_get_child_ids_correct_positioning(per, root, node1, node2, node3):
+    ids = list(get_child_ids(per, root))
+    expected = [node1.id, node2.id, node3.id]
+    assert ids == expected
+
+
+# def test_change_position_absolute
+
+def test_change_parent(per, root, node1, node2, node2_1, node2_1_1,
+                       node2_leaf):
     """
         Tree layout before move:
         /
@@ -151,6 +163,7 @@ def test_change_parent(per, root, node1, node2, node2_1, node2_1_1, node2_leaf):
               - node2-1-1
                 - node2-leaf
           - node2
+          - node3
     """
     # We expect node2-1 to be child of node2 and node2-1-1 to be child
     # of node2-1.
@@ -207,12 +220,14 @@ def test_delete_node(per, node1, node2_1, node2_1_1, node2_leaf):
               - node2-1-1
                 - node2-leaf
           - node2
+          - node3
 
         Expected tree layout after move:
         /
           - node1
             - node2-1
           - node2
+          - node3
     """
     delete_node(per, node2_1_1)
 
