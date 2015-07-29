@@ -158,7 +158,9 @@ def get_children(per, node):
         FROM
           nodes
         WHERE
-          parent=%s;
+          parent=%s
+        ORDER BY
+          position;
     """
     per.execute(sql, (int(node), ))
     for result in per:
@@ -172,7 +174,9 @@ def get_child_ids(per, node):
         FROM
           nodes
         WHERE
-          parent=%s;
+          parent=%s
+        ORDER BY
+          position;
     """
     per.execute(sql, (int(node), ))
     for result in per:

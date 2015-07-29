@@ -95,8 +95,6 @@ def test_get_child_ids_correct_positioning(per, root, node1, node2, node3):
     assert ids == expected
 
 
-# def test_change_position_absolute
-
 def test_change_parent(per, root, node1, node2, node2_1, node2_1_1,
                        node2_leaf):
     """
