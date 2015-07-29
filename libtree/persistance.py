@@ -56,7 +56,7 @@ class PostgreSQLPersistance(object):
               id serial NOT NULL,
               parent integer,
               type character varying(255),
-              "position" smallint DEFAULT 0,
+              "position" smallint DEFAULT NULL,
               description character varying(255),
               CONSTRAINT "primary" PRIMARY KEY (id)
             )
