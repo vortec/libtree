@@ -1,5 +1,5 @@
-from libtree.positioning import set_position, swap_node_positions
-from libtree.tree import get_children, get_child_ids, get_node
+from libtree.positioning import set_position, swap_node_positions  # noqa
+from libtree.tree import get_children, get_child_ids, get_node  # noqa
 from pdb import set_trace as trace  # noqa
 
 
@@ -19,7 +19,7 @@ def test_swap_node_positions(per, node1, node2):
     assert new_node2.position == node1.position
 
 
-#def test_shift_node
+# def test_shift_node
 
 
 def xtest_move_node_before(per, root, node1, node2, node3):
