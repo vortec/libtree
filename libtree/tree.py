@@ -190,7 +190,7 @@ def delete_node(per, node):
     per.execute(sql, (id, ))
 
 
-def move_node(per, node, new_parent):
+def change_parent(per, node, new_parent):
     sql = """
         UPDATE
             nodes

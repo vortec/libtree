@@ -119,7 +119,7 @@ def test_get_child_ids(per, root, node1, node2):
     assert node2.id in ids
 
 
-def test_move_node(per, root, node1, node2, node2_1, node2_1_1, node2_leaf):
+def test_change_parent(per, root, node1, node2, node2_1, node2_1_1, node2_leaf):
     """
         Tree layout before move:
         /  (#1)
@@ -142,7 +142,7 @@ def test_move_node(per, root, node1, node2, node2_1, node2_1_1, node2_leaf):
     # of node2-1.
 
     # Move node2-1 from node2 to node1
-    move_node(per, node2_1, node1)
+    change_parent(per, node2_1, node1)
 
     # node2-1 should have node1 as parent
     node = get_node(per, node2_1.id)
