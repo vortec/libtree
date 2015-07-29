@@ -7,10 +7,12 @@ import pytest
 @pytest.fixture(scope='session')
 def per(request):
     per = PostgreSQLPersistance(config['postgres']['test_details'])
+    per.set_autocommit(True)
 
     per.drop_tables()
     per.create_tables()
     per.create_triggers()
+
     return per
 
 
