@@ -2,7 +2,11 @@ from libtree.config import config
 from libtree.persistance import *
 from libtree.tree import *
 import os
+import sys
 from time import time
+
+
+sys.setrecursionlimit(100000)
 
 per = PostgreSQLPersistance(config['postgres']['details'])
 stats = list()
@@ -38,20 +42,12 @@ def benchmark(per_level, levels):
     averages.append(_average)
     print(output.format(per_level, levels, len(stats), end, _average))
 
-benchmark(1, 1)
-benchmark(1, 100)
-benchmark(2, 10)
-benchmark(2, 11)
-benchmark(2, 12)
-#import pdb; pdb.set_trace()
-benchmark(2, 13)
-benchmark(3, 5)
-benchmark(5, 5)
-#benchmark(6, 6)
-#benchmark(7, 7)
-"""benchmark(8, 8)"""
-per.commit()
 
-print(averages)
-print("Overall average INSERT speed per node: {}".format(average(averages)))
+benchmark(1, 10000)
+per.commit()
+csv = '\n'.join(map(lambda s: s.replace('.', ','), map(str, stats)))
+open('stats.csv', 'w').write(csv)
+
+#print(averages)
+#print("Overall average INSERT speed per node: {}".format(average(averages)))
 #import pdb; pdb.set_trace()
