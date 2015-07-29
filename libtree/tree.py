@@ -14,11 +14,11 @@ def print_tree(per, node=None, intend=0):
 def get_root_node(per):
     sql = """
         SELECT
-            *
+          *
         FROM
-            nodes
+          nodes
         WHERE
-            parent IS NULL;
+          parent IS NULL;
     """
     per.execute(sql)
     result = per.fetchone()
@@ -35,11 +35,11 @@ def get_node(per, id):
 
     sql = """
         SELECT
-            *
+          *
         FROM
-            nodes
+          nodes
         WHERE
-            id = %s;
+          id = %s;
     """
     per.execute(sql, (id, ))
     result = per.fetchone()
@@ -57,10 +57,10 @@ def insert_node(per, parent, type, position=None, description=''):
 
     sql = """
         INSERT INTO
-            nodes
-            (parent, type, position, description)
+          nodes
+          (parent, type, position, description)
         VALUES
-            (%s, %s, %s, %s);
+          (%s, %s, %s, %s);
     """
     per.execute(sql, (parent_id, type, position, description))
     id = per.get_last_row_id()
@@ -78,10 +78,10 @@ def insert_ancestors(per, node, ancestors):
 
     sql = """
         INSERT INTO
-            ancestor
-            (node, ancestor)
+          ancestor
+          (node, ancestor)
         VALUES
-            (%s, %s);
+          (%s, %s);
     """
     per.executemany(sql, data)
 
@@ -91,11 +91,11 @@ def delete_ancestors(per, node, ancestors):
 
     sql = """
         DELETE FROM
-            ancestor
+          ancestor
         WHERE
-            node=%s
+          node=%s
         AND
-            ancestor=%s;
+          ancestor=%s;
     """
     per.execute(sql, (id, ','.join(map(str, ancestors))))
 
@@ -103,11 +103,11 @@ def delete_ancestors(per, node, ancestors):
 def get_ancestor_ids(per, node):
     sql = """
         SELECT
-            ancestor
+          ancestor
         FROM
-            ancestor
+          ancestor
         WHERE
-            node=%s;
+          node=%s;
     """
     per.execute(sql, (int(node), ))
     for result in per:
@@ -117,15 +117,15 @@ def get_ancestor_ids(per, node):
 def get_ancestors(per, node):
     sql = """
         SELECT
-            nodes.*
+          nodes.*
         FROM
-            ancestor
+          ancestor
         INNER JOIN
-            nodes
+          nodes
         ON
-            ancestor.ancestor=nodes.id
+          ancestor.ancestor=nodes.id
         WHERE
-            ancestor.node=%s;
+          ancestor.node=%s;
     """
     per.execute(sql, (int(node), ))
     for result in per:
@@ -135,11 +135,11 @@ def get_ancestors(per, node):
 def get_descendant_ids(per, node):
     sql = """
         SELECT
-            node
+          node
         FROM
-            ancestor
+          ancestor
         WHERE
-            ancestor=%s;
+          ancestor=%s;
     """
     per.execute(sql, (int(node), ))
     # TODO: check if fetchmany() is fast and not uses more memory
@@ -154,11 +154,11 @@ def get_descendants(per, node):
 def get_children(per, node):
     sql = """
         SELECT
-            *
+          *
         FROM
-            nodes
+          nodes
         WHERE
-            parent=%s;
+          parent=%s;
     """
     per.execute(sql, (int(node), ))
     for result in per:
@@ -168,11 +168,11 @@ def get_children(per, node):
 def get_child_ids(per, node):
     sql = """
         SELECT
-            id
+          id
         FROM
-            nodes
+          nodes
         WHERE
-            parent=%s;
+          parent=%s;
     """
     per.execute(sql, (int(node), ))
     for result in per:
@@ -183,9 +183,9 @@ def delete_node(per, node):
     id = int(node)
     sql = """
         DELETE FROM
-            nodes
+          nodes
         WHERE
-            id=%s;
+          id=%s;
     """
     per.execute(sql, (id, ))
 
@@ -193,10 +193,10 @@ def delete_node(per, node):
 def change_parent(per, node, new_parent):
     sql = """
         UPDATE
-            nodes
+          nodes
         SET
-            parent=%s
+          parent=%s
         WHERE
-            id=%s;
+          id=%s;
     """
     per.execute(sql, (int(new_parent), int(node)))
