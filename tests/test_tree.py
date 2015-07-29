@@ -22,12 +22,17 @@ def root(per):
 
 @pytest.fixture(scope='module')
 def node1(per, root):
-    return insert_node(per, root, 'node1')
+    return insert_node(per, root, 'node1', position=0)
 
 
 @pytest.fixture(scope='module')
 def node2(per, root):
-    return insert_node(per, root, 'node2')
+    return insert_node(per, root, 'node2', position=1)
+
+
+@pytest.fixture(scope='module')
+def node3(per, root):
+    return insert_node(per, root, 'node3', position=2)
 
 
 @pytest.fixture(scope='module')
@@ -55,12 +60,13 @@ def test_non_existing_node(per):
         get_node(per, 1)
 
 
-def test_insert_node(root, node1, node2, node2_1, node2_1_1):
+def test_insert_node(root, node1, node2, node2_1, node2_1_1, node3):
     assert root.parent is None
     assert node1.parent == root.id
     assert node2.parent == root.id
     assert node2_1.parent == node2.id
     assert node2_1_1.parent == node2_1.id
+    assert node3.parent == root.id
 
 
 def test_get_root_node(per):
@@ -82,6 +88,7 @@ def test_print_tree(per, capsys):
   node2
     node2-1
       node2-1-1
+  node3
 """
     assert out == expected
 
@@ -98,45 +105,52 @@ def test_get_ancestors(per, root, node2, node2_1):
     assert ancestors[1].id == node2.id
 
 
-def test_get_descendant_ids(per, root, node1, node2, node2_1, node2_1_1,
+def test_get_descendant_ids(per, root, node1, node2, node3, node2_1, node2_1_1,
                             node2_leaf):
     ids = get_descendant_ids(per, root)
-    expected = {node1.id, node2.id, node2_1.id, node2_1_1.id, node2_leaf.id}
+    nodes = {node1, node2, node3, node2_1, node2_1_1, node2_leaf}
+    expected = {node.id for node in nodes}
     assert set(ids) == expected
 
 
-def test_get_children(per, root, node1, node2):
+def test_get_children(per, root, node1, node2, node3):
     ids = {child.id for child in get_children(per, root)}
-    assert len(ids) == 2
+    assert len(ids) == 3
     assert node1.id in ids
     assert node2.id in ids
+    assert node3.id in ids
 
 
-def test_get_child_ids(per, root, node1, node2):
+def test_get_child_ids(per, root, node1, node2, node3):
     ids = set(get_child_ids(per, root))
-    assert len(ids) == 2
+    assert len(ids) == 3
     assert node1.id in ids
     assert node2.id in ids
+    assert node3.id in ids
+
+
+#def test_get_children_correct_positioning(per, root, )
 
 
 def test_change_parent(per, root, node1, node2, node2_1, node2_1_1, node2_leaf):
     """
         Tree layout before move:
-        /  (#1)
-          - node1  (#2)
-          - node2  (#3)
-            - node2-1  (#4)
-              - node2-1-1  (#5)
-                - node2-leaf (#6)
+        /
+          - node1
+          - node2
+            - node2-1
+              - node2-1-1
+                - node2-leaf
+          - node3
 
         Expected tree layout after move:
 
-        /  (#1)
-          - node1  (#2)
-            - node2-1  (#4)
-              - node2-1-1  (#5)
-                - node2-leaf (#6)
-          - node2  (#3)
+        /
+          - node1
+            - node2-1
+              - node2-1-1
+                - node2-leaf
+          - node2
     """
     # We expect node2-1 to be child of node2 and node2-1-1 to be child
     # of node2-1.
@@ -187,18 +201,18 @@ def test_change_parent(per, root, node1, node2, node2_1, node2_1_1, node2_leaf):
 def test_delete_node(per, node1, node2_1, node2_1_1, node2_leaf):
     """
         Tree layout before delete:
-        /  (#1)
-          - node1  (#2)
-            - node2-1  (#4)
-              - node2-1-1  (#5)
-                - node2-leaf (#6)
-          - node2  (#3)
+        /
+          - node1
+            - node2-1
+              - node2-1-1
+                - node2-leaf
+          - node2
 
         Expected tree layout after move:
-        /  (#1)
-          - node1  (#2)
-            - node2-1  (#4)
-          - node2  (#3)
+        /
+          - node1
+            - node2-1
+          - node2
     """
     delete_node(per, node2_1_1)
 
