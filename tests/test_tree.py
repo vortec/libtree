@@ -83,10 +83,8 @@ def test_get_child_ids(per, root, node1, node2, node3):
     assert node3.id in ids
 
 
-#def test_get_children_correct_positioning(per, root, )
-
-
-def test_change_parent(per, root, node1, node2, node2_1, node2_1_1, node2_leaf):
+def test_change_parent(per, root, node1, node2, node2_1, node2_1_1,
+                       node2_leaf):
     """
         Tree layout before move:
         /
