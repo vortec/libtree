@@ -11,6 +11,18 @@ def print_tree(per, node=None, intend=0):
         print_tree(per, child, intend=intend+2)
 
 
+def get_size(per):
+    sql = """
+      SELECT
+        COUNT(*)
+      FROM
+        nodes;
+    """
+    per.execute(sql)
+    result = per.fetchone()
+    return result[0]
+
+
 def get_root_node(per):
     sql = """
         SELECT
