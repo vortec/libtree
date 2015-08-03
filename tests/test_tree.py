@@ -1,6 +1,6 @@
-from libtree.tree import (print_tree, get_root_node, get_node, delete_node,
-                          get_children, get_child_ids, get_ancestors,
-                          get_ancestor_ids, get_descendants,
+from libtree.tree import (print_tree, get_size, get_root_node, get_node,
+                          delete_node, get_children, get_child_ids,
+                          get_ancestors, get_ancestor_ids, get_descendants,
                           get_descendant_ids, change_parent)
 from pdb import set_trace as trace  # noqa
 import pytest
@@ -48,6 +48,9 @@ def test_print_tree(per, capsys):
 """
     assert out == expected
 
+
+def test_get_size(per):
+    assert get_size(per) == 6
 
 def test_get_node_needs_number(per, root):
     with pytest.raises(TypeError):
