@@ -50,6 +50,7 @@ def test_print_tree(per, capsys):
 def test_get_size(per):
     assert get_size(per) == 6
 
+
 def test_get_node_needs_number(per, root):
     with pytest.raises(TypeError):
         get_node(per, root)
