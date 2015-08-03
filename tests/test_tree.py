@@ -1,17 +1,17 @@
-from libtree.tree import (print_tree, get_size, get_root_node, get_node,
+from libtree.tree import (print_tree, get_tree_size, get_root_node, get_node,
                           delete_node, get_children, get_child_ids,
-                          get_ancestors, get_ancestor_ids, get_descendants,
-                          get_descendant_ids, change_parent)
+                          get_children_count, get_ancestors, get_ancestor_ids,
+                          get_descendants, get_descendant_ids, change_parent)
 from pdb import set_trace as trace  # noqa
 import pytest
 
 
-def xtest_no_root_node(per):
+def test_get_root_node_non_existing(per):
     with pytest.raises(ValueError):
         get_root_node(per)
 
 
-def xtest_non_existing_node(per):
+def test_get_node_non_existing(per):
     with pytest.raises(ValueError):
         get_node(per, 1)
 
@@ -49,8 +49,9 @@ def test_print_tree(per, capsys):
     assert out == expected
 
 
-def test_get_size(per):
-    assert get_size(per) == 6
+def test_get_tree_size(per):
+    assert get_tree_size(per) == 6
+
 
 def test_get_node_needs_number(per, root):
     with pytest.raises(TypeError):
@@ -105,6 +106,10 @@ def test_get_child_ids_correct_positioning(per, root, node1, node2, node3):
     assert ids == expected
 
 
+def test_get_children_count(per, root):
+    assert get_children_count(per, root) == 3
+
+
 def test_change_parent(per, root, node1, node2, node2_1, node2_1_1,
                        node2_leaf):
     """
@@ -131,7 +136,7 @@ def test_change_parent(per, root, node1, node2, node2_1, node2_1_1,
     # of node2-1.
 
     # Move node2-1 from node2 to node1
-    change_parent(per, node2_1, node1)
+    change_parent(per, node2_1, node1, auto_position=False)
 
     # node2-1 should have node1 as parent
     node = get_node(per, node2_1.id)
@@ -191,7 +196,7 @@ def test_delete_node(per, node1, node2_1, node2_1_1, node2_leaf):
           - node2
           - node3
     """
-    delete_node(per, node2_1_1)
+    delete_node(per, node2_1_1, auto_position=False)
 
     # Deleted node doesn't exist anymore
     with pytest.raises(ValueError):

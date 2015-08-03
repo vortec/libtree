@@ -1,4 +1,5 @@
 from libtree.node import Node
+from libtree.positioning import ensure_free_position, find_highest_position
 
 
 def print_tree(per, node=None, intend=0):
@@ -11,7 +12,7 @@ def print_tree(per, node=None, intend=0):
         print_tree(per, child, intend=intend+2)
 
 
-def get_size(per):
+def get_tree_size(per):
     sql = """
       SELECT
         COUNT(*)
@@ -62,11 +63,17 @@ def get_node(per, id):
         return Node(**result)
 
 
-# IDEA: insert_node(position=None, auto_position=True)
-def insert_node(per, parent, type, position=None, description=''):
+def insert_node(per, parent, xtype, position=None, description='',
+                auto_position=True):
     parent_id = None
     if parent is not None:
         parent_id = int(parent)
+
+    if auto_position:
+        if type(position) == int and position >= 0:
+            ensure_free_position(per, parent, position)
+        else:
+            position = find_highest_position(per, parent) + 1
 
     sql = """
         INSERT INTO
@@ -75,9 +82,9 @@ def insert_node(per, parent, type, position=None, description=''):
         VALUES
           (%s, %s, %s, %s);
     """
-    per.execute(sql, (parent_id, type, position, description))
+    per.execute(sql, (parent_id, xtype, position, description))
     id = per.get_last_row_id()
-    node = Node(id, parent_id, type, position)
+    node = Node(id, parent_id, xtype, position)
 
     return node
 
@@ -85,7 +92,7 @@ def insert_node(per, parent, type, position=None, description=''):
 # CREATE TEMP SEQUENCE
 
 
-def delete_node(per, node):
+def delete_node(per, node, auto_position=True):
     sql = """
         DELETE FROM
           nodes
@@ -125,6 +132,20 @@ def get_child_ids(per, node):
     per.execute(sql, (int(node), ))
     for result in per:
         yield int(result['id'])
+
+
+def get_children_count(per, node):
+    sql = """
+      SELECT
+        COUNT(*)
+      FROM
+        nodes
+      WHERE
+        parent=%s;
+    """
+    per.execute(sql, (int(node), ))
+    result = per.fetchone()
+    return result[0]
 
 
 def get_ancestors(per, node):
@@ -209,7 +230,7 @@ def get_descendant_ids(per, node):
         yield int(result['node'])
 
 
-def change_parent(per, node, new_parent):
+def change_parent(per, node, new_parent, auto_position=True):
     # TODO: dont move into its own subtree
     sql = """
         UPDATE
