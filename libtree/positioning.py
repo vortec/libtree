@@ -24,10 +24,10 @@ def find_highest_position(per, node):
     per.execute(sql, (int(node), ))
     result = per.fetchone()[0]
 
-    if result:
+    if result is not None:
         return result
     else:
-        raise ValueError('Position could not be found.')
+        return -1
 
 
 def get_node_at_position(per, node, position):

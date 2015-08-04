@@ -1,5 +1,6 @@
 from libtree.node import Node
-from libtree.positioning import ensure_free_position, find_highest_position
+from libtree.positioning import (ensure_free_position,
+                                 find_highest_position, shift_positions)
 
 
 def print_tree(per, node=None, intend=0):
@@ -93,13 +94,22 @@ def insert_node(per, parent, xtype, position=None, description='',
 
 
 def delete_node(per, node, auto_position=True):
+    id = int(node)
+
+    # Get Node object if integer (ID) was passed
+    if auto_position and type(node) != Node:
+        node = get_node(per, id)
+
     sql = """
         DELETE FROM
           nodes
         WHERE
           id=%s;
     """
-    per.execute(sql, (int(node), ))
+    per.execute(sql, (id, ))
+
+    if auto_position:
+        shift_positions(per, node.parent, node.position, -1)
 
 
 def get_children(per, node):
@@ -230,7 +240,13 @@ def get_descendant_ids(per, node):
         yield int(result['node'])
 
 
-def change_parent(per, node, new_parent, auto_position=True):
+def change_parent(per, node, new_parent, position=None, auto_position=True):
+    if auto_position:
+        if type(position) == int and position >= 0:
+            ensure_free_position(per, new_parent, position)
+        else:
+            position = find_highest_position(per, new_parent) + 1
+
     # TODO: dont move into its own subtree
     sql = """
         UPDATE
