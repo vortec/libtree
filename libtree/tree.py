@@ -1,4 +1,6 @@
 from libtree.node import Node
+from libtree.positioning import (ensure_free_position,
+                                 find_highest_position, shift_positions)
 
 
 def print_tree(per, node=None, intend=0):
@@ -11,7 +13,7 @@ def print_tree(per, node=None, intend=0):
         print_tree(per, child, intend=intend+2)
 
 
-def get_size(per):
+def get_tree_size(per):
     sql = """
       SELECT
         COUNT(*)
@@ -62,10 +64,17 @@ def get_node(per, id):
         return Node(**result)
 
 
-def insert_node(per, parent, type, position=None, description=''):
+def insert_node(per, parent, xtype, position=None, description='',
+                auto_position=True):
     parent_id = None
     if parent is not None:
         parent_id = int(parent)
+
+    if auto_position:
+        if type(position) == int and position >= 0:
+            ensure_free_position(per, parent, position)
+        else:
+            position = find_highest_position(per, parent) + 1
 
     sql = """
         INSERT INTO
@@ -74,11 +83,111 @@ def insert_node(per, parent, type, position=None, description=''):
         VALUES
           (%s, %s, %s, %s);
     """
-    per.execute(sql, (parent_id, type, position, description))
+    per.execute(sql, (parent_id, xtype, position, description))
     id = per.get_last_row_id()
-    node = Node(id, parent_id, type, position)
+    node = Node(id, parent_id, xtype, position)
 
     return node
+
+# IDEA: def mass_insert()
+# CREATE TEMP SEQUENCE
+
+
+def delete_node(per, node, auto_position=True):
+    id = int(node)
+
+    # Get Node object if integer (ID) was passed
+    if auto_position and type(node) != Node:
+        node = get_node(per, id)
+
+    sql = """
+        DELETE FROM
+          nodes
+        WHERE
+          id=%s;
+    """
+    per.execute(sql, (id, ))
+
+    if auto_position:
+        shift_positions(per, node.parent, node.position, -1)
+
+
+def get_children(per, node):
+    sql = """
+        SELECT
+          *
+        FROM
+          nodes
+        WHERE
+          parent=%s
+        ORDER BY
+          position;
+    """
+    per.execute(sql, (int(node), ))
+    for result in per:
+        yield Node(**result)
+
+
+def get_child_ids(per, node):
+    sql = """
+        SELECT
+          id
+        FROM
+          nodes
+        WHERE
+          parent=%s
+        ORDER BY
+          position;
+    """
+    per.execute(sql, (int(node), ))
+    for result in per:
+        yield int(result['id'])
+
+
+def get_children_count(per, node):
+    sql = """
+      SELECT
+        COUNT(*)
+      FROM
+        nodes
+      WHERE
+        parent=%s;
+    """
+    per.execute(sql, (int(node), ))
+    result = per.fetchone()
+    return result[0]
+
+
+def get_ancestors(per, node):
+    sql = """
+        SELECT
+          nodes.*
+        FROM
+          ancestor
+        INNER JOIN
+          nodes
+        ON
+          ancestor.ancestor=nodes.id
+        WHERE
+          ancestor.node=%s;
+    """
+    per.execute(sql, (int(node), ))
+    for result in per:
+        yield Node(**result)
+
+
+def get_ancestor_ids(per, node):
+    sql = """
+        SELECT
+          ancestor
+        FROM
+          ancestor
+        WHERE
+          node=%s;
+    """
+    per.execute(sql, (int(node), ))
+    for result in per:
+        yield int(result['ancestor'])
 
 
 def insert_ancestors(per, node, ancestors):
@@ -112,36 +221,8 @@ def delete_ancestors(per, node, ancestors):
     per.execute(sql, (id, ','.join(map(str, ancestors))))
 
 
-def get_ancestor_ids(per, node):
-    sql = """
-        SELECT
-          ancestor
-        FROM
-          ancestor
-        WHERE
-          node=%s;
-    """
-    per.execute(sql, (int(node), ))
-    for result in per:
-        yield int(result['ancestor'])
-
-
-def get_ancestors(per, node):
-    sql = """
-        SELECT
-          nodes.*
-        FROM
-          ancestor
-        INNER JOIN
-          nodes
-        ON
-          ancestor.ancestor=nodes.id
-        WHERE
-          ancestor.node=%s;
-    """
-    per.execute(sql, (int(node), ))
-    for result in per:
-        yield Node(**result)
+def get_descendants(per, node):
+    raise NotImplementedError('This could create billions of Python objects.')
 
 
 def get_descendant_ids(per, node):
@@ -159,50 +240,14 @@ def get_descendant_ids(per, node):
         yield int(result['node'])
 
 
-def get_descendants(per, node):
-    raise NotImplementedError("could be billions of objects")
+def change_parent(per, node, new_parent, position=None, auto_position=True):
+    if auto_position:
+        if type(position) == int and position >= 0:
+            ensure_free_position(per, new_parent, position)
+        else:
+            position = find_highest_position(per, new_parent) + 1
 
-
-def get_children(per, node):
-    sql = """
-        SELECT
-          *
-        FROM
-          nodes
-        WHERE
-          parent=%s;
-    """
-    per.execute(sql, (int(node), ))
-    for result in per:
-        yield Node(**result)
-
-
-def get_child_ids(per, node):
-    sql = """
-        SELECT
-          id
-        FROM
-          nodes
-        WHERE
-          parent=%s;
-    """
-    per.execute(sql, (int(node), ))
-    for result in per:
-        yield int(result['id'])
-
-
-def delete_node(per, node):
-    id = int(node)
-    sql = """
-        DELETE FROM
-          nodes
-        WHERE
-          id=%s;
-    """
-    per.execute(sql, (id, ))
-
-
-def change_parent(per, node, new_parent):
+    # TODO: dont move into its own subtree
     sql = """
         UPDATE
           nodes

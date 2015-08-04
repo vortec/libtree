@@ -13,19 +13,13 @@ import psycopg2.extras
 class PostgreSQLPersistance(object):
     protocol = 'postgres'
 
-    def __init__(self, details):
+    def __init__(self, details, autocommit=False):
         connection = psycopg2.connect(details)
-        connection.autocommit = False
+        connection.autocommit = autocommit
         cursor = connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
         self._connection = connection
         self._cursor = cursor
-
-    def __getattr__(self, name, *args):
-        if len(args) == 1:
-            return getattr(self._cursor, name, args[0])
-        else:
-            return getattr(self._cursor, name)
 
     def __iter__(self):
         for iter in self._cursor:
@@ -33,6 +27,21 @@ class PostgreSQLPersistance(object):
 
     def commit(self):
         return self._connection.commit()
+
+    def rollback(self):
+        return self._connection.rollback()
+
+    def execute(self, *args, **kwargs):
+        return self._cursor.execute(*args, **kwargs)
+
+    def executemany(self, *args, **kwargs):
+        return self._cursor.executemany(*args, **kwargs)
+
+    def fetchone(self):
+        return self._cursor.fetchone()
+
+    def set_autocommit(self, autocommit):
+        self._connection.autocommit = autocommit
 
     def get_last_row_id(self):
         self._cursor.execute("SELECT LASTVAL();")
@@ -112,6 +121,7 @@ class PostgreSQLPersistance(object):
             FOR EACH ROW
             EXECUTE PROCEDURE update_ancestors_after_insert()
         """)
+
         self._cursor.execute("""
             CREATE OR REPLACE FUNCTION
               update_ancestors_after_delete()
@@ -172,6 +182,7 @@ class PostgreSQLPersistance(object):
             FOR EACH ROW
             EXECUTE PROCEDURE update_ancestors_after_delete()
         """)
+
         self._cursor.execute("""
             CREATE OR REPLACE FUNCTION
                 update_ancestors_after_update()
