@@ -85,14 +85,14 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-
-/* AFTER DELETE */
 CREATE CONSTRAINT TRIGGER update_ancestors_after_delete
 AFTER DELETE
 ON nodes
 FOR EACH ROW
 EXECUTE PROCEDURE update_ancestors_after_delete();
 
+
+/* AFTER UPDATE */
 CREATE OR REPLACE FUNCTION
     update_ancestors_after_update()
   RETURNS TRIGGER AS
@@ -170,7 +170,7 @@ CREATE OR REPLACE FUNCTION
   LANGUAGE plpgsql;
 
 CREATE CONSTRAINT TRIGGER update_ancestors_after_update
-AFTER UPDATE
+AFTER UPDATE OF parent
 ON nodes
 FOR EACH ROW
 EXECUTE PROCEDURE update_ancestors_after_update();
