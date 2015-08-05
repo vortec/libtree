@@ -7,13 +7,13 @@ BEGIN
   IF NEW.parent IS NOT NULL THEN
 
     INSERT INTO
-      ancestor
+      ancestors
       (node, ancestor)
 
       SELECT
         NEW.id, ancestor
       FROM
-        ancestor
+        ancestors
       WHERE
         node=NEW.parent
       UNION
@@ -47,20 +47,20 @@ BEGIN
         SELECT
           node
         FROM
-          ancestor
+          ancestors
         WHERE
           ancestor=OLD.id
       );
 
   DELETE FROM
-    ancestor
+    ancestors
   WHERE
     node IN
       (
         SELECT
           node
         FROM
-          ancestor
+          ancestors
         WHERE
           ancestor=OLD.id
         UNION
@@ -72,7 +72,7 @@ BEGIN
         SELECT
           node
         FROM
-          ancestor
+          ancestors
         WHERE
           ancestor=OLD.id
         UNION
@@ -100,7 +100,7 @@ CREATE OR REPLACE FUNCTION
   BEGIN
 
     DELETE FROM
-      ancestor
+      ancestors
     WHERE
       ancestor
     IN
@@ -108,7 +108,7 @@ CREATE OR REPLACE FUNCTION
         SELECT
           ancestor
         FROM
-          ancestor
+          ancestors
         WHERE
           node=NEW.id
         )
@@ -119,7 +119,7 @@ CREATE OR REPLACE FUNCTION
         SELECT
           node
         FROM
-          ancestor
+          ancestors
         WHERE
           ancestor=NEW.id
         OR
@@ -127,17 +127,17 @@ CREATE OR REPLACE FUNCTION
         );
 
     INSERT INTO
-      ancestor
+      ancestors
     SELECT
       sub.node, par.ancestor
     FROM
-      ancestor AS sub
+      ancestors AS sub
     JOIN
       (
         SELECT
           ancestor
         FROM
-          ancestor
+          ancestors
         WHERE
           node=NEW.parent
         UNION SELECT NEW.parent
@@ -151,13 +151,13 @@ CREATE OR REPLACE FUNCTION
     IF NEW.parent IS NOT NULL THEN
 
       INSERT INTO
-        ancestor
+        ancestors
         (node, ancestor)
 
         SELECT
           NEW.id, ancestor
         FROM
-          ancestor
+          ancestors
         WHERE
           node=NEW.parent
         UNION

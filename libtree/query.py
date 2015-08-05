@@ -6,13 +6,13 @@ def get_ancestors(per, node):
         SELECT
           nodes.*
         FROM
-          ancestor
+          ancestors
         INNER JOIN
           nodes
         ON
-          ancestor.ancestor=nodes.id
+          ancestors.ancestor=nodes.id
         WHERE
-          ancestor.node=%s;
+          ancestors.node=%s;
     """
     per.execute(sql, (int(node), ))
     for result in per:
@@ -24,7 +24,7 @@ def get_ancestor_ids(per, node):
         SELECT
           ancestor
         FROM
-          ancestor
+          ancestors
         WHERE
           node=%s;
     """
@@ -42,7 +42,7 @@ def get_descendant_ids(per, node):
         SELECT
           node
         FROM
-          ancestor
+          ancestors
         WHERE
           ancestor=%s;
     """

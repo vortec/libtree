@@ -167,7 +167,7 @@ def insert_ancestors(per, node, ancestors):
 
     sql = """
         INSERT INTO
-          ancestor
+          ancestors
           (node, ancestor)
         VALUES
           (%s, %s);
@@ -180,7 +180,7 @@ def delete_ancestors(per, node, ancestors):
 
     sql = """
         DELETE FROM
-          ancestor
+          ancestors
         WHERE
           node=%s
         AND

@@ -1,4 +1,4 @@
-CREATE TABLE ancestor
+CREATE TABLE ancestors
 (
   node integer NOT NULL,
   ancestor integer NOT NULL,
@@ -9,12 +9,12 @@ WITH (
 );
 
 CREATE INDEX idx_ancestor
-  ON ancestor
+  ON ancestors
   USING btree
   (ancestor);
 
 CREATE INDEX idx_node
-  ON ancestor
+  ON ancestors
   USING btree
   (node);
 
