@@ -3,12 +3,10 @@ class Node(object):
         '_Node__id',
         '_Node__parent',
         '_Node__type',
-        '_Node__position',
-        '_Node__description'
+        '_Node__position'
     ]
 
-    def __init__(self, id=None, parent=None, type=None, position=None,
-                 description=''):
+    def __init__(self, id=None, parent=None, type=None, position=None):
         self.__id = None
         if id is not None:
             self.__id = int(id)
@@ -22,15 +20,13 @@ class Node(object):
             self.__position = int(position)
 
         self.__type = type
-        self.__description = description
 
     def __int__(self):
         return self.id
 
     def __repr__(self):
         ret = '<Node id={!r}, parent={!r}, type={!r}, position={!r}>'
-        return ret.format(self.id, self.parent, self.type, self.position,
-                          self.description)
+        return ret.format(self.id, self.parent, self.type, self.position)
 
     @property
     def id(self):
@@ -47,7 +43,3 @@ class Node(object):
     @property
     def position(self):
         return self.__position
-
-    @property
-    def description(self):
-        return self.__description

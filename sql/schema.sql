@@ -26,7 +26,6 @@ CREATE TABLE nodes
   parent integer,
   type character varying(255),
   "position" smallint DEFAULT NULL,
-  description character varying(255),
   CONSTRAINT "primary" PRIMARY KEY (id)
 )
 WITH (

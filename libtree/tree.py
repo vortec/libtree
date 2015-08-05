@@ -65,8 +65,7 @@ def get_node(per, id):
         return Node(**result)
 
 
-def insert_node(per, parent, xtype, position=None, description='',
-                auto_position=True):
+def insert_node(per, parent, xtype, position=None, auto_position=True):
     parent_id = None
     if parent is not None:
         parent_id = int(parent)
@@ -80,11 +79,11 @@ def insert_node(per, parent, xtype, position=None, description='',
     sql = """
         INSERT INTO
           nodes
-          (parent, type, position, description)
+          (parent, type, position)
         VALUES
-          (%s, %s, %s, %s);
+          (%s, %s, %s);
     """
-    per.execute(sql, (parent_id, xtype, position, description))
+    per.execute(sql, (parent_id, xtype, position))
     id = per.get_last_row_id()
     node = Node(id, parent_id, xtype, position)
 
