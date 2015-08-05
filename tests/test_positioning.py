@@ -97,25 +97,20 @@ def test_delete_node_shifts_positions(per, root, node1):
     assert list(positions) == [0, 1, 3]
 
 
-def xtest_change_parent_to_highest_position(per, root, node2, node2_1):
-    change_parent(per, node3, root, position=None, auto_position=True)
-    print_tree(per)
-    assert False
+def test_change_parent_to_highest_position(per, root, node2, node2_1):
+    highest_position = find_highest_position(per, root)
+    change_parent(per, node2_1, root, position=None, auto_position=True)
+    node2_1 = get_node(per, node2_1.id)
+    assert node2_1.position == highest_position + 1
 
 
-def x___test_move_node_before(per, root, node1, node2, node3):
-    assert node1.position < node2.position < node3.position
-    move_node_before(per, node3, node2)
-    node1 = get_node(node1.id)
-    node2 = get_node(node2.id)
-    node3 = get_node(node3.id)
-    assert node1.position < node3.position < node2.position
+def test_change_parent_starts_couting_at_zero(per, root, node2, node2_1):
+    change_parent(per, node2_1, node2, position=None, auto_position=True)
+    node2_1 = get_node(per, node2_1.id)
+    assert node2_1.position == 0
 
 
-def x___xtest_move_node_after(per, root, node1, node2, node3):
-    assert node1.position < node2.position < node3.position
-    move_node_before(per, node3, node2)
-    node1 = get_node(node1.id)
-    node2 = get_node(node2.id)
-    node3 = get_node(node3.id)
-    assert node1.position < node3.position < node2.position
+def test_change_parent_to_specific_position(per, root, node2_1):
+    change_parent(per, node2_1, root, position=0, auto_position=True)
+    positions = map(lambda n: n.position, get_children(per, root))
+    assert list(positions) == [0, 1, 2, 4]

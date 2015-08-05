@@ -1,6 +1,7 @@
 from libtree.node import Node
 from libtree.positioning import (ensure_free_position,
-                                 find_highest_position, shift_positions)
+                                 find_highest_position, set_position,
+                                 shift_positions)
 
 
 def print_tree(per, node=None, intend=0):
@@ -246,6 +247,7 @@ def change_parent(per, node, new_parent, position=None, auto_position=True):
             ensure_free_position(per, new_parent, position)
         else:
             position = find_highest_position(per, new_parent) + 1
+        set_position(per, node, position)
 
     # TODO: dont move into its own subtree
     sql = """
