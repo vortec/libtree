@@ -159,38 +159,6 @@ def get_children_count(per, node):
     return result[0]
 
 
-def get_ancestors(per, node):
-    sql = """
-        SELECT
-          nodes.*
-        FROM
-          ancestor
-        INNER JOIN
-          nodes
-        ON
-          ancestor.ancestor=nodes.id
-        WHERE
-          ancestor.node=%s;
-    """
-    per.execute(sql, (int(node), ))
-    for result in per:
-        yield Node(**result)
-
-
-def get_ancestor_ids(per, node):
-    sql = """
-        SELECT
-          ancestor
-        FROM
-          ancestor
-        WHERE
-          node=%s;
-    """
-    per.execute(sql, (int(node), ))
-    for result in per:
-        yield int(result['ancestor'])
-
-
 def insert_ancestors(per, node, ancestors):
     id = int(node)
     data = []
@@ -220,25 +188,6 @@ def delete_ancestors(per, node, ancestors):
           ancestor=%s;
     """
     per.execute(sql, (id, ','.join(map(str, ancestors))))
-
-
-def get_descendants(per, node):
-    raise NotImplementedError('This could create billions of Python objects.')
-
-
-def get_descendant_ids(per, node):
-    sql = """
-        SELECT
-          node
-        FROM
-          ancestor
-        WHERE
-          ancestor=%s;
-    """
-    per.execute(sql, (int(node), ))
-    # TODO: check if fetchmany() is fast and not uses more memory
-    for result in per:
-        yield int(result['node'])
 
 
 def change_parent(per, node, new_parent, position=None, auto_position=True):
