@@ -60,8 +60,8 @@ class PostgreSQLPersistance(object):
 
     def drop_tables(self):
         self._cursor.execute("DROP TABLE IF EXISTS nodes;")
-        self._cursor.execute("DROP TABLE IF EXISTS ancestor;")
+        self._cursor.execute("DROP TABLE IF EXISTS ancestors;")
 
     def flush_tables(self):
         self._cursor.execute("TRUNCATE TABLE nodes RESTART IDENTITY;")
-        self._cursor.execute("TRUNCATE TABLE ancestor;")
+        self._cursor.execute("TRUNCATE TABLE ancestors;")
