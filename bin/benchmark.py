@@ -28,7 +28,7 @@ def benchmark(per_level, levels):
     global per, stats, averages
     stats = list()
     per.drop_tables()
-    per.create_tables()
+    per.create_schema()
     per.create_triggers()
     root = insert_node(per, None, 'root')
     per.commit()

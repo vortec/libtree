@@ -8,7 +8,7 @@ per = PostgreSQLPersistance(config['postgres']['details'])
 cache = {}
 
 per.drop_tables()
-per.create_tables()
+per.create_schema()
 per.commit()
 
 start_path = '/'

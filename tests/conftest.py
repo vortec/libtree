@@ -39,7 +39,7 @@ def per(request):
 
     node_ids.clear()
     per.drop_tables()
-    per.create_tables()
+    per.create_schema()
     per.create_triggers()
 
     def fin():
