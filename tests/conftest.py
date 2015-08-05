@@ -56,17 +56,20 @@ def root(per):
 
 @pytest.fixture
 def node1(per, root):
-    return get_or_create_node(per, root, 'node1', auto_position=False)
+    return get_or_create_node(per, root, 'node1', position=4,
+                              auto_position=False)
 
 
 @pytest.fixture
 def node2(per, root):
-    return get_or_create_node(per, root, 'node2', auto_position=False)
+    return get_or_create_node(per, root, 'node2', position=5,
+                              auto_position=False)
 
 
 @pytest.fixture
 def node3(per, root):
-    return get_or_create_node(per, root, 'node3', auto_position=False)
+    return get_or_create_node(per, root, 'node3', position=6,
+                              auto_position=False)
 
 
 @pytest.fixture

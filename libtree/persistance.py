@@ -74,6 +74,13 @@ class PostgreSQLPersistance(object):
             );
         """)
         self._cursor.execute("""
+            CREATE INDEX idx_parent
+              ON nodes
+              USING btree
+              (parent);
+        """)
+
+        self._cursor.execute("""
             CREATE INDEX idx_ancestor
               ON ancestor
               USING btree
