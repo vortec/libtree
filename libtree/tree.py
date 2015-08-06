@@ -184,9 +184,10 @@ def delete_ancestors(per, node, ancestors):
         WHERE
           node=%s
         AND
-          ancestor=%s;
+          ancestor IN ({});
     """
-    per.execute(sql, (id, ','.join(map(str, ancestors))))
+    sql = sql.format(','.join(map(str, map(int, ancestors))))
+    per.execute(sql, (id, ))
 
 
 def change_parent(per, node, new_parent, position=None, auto_position=True):
@@ -207,3 +208,16 @@ def change_parent(per, node, new_parent, position=None, auto_position=True):
           id=%s;
     """
     per.execute(sql, (int(new_parent), int(node)))
+
+
+def vectorize_nodes(nodes):
+    ret = []
+    parents = {node.parent: node for node in nodes}
+
+    last_parent = None
+    for _ in range(len(parents)):
+        node = parents[last_parent]
+        ret.append(node)
+        last_parent = node.id
+
+    return ret

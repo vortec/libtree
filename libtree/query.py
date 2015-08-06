@@ -1,7 +1,8 @@
 from libtree.node import Node
+from libtree.tree import vectorize_nodes
 
 
-def get_ancestors(per, node):
+def get_ancestors(per, node, sort=True):
     sql = """
         SELECT
           nodes.*
@@ -15,8 +16,14 @@ def get_ancestors(per, node):
           ancestors.node=%s;
     """
     per.execute(sql, (int(node), ))
-    for result in per:
-        yield Node(**result)
+
+    if sort:
+        make_node = lambda r: Node(**r)
+        for node in vectorize_nodes(map(make_node, per)):
+            yield node
+    else:
+        for result in per:
+            yield Node(**result)
 
 
 def get_ancestor_ids(per, node):

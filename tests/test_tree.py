@@ -1,6 +1,6 @@
 from libtree.tree import (print_tree, get_tree_size, get_root_node, get_node,
                           delete_node, get_children, get_child_ids,
-                          get_children_count, change_parent)
+                          get_children_count, change_parent, vectorize_nodes)
 from libtree.query import (get_ancestor_ids, get_descendant_ids)
 from pdb import set_trace as trace  # noqa
 import pytest
@@ -88,6 +88,12 @@ def test_get_child_ids_correct_positioning(per, root, node1, node2, node3):
 
 def test_get_children_count(per, root):
     assert get_children_count(per, root) == 3
+
+
+def test_vectorize_nodes(per, root, node2, node2_1, node2_1_1):
+    nodes = [node2_1_1, node2, root, node2_1]
+    expected = [root, node2, node2_1, node2_1_1]
+    assert vectorize_nodes(nodes) == expected
 
 
 def test_change_parent(per, root, node1, node2, node2_1, node2_1_1,
