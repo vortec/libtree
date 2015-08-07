@@ -9,6 +9,7 @@ from time import time
 sys.setrecursionlimit(100000)
 
 per = PostgreSQLPersistance(config['postgres']['details'])
+
 stats = list()
 averages = list()
 average = lambda a: sum(a) / len(a)
@@ -27,9 +28,9 @@ def populate_tree(per, node, levels, per_level, depth=0):
 def benchmark(per_level, levels):
     global per, stats, averages
     stats = list()
-    per.drop_tables()
-    per.create_schema()
-    per.create_triggers()
+    #per.drop_tables()
+    #per.create_schema()
+    #per.create_triggers()
     root = insert_node(per, None, 'root')
     per.commit()
 
@@ -43,11 +44,11 @@ def benchmark(per_level, levels):
     print(output.format(per_level, levels, len(stats), end, _average))
 
 
-benchmark(1, 10000)
-per.commit()
-csv = '\n'.join(map(lambda s: s.replace('.', ','), map(str, stats)))
-open('stats.csv', 'w').write(csv)
+#benchmark(1, 10000)
+#per.commit()
+#csv = '\n'.join(map(lambda s: s.replace('.', ','), map(str, stats)))
+#open('stats.csv', 'w').write(csv)
 
 #print(averages)
-#print("Overall average INSERT speed per node: {}".format(average(averages)))
+#print("Overall average                speed per node: {}".format(average(averages)))
 #import pdb; pdb.set_trace()

@@ -1,3 +1,5 @@
+import builtins
+import json
 from libtree.node import Node
 from libtree.positioning import (ensure_free_position,
                                  find_highest_position, set_position,
@@ -66,13 +68,20 @@ def get_node(per, id):
         return Node(**result)
 
 
-def insert_node(per, parent, xtype, position=None, auto_position=True):
+def insert_node(per, parent, type, position=None, attributes=None,
+                properties=None, auto_position=True):
     parent_id = None
     if parent is not None:
         parent_id = int(parent)
 
+    if attributes is None:
+        attributes = {}
+
+    if properties is None:
+        properties = {}
+
     if auto_position:
-        if type(position) == int and position >= 0:
+        if builtins.type(position) == int and position >= 0:
             ensure_free_position(per, parent, position)
         else:
             position = find_highest_position(per, parent) + 1
@@ -80,13 +89,14 @@ def insert_node(per, parent, xtype, position=None, auto_position=True):
     sql = """
         INSERT INTO
           nodes
-          (parent, type, position)
+          (parent, type, position, attributes, properties)
         VALUES
-          (%s, %s, %s);
+          (%s, %s, %s, %s, %s);
     """
-    per.execute(sql, (parent_id, xtype, position))
+    per.execute(sql, (parent_id, type, position, json.dumps(attributes),
+                      json.dumps(properties)))
     id = per.get_last_row_id()
-    node = Node(id, parent_id, xtype, position)
+    node = Node(id, parent_id, type, position)
 
     return node
 
