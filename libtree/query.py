@@ -1,5 +1,5 @@
 from libtree.node import Node
-from libtree.tree import vectorize_nodes
+from libtree.utils import vectorize_nodes
 
 
 def get_ancestors(per, node, sort=True):

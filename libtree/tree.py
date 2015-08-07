@@ -2,6 +2,7 @@ from libtree.node import Node
 from libtree.positioning import (ensure_free_position,
                                  find_highest_position, set_position,
                                  shift_positions)
+from libtree.query import get_descendant_ids
 
 
 def print_tree(per, node=None, intend=0):
@@ -191,6 +192,9 @@ def delete_ancestors(per, node, ancestors):
 
 
 def change_parent(per, node, new_parent, position=None, auto_position=True):
+    if int(new_parent) in get_descendant_ids(per, node):
+        raise ValueError('Cannot move node into its own subtree.')
+
     if auto_position:
         if type(position) == int and position >= 0:
             ensure_free_position(per, new_parent, position)
@@ -208,16 +212,3 @@ def change_parent(per, node, new_parent, position=None, auto_position=True):
           id=%s;
     """
     per.execute(sql, (int(new_parent), int(node)))
-
-
-def vectorize_nodes(nodes):
-    ret = []
-    parents = {node.parent: node for node in nodes}
-
-    last_parent = None
-    for _ in range(len(parents)):
-        node = parents[last_parent]
-        ret.append(node)
-        last_parent = node.id
-
-    return ret
