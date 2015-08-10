@@ -48,6 +48,10 @@ class PostgreSQLPersistance(object):
         self._cursor.execute("SELECT LASTVAL();")
         return self._cursor.fetchone()['lastval']
 
+    def install(self):
+        self.create_schema()
+        self.create_triggers()
+
     def create_schema(self):
         script_folder = os.path.split(os.path.realpath(__file__))[0]
         path = os.path.join(script_folder, '..', 'sql', 'schema.sql')
