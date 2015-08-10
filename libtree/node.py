@@ -1,4 +1,7 @@
-import builtins
+try:
+    import builtins
+except ImportError:
+    import __builtin__ as builtins
 
 
 class Node(object):

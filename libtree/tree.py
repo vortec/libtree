@@ -1,10 +1,14 @@
-import builtins
 import json
 from libtree.node import Node
 from libtree.positioning import (ensure_free_position,
                                  find_highest_position, set_position,
                                  shift_positions)
 from libtree.query import get_descendant_ids
+
+try:
+    import builtins
+except ImportError:
+    import __builtin__ as builtins
 
 
 def print_tree(per, node=None, intend=0):
