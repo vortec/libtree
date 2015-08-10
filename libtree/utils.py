@@ -1,4 +1,10 @@
-def vectorize_nodes(nodes):
+import collections
+
+
+def vectorize_nodes(*nodes):
+    if len(nodes) == 1 and isinstance(nodes[0], collections.Iterable):
+        nodes = nodes[0]
+
     ret = []
     parents = {node.parent: node for node in nodes}
 
