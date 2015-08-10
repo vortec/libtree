@@ -1,6 +1,6 @@
-from libtree.tree import (print_tree, get_tree_size, get_root_node, get_node,
-                          delete_node, get_children, get_child_ids,
-                          get_children_count, change_parent)
+from libtree.tree import (get_tree_size, get_root_node, get_node, delete_node,
+                          get_children, get_child_ids, get_children_count,
+                          change_parent)
 from libtree.query import (get_ancestor_ids, get_descendant_ids)
 from pdb import set_trace as trace  # noqa
 import pytest
