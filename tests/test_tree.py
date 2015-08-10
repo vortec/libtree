@@ -46,19 +46,6 @@ def test_get_node(per, node1):
     assert node.parent == node1.parent
 
 
-def test_print_tree(per, capsys):
-    print_tree(per)
-    out, _ = capsys.readouterr()
-    expected = """root
-  node1
-  node2
-    node2-1
-      node2-1-1
-  node3
-"""
-    assert out == expected
-
-
 def test_get_tree_size(per):
     assert get_tree_size(per) == 6
 

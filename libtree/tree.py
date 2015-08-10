@@ -15,7 +15,7 @@ def print_tree(per, node=None, intend=0):
     if node is None:
         node = get_root_node(per)
 
-    print('{}{}'.format(' '*intend, node.type))  # noqa
+    print('{}{}'.format(' '*intend, node))  # noqa
 
     for child in list(get_children(per, node)):
         print_tree(per, child, intend=intend+2)
