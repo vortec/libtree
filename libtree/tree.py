@@ -96,7 +96,7 @@ def insert_node(per, parent, type, position=None, attributes=None,
     per.execute(sql, (parent_id, type, position, json.dumps(attributes),
                       json.dumps(properties)))
     id = per.get_last_row_id()
-    node = Node(id, parent_id, type, position)
+    node = Node(id, parent_id, type, position, attributes, properties)
 
     return node
 

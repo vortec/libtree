@@ -16,6 +16,10 @@ def test_get_ancestors(per, root, node2, node2_1, node2_1_1, node2_leaf):
     assert ids == expected
 
 
+def test_get_attributes(per, root):
+    assert root.attributes == {'title': 'Root'}
+
+
 def test_get_ancestors_returns_correct_order(per, root, node2, node2_1,
                                              node2_1_1, node2_leaf):
     expected = [root.id, node2.id, node2_1.id, node2_1_1.id]

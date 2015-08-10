@@ -3,6 +3,7 @@ from libtree.utils import vectorize_nodes
 
 
 def get_ancestors(per, node, sort=True):
+    # TODO: benchmark if vectorize_nodes() or WITH RECURSIVE is faster
     sql = """
         SELECT
           nodes.*

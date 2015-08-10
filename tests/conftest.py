@@ -51,7 +51,16 @@ def per(request):
 
 @pytest.fixture
 def root(per):
-    return get_or_create_node(per, None, 'root', auto_position=False)
+    attrs = {
+        'title': 'Root'
+    }
+    props = {
+        'boolean': False,
+        'string': 'a',
+        'integer': 1
+    }
+    return get_or_create_node(per, None, 'root', auto_position=False,
+                              attributes=attrs, properties=props)
 
 
 @pytest.fixture
@@ -62,8 +71,13 @@ def node1(per, root):
 
 @pytest.fixture
 def node2(per, root):
+    props = {
+        'boolean': True,
+        'string': 'b',
+        'foo': 'bar'
+    }
     return get_or_create_node(per, root, 'node2', position=5,
-                              auto_position=False)
+                              auto_position=False, properties=props)
 
 
 @pytest.fixture
@@ -79,7 +93,12 @@ def node2_1(per, node2):
 
 @pytest.fixture
 def node2_1_1(per, node2_1):
-    return get_or_create_node(per, node2_1, 'node2-1-1', auto_position=False)
+    props = {
+        'boolean': False,
+        'string': 'c'
+    }
+    return get_or_create_node(per, node2_1, 'node2-1-1', auto_position=False,
+                              properties=props)
 
 
 @pytest.fixture

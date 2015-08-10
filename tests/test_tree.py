@@ -25,6 +25,16 @@ def test_insert_node(per, root, node1, node2, node2_1, node2_1_1, node3):
     assert node3.parent == root.id
 
 
+def test_insert_node_sets_attributes(root):
+    assert root.type == 'root'
+    assert root.attributes == {'title': 'Root'}
+    assert root.properties == {
+        'boolean': False,
+        'string': 'a',
+        'integer': 1
+    }
+
+
 def test_get_root_node(per):
     root = get_root_node(per)
     assert root.parent is None
