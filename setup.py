@@ -25,7 +25,7 @@ setup(
     version='0.0.1',
     author='Fabian Kochem',
     author_email='fabian.kochem@concepts-and-training.de',
-    description='Library for high and bulky trees',
+    description='Postgres-based library to handle and persist wide trees',
 
     # Dependencies
     install_requires=[
