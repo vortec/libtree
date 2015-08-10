@@ -57,6 +57,7 @@ class PostgreSQLPersistance(object):
         self._cursor.execute("SHOW server_version;")
         result = self._cursor.fetchone()['server_version']
         server_version = tuple(map(int, result.split('.')))
+
         if server_version < REQUIRED_POSTGRES_VERSION:
             msg = 'Insufficient Postgres version: {}, required: {}'
             msg = msg.format('.'.join(map(str, server_version)),
