@@ -44,8 +44,12 @@ class Node(object):
         return self.id
 
     def __repr__(self):
-        ret = '<Node id={!r}, parent={!r}, type={!r}, position={!r}>'
-        return ret.format(self.id, self.parent, self.type, self.position)
+        if 'title' in self.attributes:
+            ret = '<Node id={!r}, title={!r}>'
+            return ret.format(self.id, self.attributes['title'])
+        else:
+            ret = '<Node id={!r}, parent={!r}, type={!r}, position={!r}>'
+            return ret.format(self.id, self.parent, self.type, self.position)
 
     @property
     def id(self):
