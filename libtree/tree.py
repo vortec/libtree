@@ -173,38 +173,6 @@ def get_children_count(per, node):
     return result[0]
 
 
-def insert_ancestors(per, node, ancestors):
-    id = int(node)
-    data = []
-
-    for ancestor in ancestors:
-        data.append((id, int(ancestor)))
-
-    sql = """
-        INSERT INTO
-          ancestors
-          (node, ancestor)
-        VALUES
-          (%s, %s);
-    """
-    per.executemany(sql, data)
-
-
-def delete_ancestors(per, node, ancestors):
-    id = int(node)
-
-    sql = """
-        DELETE FROM
-          ancestors
-        WHERE
-          node=%s
-        AND
-          ancestor IN ({});
-    """
-    sql = sql.format(','.join(map(str, map(int, ancestors))))
-    per.execute(sql, (id, ))
-
-
 def change_parent(per, node, new_parent, position=None, auto_position=True):
     if int(new_parent) in get_descendant_ids(per, node):
         raise ValueError('Cannot move node into its own subtree.')
