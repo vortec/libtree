@@ -1,6 +1,6 @@
-from libtree.tree import (get_tree_size, get_root_node, get_node, delete_node,
-                          get_children, get_child_ids, get_children_count,
-                          change_parent)
+from libtree.tree import (insert_node, get_tree_size, get_root_node, get_node,
+                          delete_node, get_children, get_child_ids,
+                          get_children_count, change_parent)
 from libtree.query import (get_ancestor_ids, get_descendant_ids)
 from pdb import set_trace as trace  # noqa
 import pytest
@@ -14,6 +14,11 @@ def test_get_root_node_non_existing(per):
 def test_get_node_non_existing(per):
     with pytest.raises(ValueError):
         get_node(per, 1)
+
+
+def test_insert_root_node_with_auto_position(per):
+    root = insert_node(per, None, 'folder', auto_position=True)
+    delete_node(per, root)
 
 
 def test_insert_node(per, root, node1, node2, node2_1, node2_1_1, node3):

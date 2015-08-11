@@ -13,6 +13,11 @@ def ensure_free_position(per, node, position):
 
 
 def find_highest_position(per, node):
+    if node is not None:
+        id = int(node)
+    else:
+        id = None
+
     sql = """
       SELECT
         MAX(position)
@@ -21,7 +26,7 @@ def find_highest_position(per, node):
       WHERE
         parent=%s;
     """
-    per.execute(sql, (int(node), ))
+    per.execute(sql, (id, ))
     result = per.fetchone()[0]
 
     if result is not None:
@@ -64,6 +69,11 @@ def set_position(per, node, position, auto_position=True):
 
 
 def shift_positions(per, node, position, offset):
+    if node is not None:
+        id = int(node)
+    else:
+        id = None
+
     sql = """
         UPDATE
           nodes
@@ -81,7 +91,7 @@ def shift_positions(per, node, position, offset):
         delta = '{}'.format(offset)
 
     sql = sql.format(delta)
-    per.execute(sql, (int(node), position))
+    per.execute(sql, (id, position))
 
 
 def swap_node_positions(per, node1, node2):
