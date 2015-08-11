@@ -9,6 +9,7 @@ junit/
 .tox
 __pycache__
 build
+docs/build
 libtree.egg-info
 dist/
 junit-*.xml

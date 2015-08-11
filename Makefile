@@ -1,3 +1,5 @@
+.PHONY: test unit acceptance style style-verbose docs clean
+
 test:
 	tox
 
@@ -15,6 +17,9 @@ style-verbose:
 	flake8 -v --show-source libtree
 	flake8 -v --show-source --ignore=F811,F821 tests
 
+docs:
+	make -C docs html
+
 clean:
 	find . -name '*.pyc' -exec rm -f {} \;
 	find libtree -name "__pycache__" | xargs rm -rf
@@ -23,5 +28,6 @@ clean:
 	rm -rf *.egg-info
 	rm -rf .tox/
 	rm -rf build/
+	rm -rf docs/build/
 	rm -rf dist/
 	rm -rf junit/

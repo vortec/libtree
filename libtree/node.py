@@ -5,6 +5,30 @@ except ImportError:
 
 
 class Node(object):
+    """Immutable data-holding object which represents a tree node. Its
+    attributes are identical to the columns in the ``nodes`` table.
+
+    Since it's immutable, you must use functions like ``get_node()`` or
+    ``update_node()`` to talk to the database in any way
+    (see :ref:`tree`).
+
+    Most ``libtree`` functions need a database ID in order to know on
+    which data they should operate, but also accept ``Node`` objects
+    to make the handling with them easier.
+
+    All parameters are optional and default to ``None``.
+
+    :param int id: ID of the node as returned from the database
+    :param parent: Reference to parent node
+    :type parent: int or None
+    :param str type: Arbitrary string, can be used for filtering
+    :param int position: Position in between siblings
+                         (see :ref:`positioning`)
+    :param dict attributes: Non-inheritable key/value pairs
+                            (see :ref:`attributes`)
+    :param dict properties: Inheritable key/value pairs
+                             (see :ref:`properties`)
+    """
     __slots__ = [
         '_Node__id',
         '_Node__parent',

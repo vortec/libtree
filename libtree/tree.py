@@ -1,3 +1,6 @@
+"""
+"""
+
 import json
 from libtree.node import Node
 from libtree.positioning import (ensure_free_position,
