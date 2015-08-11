@@ -1,4 +1,52 @@
 """
+Auto position basics
+--------------------
+
+``libtree`` has a feature called `auto position` which is turned on by
+default and makes sure that whenever you insert, move or delete a node
+its siblings stay correctly ordered.
+
+Let's assume you have a node sequence like this::
+
+    0 | 1
+    A | B
+
+If you now insert a new node without any further arguments, auto
+position will insert it at the end of the sequence::
+
+    0 | 1 | 2
+    A | B | C
+
+But if you insert the node at a certain position (1 in this example),
+auto position will free the desired spot and shift the following
+siblings to the right like this::
+
+    0 | 1 | 2
+    A | C | B
+
+Likewise, if you want to delete the node at position 1, auto position
+will left-shift all following nodes, so you end up with the same
+sequence as at the beginning again.
+
+This is default behaviour because most users expect a tree
+implementation to behave like this.
+
+
+Disable auto position
+---------------------
+If you're working on a dataset in which you know the final positions of
+your nodes before feeding them into ``libtree``, you can disable auto
+position altogether. This means lesser queries to the database and thus,
+faster insert speeds. On the other hand this means that no constraint
+checks are being made and you could end up with non-continuative
+position sequences, multiple nodes at the same position or no position
+at all. Don't worry - libtree supports those cases perfectly well - but
+it might be confusing in the end.
+
+To disable auto position you must pass ``auto_position=False`` to any
+function that manipulates the tree (see :ref:`tree`).
+
+
 Related: :func:`libtree.query.get_node_at_position`
 """
 
