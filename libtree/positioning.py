@@ -5,6 +5,10 @@ def ensure_free_position(per, node, position):
     """
     Move siblings away to have a free slot at ``position`` in the
     children of ``node``.
+
+    :param node:
+    :type node: Node or int
+    :param int position:
     """
     try:
         get_node_at_position(per, node, position)
@@ -19,6 +23,9 @@ def ensure_free_position(per, node, position):
 def find_highest_position(per, node):
     """
     Return highest, not occupied position in the children of ``node``.
+
+    :param node:
+    :type node: Node or int
     """
     if node is not None:
         id = int(node)
@@ -45,6 +52,10 @@ def find_highest_position(per, node):
 def get_node_at_position(per, node, position):
     """
     Return node at ``position`` in the children of ``node``.
+
+    :param node:
+    :type node: Node or int
+    :param int position:
     """
     sql = """
       SELECT
@@ -69,6 +80,10 @@ def get_node_at_position(per, node, position):
 def set_position(per, node, position, auto_position=True):
     """
     Set ``position`` for ``node``.
+
+    :param node:
+    :type node: Node or int
+    :param int position:
     """
     # TODO: run auto position!
     sql = """
@@ -85,6 +100,12 @@ def set_position(per, node, position, auto_position=True):
 def shift_positions(per, node, position, offset):
     """
     Shift all children of ``node`` at ``position`` by ``offset``.
+
+    :param node:
+    :type node: Node or int
+    :param int position:
+    :param int offset: Positive value for right shift, negative value
+                       for left shift
     """
     if node is not None:
         id = int(node)
@@ -114,6 +135,11 @@ def shift_positions(per, node, position, offset):
 def swap_node_positions(per, node1, node2):
     """
     Swap positions of ``node1`` and ``node2``.
+
+    :param node1:
+    :type node1: Node or int
+    :param node2:
+    :type node2: Node or int
     """
     set_position(per, node1, node2.position, auto_position=False)
     set_position(per, node2, node1.position, auto_position=False)
