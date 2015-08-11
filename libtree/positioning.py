@@ -1,6 +1,6 @@
 """
-Auto position basics
---------------------
+Auto position
+-------------
 
 ``libtree`` has a feature called `auto position` which is turned on by
 default and makes sure that whenever you insert, move or delete a node
@@ -8,21 +8,21 @@ its siblings stay correctly ordered.
 
 Let's assume you have a node sequence like this::
 
-    0 | 1
-    A | B
+    position | 0 | 1
+    node     | A | B
 
 If you now insert a new node without any further arguments, auto
 position will insert it at the end of the sequence::
 
-    0 | 1 | 2
-    A | B | C
+    position | 0 | 1 | 2
+    node     | A | B | C
 
 But if you insert the node at a certain position (1 in this example),
 auto position will free the desired spot and shift the following
 siblings to the right like this::
 
-    0 | 1 | 2
-    A | C | B
+    position | 0 | 1 | 2
+    node     | A | C | B
 
 Likewise, if you want to delete the node at position 1, auto position
 will left-shift all following nodes, so you end up with the same
@@ -46,6 +46,9 @@ it might be confusing in the end.
 To disable auto position you must pass ``auto_position=False`` to any
 function that manipulates the tree (see :ref:`tree`).
 
+
+API
+---
 
 Related: :func:`libtree.query.get_node_at_position`
 """
