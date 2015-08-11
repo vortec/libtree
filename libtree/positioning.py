@@ -1,3 +1,7 @@
+"""
+Related: :func:`libtree.query.get_node_at_position`
+"""
+
 from libtree.query import get_node_at_position
 
 
