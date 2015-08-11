@@ -8,8 +8,8 @@ class Node(object):
     """Immutable data-holding object which represents a tree node. Its
     attributes are identical to the columns in the ``nodes`` table.
 
-    Since it's immutable, you must use functions like ``get_node()`` or
-    ``update_node()`` to talk to the database in any way
+    Since it's immutable, you must use functions like :func:`get_node`
+    or ``update_node()`` to talk to the database in any way
     (see :ref:`tree`).
 
     Most ``libtree`` functions need a database ID in order to know on
@@ -19,8 +19,8 @@ class Node(object):
     All parameters are optional and default to ``None``.
 
     :param int id: ID of the node as returned from the database
-    :param parent: Reference to parent node
-    :type parent: int or None
+    :param parent: Reference to a parent node
+    :type parent: Node or int
     :param str type: Arbitrary string, can be used for filtering
     :param int position: Position in between siblings
                          (see :ref:`positioning`)

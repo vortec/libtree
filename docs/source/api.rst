@@ -3,11 +3,8 @@
 API
 ===
 
-.. automodule:: libtree
-   :members:
-
+Node
+----
 .. autoclass:: libtree.Node
    :members:
 
-.. automodule:: libtree.tree
-   :members:

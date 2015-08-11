@@ -2,6 +2,10 @@ from libtree.node import Node
 
 
 def ensure_free_position(per, node, position):
+    """
+    Move siblings away to have a free slot at ``position`` in the
+    children of ``node``.
+    """
     try:
         get_node_at_position(per, node, position)
         node_exists_at_position = True
@@ -13,6 +17,9 @@ def ensure_free_position(per, node, position):
 
 
 def find_highest_position(per, node):
+    """
+    Return highest, not occupied position in the children of ``node``.
+    """
     if node is not None:
         id = int(node)
     else:
@@ -36,6 +43,9 @@ def find_highest_position(per, node):
 
 
 def get_node_at_position(per, node, position):
+    """
+    Return node at ``position`` in the children of ``node``.
+    """
     sql = """
       SELECT
         *
@@ -57,6 +67,10 @@ def get_node_at_position(per, node, position):
 
 
 def set_position(per, node, position, auto_position=True):
+    """
+    Set ``position`` for ``node``.
+    """
+    # TODO: run auto position!
     sql = """
         UPDATE
           nodes
@@ -69,6 +83,9 @@ def set_position(per, node, position, auto_position=True):
 
 
 def shift_positions(per, node, position, offset):
+    """
+    Shift all children of ``node`` at ``position`` by ``offset``.
+    """
     if node is not None:
         id = int(node)
     else:
@@ -95,5 +112,8 @@ def shift_positions(per, node, position, offset):
 
 
 def swap_node_positions(per, node1, node2):
+    """
+    Swap positions of ``node1`` and ``node2``.
+    """
     set_position(per, node1, node2.position, auto_position=False)
     set_position(per, node2, node1.position, auto_position=False)

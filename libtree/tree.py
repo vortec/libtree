@@ -1,4 +1,5 @@
 """
+
 """
 
 import json
@@ -14,17 +15,28 @@ except ImportError:
     import __builtin__ as builtins
 
 
-def print_tree(per, node=None, intend=0):
-    if node is None:
-        node = get_root_node(per)
+def print_tree(per, start_node=None, indent=2, _level=0):
+    """
+    Print tree to stdout.
 
-    print('{}{}'.format(' '*intend, node))  # noqa
+    :param start_node: Starting point for tree output.
+                       If ``None``, start at root node.
+    :type start_node: int, Node or None
+    :param int indent: Amount of whitespaces per level (default: 2)
+    """
+    if start_node is None:
+        start_node = get_root_node(per)
 
-    for child in list(get_children(per, node)):
-        print_tree(per, child, intend=intend+2)
+    print('{}{}'.format(' '*indent, start_node))  # noqa
+
+    for child in list(get_children(per, start_node)):
+        print_tree(per, child, _level=_level+indent)
 
 
 def get_tree_size(per):
+    """
+    Return the total amount of tree nodes.
+    """
     sql = """
       SELECT
         COUNT(*)
@@ -37,6 +49,9 @@ def get_tree_size(per):
 
 
 def get_root_node(per):
+    """
+    Return root node. Raises ``ValueError`` if root node doesn't exist.
+    """
     sql = """
         SELECT
           *
@@ -55,6 +70,12 @@ def get_root_node(per):
 
 
 def get_node(per, id):
+    """
+    Return ``Node`` object for given ``id``. Raises ``ValueError`` if
+    ID doesn't exist.
+
+    :param int id: Database ID
+    """
     if type(id) != int:
         raise TypeError('Need numerical id.')
 
@@ -77,6 +98,26 @@ def get_node(per, id):
 
 def insert_node(per, parent, type, position=None, attributes=None,
                 properties=None, auto_position=True):
+    """
+    Create a ``Node`` object, insert it into the tree and then return
+    it.
+
+    :param parent: Reference to its parent node. If `None`, this will
+                   be the root node.
+    :type parent: Node or int
+    :param str type: Arbitrary string, can be used for filtering
+    :param int position: Position in between siblings. If 0, the node
+                         will be inserted at the beginning of the
+                         parents children. If -1, the node will be
+                         inserted the the end of the parents children.
+                         If `auto_position` is disabled, this is just a
+                         value.
+    :param dict attributes: Non-inheritable key/value pairs
+                            (see :ref:`attributes`)
+    :param dict properties: Inheritable key/value pairs
+                             (see :ref:`properties`)
+    :param bool auto_position: See :ref:`positioning`
+    """
     parent_id = None
     if parent is not None:
         parent_id = int(parent)
@@ -112,6 +153,13 @@ def insert_node(per, parent, type, position=None, attributes=None,
 
 
 def delete_node(per, node, auto_position=True):
+    """
+    Delete node and its subtree.
+
+    :param node:
+    :type node: Node or int
+    :param bool auto_position: See :ref:`positioning`
+    """
     id = int(node)
 
     # Get Node object if integer (ID) was passed
@@ -131,6 +179,13 @@ def delete_node(per, node, auto_position=True):
 
 
 def get_children(per, node):
+    """
+    Return an iterator that yields a ``Node`` object of every immediate
+    child.
+
+    :param node:
+    :type node: Node or int
+    """
     sql = """
         SELECT
           *
@@ -147,6 +202,12 @@ def get_children(per, node):
 
 
 def get_child_ids(per, node):
+    """
+    Return an iterator that yields the ID of every immediate child.
+
+    :param node:
+    :type node: Node or int
+    """
     sql = """
         SELECT
           id
@@ -163,6 +224,12 @@ def get_child_ids(per, node):
 
 
 def get_children_count(per, node):
+    """
+    Get amount of immediate children.
+
+    :param node: Node
+    :type node: Node or int
+    """
     sql = """
       SELECT
         COUNT(*)
@@ -177,6 +244,21 @@ def get_children_count(per, node):
 
 
 def change_parent(per, node, new_parent, position=None, auto_position=True):
+    """
+    Move node and its subtree from its current to another parent node.
+
+    :param node:
+    :type node: Node or int
+    :param new_parent: Reference to the new parent node
+    :type new_parent: Node or int
+    :param int position: Position in between siblings. If 0, the node
+                         will be inserted at the beginning of the
+                         parents children. If -1, the node will be
+                         inserted the the end of the parents children.
+                         If `auto_position` is disabled, this is just a
+                         value.
+    :param bool auto_position: See :ref:`positioning`.
+    """
     if int(new_parent) in get_descendant_ids(per, node):
         raise ValueError('Cannot move node into its own subtree.')
 
@@ -187,7 +269,6 @@ def change_parent(per, node, new_parent, position=None, auto_position=True):
             position = find_highest_position(per, new_parent) + 1
         set_position(per, node, position)
 
-    # TODO: dont move into its own subtree
     sql = """
         UPDATE
           nodes
