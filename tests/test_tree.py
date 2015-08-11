@@ -1,19 +1,8 @@
-from libtree.tree import (insert_node, get_tree_size, get_root_node, get_node,
-                          delete_node, get_children, get_child_ids,
-                          get_children_count, change_parent)
-from libtree.query import (get_ancestor_ids, get_descendant_ids)
+from libtree.tree import change_parent, delete_node, insert_node
+from libtree.query import (get_ancestor_ids, get_child_ids, get_children,
+                           get_descendant_ids, get_node)
 from pdb import set_trace as trace  # noqa
 import pytest
-
-
-def test_get_root_node_non_existing(per):
-    with pytest.raises(ValueError):
-        get_root_node(per)
-
-
-def test_get_node_non_existing(per):
-    with pytest.raises(ValueError):
-        get_node(per, 1)
 
 
 def test_insert_root_node_with_auto_position(per):
@@ -38,58 +27,6 @@ def test_insert_node_sets_attributes(root):
         'string': 'a',
         'integer': 1
     }
-
-
-def test_get_root_node(per):
-    root = get_root_node(per)
-    assert root.parent is None
-
-
-def test_get_node(per, node1):
-    node = get_node(per, node1.id)
-    assert node.id == node1.id
-    assert node.parent == node1.parent
-
-
-def test_get_tree_size(per):
-    assert get_tree_size(per) == 6
-
-
-def test_get_node_needs_number(per, root):
-    with pytest.raises(TypeError):
-        get_node(per, root)
-
-
-def test_get_children(per, root, node1, node2, node3):
-    ids = {child.id for child in get_children(per, root)}
-    assert len(ids) == 3
-    assert node1.id in ids
-    assert node2.id in ids
-    assert node3.id in ids
-
-
-def test_get_child_ids(per, root, node1, node2, node3):
-    ids = set(get_child_ids(per, root))
-    assert len(ids) == 3
-    assert node1.id in ids
-    assert node2.id in ids
-    assert node3.id in ids
-
-
-def test_get_children_correct_positioning(per, root, node1, node2, node3):
-    ids = [child.id for child in get_children(per, root)]
-    expected = [node1.id, node2.id, node3.id]
-    assert ids == expected
-
-
-def test_get_child_ids_correct_positioning(per, root, node1, node2, node3):
-    ids = list(get_child_ids(per, root))
-    expected = [node1.id, node2.id, node3.id]
-    assert ids == expected
-
-
-def test_get_children_count(per, root):
-    assert get_children_count(per, root) == 3
 
 
 def test_change_parent(per, root, node1, node2, node2_1, node2_1_1,

@@ -1,9 +1,8 @@
 from libtree.positioning import (ensure_free_position, find_highest_position,
                                  get_node_at_position, set_position,
                                  shift_positions, swap_node_positions)
-from libtree.tree import (change_parent, delete_node, get_children, get_node,
-                          insert_node)
-from libtree.tree import print_tree  # noqa
+from libtree.query import get_children, get_node
+from libtree.tree import change_parent, delete_node, insert_node
 from pdb import set_trace as trace  # noqa
 import pytest
 

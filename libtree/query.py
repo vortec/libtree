@@ -2,6 +2,134 @@ from libtree.node import Node
 from libtree.utils import vectorize_nodes
 
 
+def get_tree_size(per):
+    """
+    Return the total amount of tree nodes.
+    """
+    sql = """
+      SELECT
+        COUNT(*)
+      FROM
+        nodes;
+    """
+    per.execute(sql)
+    result = per.fetchone()
+    return result[0]
+
+
+def get_root_node(per):
+    """
+    Return root node. Raises ``ValueError`` if root node doesn't exist.
+    """
+    sql = """
+        SELECT
+          *
+        FROM
+          nodes
+        WHERE
+          parent IS NULL;
+    """
+    per.execute(sql)
+    result = per.fetchone()
+
+    if result is None:
+        raise ValueError('No root node.')
+    else:
+        return Node(**result)
+
+
+def get_node(per, id):
+    """
+    Return ``Node`` object for given ``id``. Raises ``ValueError`` if
+    ID doesn't exist.
+
+    :param int id: Database ID
+    """
+    if type(id) != int:
+        raise TypeError('Need numerical id.')
+
+    sql = """
+        SELECT
+          *
+        FROM
+          nodes
+        WHERE
+          id = %s;
+    """
+    per.execute(sql, (id, ))
+    result = per.fetchone()
+
+    if result is None:
+        raise ValueError('Node does not exist.')
+    else:
+        return Node(**result)
+
+
+def get_children(per, node):
+    """
+    Return an iterator that yields a ``Node`` object of every immediate
+    child.
+
+    :param node:
+    :type node: Node or int
+    """
+    sql = """
+        SELECT
+          *
+        FROM
+          nodes
+        WHERE
+          parent=%s
+        ORDER BY
+          position;
+    """
+    per.execute(sql, (int(node), ))
+    for result in per:
+        yield Node(**result)
+
+
+def get_child_ids(per, node):
+    """
+    Return an iterator that yields the ID of every immediate child.
+
+    :param node:
+    :type node: Node or int
+    """
+    sql = """
+        SELECT
+          id
+        FROM
+          nodes
+        WHERE
+          parent=%s
+        ORDER BY
+          position;
+    """
+    per.execute(sql, (int(node), ))
+    for result in per:
+        yield int(result['id'])
+
+
+def get_children_count(per, node):
+    """
+    Get amount of immediate children.
+
+    :param node: Node
+    :type node: Node or int
+    """
+    sql = """
+      SELECT
+        COUNT(*)
+      FROM
+        nodes
+      WHERE
+        parent=%s;
+    """
+    per.execute(sql, (int(node), ))
+    result = per.fetchone()
+    return result[0]
+
+
 def get_ancestors(per, node, sort=True):
     """
     Return an iterator that yields a ``Node`` object of every element

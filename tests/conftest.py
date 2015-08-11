@@ -1,6 +1,7 @@
 from libtree.config import config
-from libtree.tree import insert_node, get_node
 from libtree.persistance import PostgreSQLPersistance
+from libtree.query import get_node
+from libtree.tree import insert_node
 import pytest
 
 
