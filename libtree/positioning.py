@@ -14,8 +14,8 @@ Let's assume you have a node sequence like this::
 If you now insert a new node without any further arguments, auto
 position will insert it at the end of the sequence::
 
-    0 | 1 | 2
-    A | B | C
+    0 | 1 | 2
+    A | B | C
 
 But if you insert the node at a certain position (1 in this example),
 auto position will free the desired spot and shift the following
