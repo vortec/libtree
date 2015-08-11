@@ -1,4 +1,4 @@
-from libtree.node import Node
+from libtree.query import get_node_at_position
 
 
 def ensure_free_position(per, node, position):
@@ -13,7 +13,7 @@ def ensure_free_position(per, node, position):
     try:
         get_node_at_position(per, node, position)
         node_exists_at_position = True
-    except:
+    except ValueError:
         node_exists_at_position = False
 
     if node_exists_at_position:
@@ -47,34 +47,6 @@ def find_highest_position(per, node):
         return result
     else:
         return -1
-
-
-def get_node_at_position(per, node, position):
-    """
-    Return node at ``position`` in the children of ``node``.
-
-    :param node:
-    :type node: Node or int
-    :param int position:
-    """
-    sql = """
-      SELECT
-        *
-      FROM
-        nodes
-      WHERE
-        parent=%s
-      AND
-        position=%s
-    """
-
-    per.execute(sql, (int(node), position))
-    result = per.fetchone()
-
-    if result is None:
-        raise ValueError('Node does not exist.')
-    else:
-        return Node(**result)
 
 
 def set_position(per, node, position, auto_position=True):

@@ -65,6 +65,34 @@ def get_node(per, id):
         return Node(**result)
 
 
+def get_node_at_position(per, node, position):
+    """
+    Return node at ``position`` in the children of ``node``.
+
+    :param node:
+    :type node: Node or int
+    :param int position:
+    """
+    sql = """
+      SELECT
+        *
+      FROM
+        nodes
+      WHERE
+        parent=%s
+      AND
+        position=%s
+    """
+
+    per.execute(sql, (int(node), position))
+    result = per.fetchone()
+
+    if result is None:
+        raise ValueError('Node does not exist.')
+    else:
+        return Node(**result)
+
+
 def get_children(per, node):
     """
     Return an iterator that yields a ``Node`` object of every immediate
