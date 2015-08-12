@@ -14,7 +14,6 @@ def test_merge_properties_no_inheritance(root):
         'title': 'Root',
         'type': 'root',
         'boolean': False,
-        'string': 'a',
         'integer': 1
     }
     assert merge_properties(root) == expected
@@ -22,10 +21,9 @@ def test_merge_properties_no_inheritance(root):
 
 def test_merge_properties_simple_inheritance(per, node2):
     expected = {
-        'title': 'Root',
+        'title': 'Node 2',
         'type': 'node2',
         'boolean': True,
-        'string': 'b',
         'foo': 'bar',
         'integer': 1
     }
@@ -34,10 +32,9 @@ def test_merge_properties_simple_inheritance(per, node2):
 
 def test_merge_properties_multiple_inheritance(per, node2_1_1):
     expected = {
-        'title': 'Root',
+        'title': 'Node 2-1-1',
         'type': 'node2_1_1',
         'boolean': False,
-        'string': 'c',
         'integer': 1,
         'foo': 'bar'
     }

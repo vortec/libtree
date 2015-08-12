@@ -57,7 +57,6 @@ def root(per):
         'title': 'Root',
         'type': 'root',
         'boolean': False,
-        'string': 'a',
         'integer': 1
     }
     return get_or_create_node(per, None, auto_position=False, properties=props)
@@ -66,7 +65,8 @@ def root(per):
 @pytest.fixture
 def node1(per, root):
     props = {
-        'type': 'node1'
+        'type': 'node1',
+        'title': 'Node 1'
     }
     return get_or_create_node(per, root, position=4, auto_position=False,
                               properties=props)
@@ -76,8 +76,8 @@ def node1(per, root):
 def node2(per, root):
     props = {
         'type': 'node2',
+        'title': 'Node 2',
         'boolean': True,
-        'string': 'b',
         'foo': 'bar'
     }
     return get_or_create_node(per, root, position=5, auto_position=False,
@@ -87,7 +87,8 @@ def node2(per, root):
 @pytest.fixture
 def node3(per, root):
     props = {
-        'type': 'node3'
+        'type': 'node3',
+        'title': 'Node 3'
     }
     return get_or_create_node(per, root, position=6, auto_position=False,
                               properties=props)
@@ -96,7 +97,8 @@ def node3(per, root):
 @pytest.fixture
 def node2_1(per, node2):
     props = {
-        'type': 'node2_1'
+        'type': 'node2_1',
+        'title': 'Node 2-1'
     }
     return get_or_create_node(per, node2, auto_position=False,
                               properties=props)
@@ -106,8 +108,8 @@ def node2_1(per, node2):
 def node2_1_1(per, node2_1):
     props = {
         'type': 'node2_1_1',
-        'boolean': False,
-        'string': 'c'
+        'title': 'Node 2-1-1',
+        'boolean': False
     }
     return get_or_create_node(per, node2_1, auto_position=False,
                               properties=props)
@@ -116,7 +118,8 @@ def node2_1_1(per, node2_1):
 @pytest.fixture
 def node2_leaf(per, node2_1_1):
     props = {
-        'type': 'node2_leaf'
+        'type': 'node2_leaf',
+        'title': 'Node 2-leaf'
     }
     return get_or_create_node(per, node2_1_1, auto_position=False,
                               properties=props)

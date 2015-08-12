@@ -24,7 +24,6 @@ def test_insert_node_sets_properties(root):
         'title': 'Root',
         'type': 'root',
         'boolean': False,
-        'string': 'a',
         'integer': 1
     }
 
