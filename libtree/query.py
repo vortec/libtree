@@ -237,3 +237,19 @@ def get_descendant_ids(per, node):
     per.execute(sql, (int(node), ))
     for result in per:
         yield int(result['node'])
+
+
+def get_properties(node):
+    pass
+
+
+def get_inherited_properties(node):
+    pass
+
+
+def get_property(node, key):
+    pass
+
+
+def get_inherited_property(node, key):
+    pass

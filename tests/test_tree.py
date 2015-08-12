@@ -19,13 +19,18 @@ def test_insert_node(per, root, node1, node2, node2_1, node2_1_1, node3):
     assert node3.parent == root.id
 
 
-def test_insert_node_sets_attributes(root):
-    assert root.attributes == {'title': 'Root', 'type': 'root'}
+def test_insert_node_sets_properties(root):
     assert root.properties == {
+        'title': 'Root',
+        'type': 'root',
         'boolean': False,
         'string': 'a',
         'integer': 1
     }
+
+
+def test_insert_node_sets_position(node1):
+    assert node1.position == 4
 
 
 def test_change_parent(per, root, node1, node2, node2_1, node2_1_1,

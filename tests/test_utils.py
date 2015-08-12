@@ -11,6 +11,8 @@ def test_vectorize_nodes(per, root, node2, node2_1, node2_1_1):
 
 def test_merge_properties_no_inheritance(root):
     expected = {
+        'title': 'Root',
+        'type': 'root',
         'boolean': False,
         'string': 'a',
         'integer': 1
@@ -20,6 +22,8 @@ def test_merge_properties_no_inheritance(root):
 
 def test_merge_properties_simple_inheritance(per, node2):
     expected = {
+        'title': 'Root',
+        'type': 'node2',
         'boolean': True,
         'string': 'b',
         'foo': 'bar',
@@ -30,6 +34,8 @@ def test_merge_properties_simple_inheritance(per, node2):
 
 def test_merge_properties_multiple_inheritance(per, node2_1_1):
     expected = {
+        'title': 'Root',
+        'type': 'node2_1_1',
         'boolean': False,
         'string': 'c',
         'integer': 1,

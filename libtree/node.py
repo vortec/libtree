@@ -17,8 +17,6 @@ class Node(object):
     :type parent: Node or int
     :param int position: Position in between siblings
                          (see :ref:`positioning`)
-    :param dict attributes: Non-inheritable key/value pairs
-                            (see :ref:`attributes`)
     :param dict properties: Inheritable key/value pairs
                              (see :ref:`properties`)
     """
@@ -26,12 +24,10 @@ class Node(object):
         '_Node__id',
         '_Node__parent',
         '_Node__position',
-        '_Node__attributes',
         '_Node__properties',
     ]
 
-    def __init__(self, id=None, parent=None, position=None, attributes=None,
-                 properties=None):
+    def __init__(self, id=None, parent=None, position=None, properties=None):
         self.__id = None
         if id is not None:
             self.__id = int(id)
@@ -43,11 +39,6 @@ class Node(object):
         self.__position = None
         if position is not None:
             self.__position = int(position)
-
-        if type(attributes) == dict:
-            self.__attributes = attributes
-        else:
-            self.__attributes = {}
 
         if type(properties) == dict:
             self.__properties = properties
@@ -62,14 +53,13 @@ class Node(object):
             'id': self.id,
             'parent': self.parent,
             'position': self.position,
-            'attributes': self.attributes,
             'properties': self.properties
         }
 
     def __repr__(self):
-        if 'title' in self.attributes:
+        if 'title' in self.properties:
             ret = '<Node id={!r}, title={!r}>'
-            return ret.format(self.id, self.attributes['title'])
+            return ret.format(self.id, self.properties['title'])
         else:
             ret = '<Node id={!r}, parent={!r}, position={!r}>'
             return ret.format(self.id, self.parent, self.position)
@@ -85,10 +75,6 @@ class Node(object):
     @property
     def position(self):
         return self.__position
-
-    @property
-    def attributes(self):
-        return self.__attributes
 
     @property
     def properties(self):

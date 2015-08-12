@@ -25,7 +25,6 @@ CREATE TABLE nodes
   id serial NOT NULL,
   parent integer,
   "position" smallint DEFAULT NULL,
-  attributes jsonb NOT NULL,
   properties jsonb NOT NULL,
   CONSTRAINT "primary" PRIMARY KEY (id)
 )

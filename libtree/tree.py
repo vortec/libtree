@@ -25,7 +25,7 @@ def print_tree(per, start_node=None, indent=2, _level=0):
         print_tree(per, child, _level=_level+indent)
 
 
-def insert_node(per, parent, position=None, attributes=None, properties=None,
+def insert_node(per, parent, position=None, properties=None,
                 auto_position=True):
     """
     Create a ``Node`` object, insert it into the tree and then return
@@ -50,9 +50,6 @@ def insert_node(per, parent, position=None, attributes=None, properties=None,
     if parent is not None:
         parent_id = int(parent)
 
-    if attributes is None:
-        attributes = {}
-
     if properties is None:
         properties = {}
 
@@ -65,14 +62,13 @@ def insert_node(per, parent, position=None, attributes=None, properties=None,
     sql = """
         INSERT INTO
           nodes
-          (parent, position, attributes, properties)
+          (parent, position, properties)
         VALUES
-          (%s, %s, %s, %s);
+          (%s, %s, %s);
     """
-    per.execute(sql, (parent_id, position, json.dumps(attributes),
-                      json.dumps(properties)))
+    per.execute(sql, (parent_id, position, json.dumps(properties)))
     id = per.get_last_row_id()
-    node = Node(id, parent_id, position, attributes, properties)
+    node = Node(id, parent_id, position, properties)
 
     return node
 
