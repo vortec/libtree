@@ -106,3 +106,11 @@ def test_get_descendant_ids(per, root, node1, node2, node3, node2_1, node2_1_1,
 def test_get_descendants(per, root):
     with pytest.raises(NotImplementedError):
         get_descendants(per, root)
+
+
+def xtest_get_inherited_properties():
+    raise NotImplementedError
+
+
+def xtest_get_inherited_property():
+    raise NotImplementedError
