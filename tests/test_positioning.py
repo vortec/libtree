@@ -68,8 +68,8 @@ def test_insert_node_starts_counting_at_zero(per, node1):
 
 def test_insert_nodes_at_highest_position(per, root):
     highest_position = find_highest_position(per, root)
-    node4 = insert_node(per, root, 'node4', position=None, auto_position=True)
-    node5 = insert_node(per, root, 'node5', position=-1, auto_position=True)
+    node4 = insert_node(per, root, position=None, auto_position=True)
+    node5 = insert_node(per, root, position=-1, auto_position=True)
     assert node4.position == highest_position + 1
     assert node5.position == highest_position + 2
 
@@ -84,7 +84,7 @@ def test_ensure_free_position(per, root):
 
 
 def test_insert_node_at_specific_position(per, root):
-    node0 = insert_node(per, root, 'node0', position=0, auto_position=True)
+    node0 = insert_node(per, root, position=0, auto_position=True)
     positions = map(lambda n: n.position, get_children(per, root))
     assert node0.position == 0
     assert list(positions) == [0, 1, 2, 4]

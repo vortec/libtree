@@ -82,7 +82,7 @@ def test_get_ancestors(per, root, node2, node2_1, node2_1_1, node2_leaf):
 
 
 def test_get_attributes(per, root):
-    assert root.attributes == {'title': 'Root'}
+    assert root.attributes == {'title': 'Root', 'type': 'root'}
 
 
 def test_get_ancestors_returns_correct_order(per, root, node2, node2_1,

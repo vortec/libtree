@@ -6,11 +6,6 @@ from libtree.positioning import (ensure_free_position,
 from libtree.query import (get_children, get_descendant_ids, get_node,
                            get_root_node)
 
-try:
-    import builtins
-except ImportError:
-    import __builtin__ as builtins
-
 
 def print_tree(per, start_node=None, indent=2, _level=0):
     """
@@ -30,8 +25,8 @@ def print_tree(per, start_node=None, indent=2, _level=0):
         print_tree(per, child, _level=_level+indent)
 
 
-def insert_node(per, parent, type, position=None, attributes=None,
-                properties=None, auto_position=True):
+def insert_node(per, parent, position=None, attributes=None, properties=None,
+                auto_position=True):
     """
     Create a ``Node`` object, insert it into the tree and then return
     it.
@@ -39,7 +34,6 @@ def insert_node(per, parent, type, position=None, attributes=None,
     :param parent: Reference to its parent node. If `None`, this will
                    be the root node.
     :type parent: Node or int
-    :param str type: Arbitrary string, can be used for filtering
     :param int position: Position in between siblings. If 0, the node
                          will be inserted at the beginning of the
                          parents children. If -1, the node will be
@@ -63,7 +57,7 @@ def insert_node(per, parent, type, position=None, attributes=None,
         properties = {}
 
     if auto_position:
-        if builtins.type(position) == int and position >= 0:
+        if type(position) == int and position >= 0:
             ensure_free_position(per, parent, position)
         else:
             position = find_highest_position(per, parent) + 1
@@ -71,14 +65,14 @@ def insert_node(per, parent, type, position=None, attributes=None,
     sql = """
         INSERT INTO
           nodes
-          (parent, type, position, attributes, properties)
+          (parent, position, attributes, properties)
         VALUES
-          (%s, %s, %s, %s, %s);
+          (%s, %s, %s, %s);
     """
-    per.execute(sql, (parent_id, type, position, json.dumps(attributes),
+    per.execute(sql, (parent_id, position, json.dumps(attributes),
                       json.dumps(properties)))
     id = per.get_last_row_id()
-    node = Node(id, parent_id, type, position, attributes, properties)
+    node = Node(id, parent_id, position, attributes, properties)
 
     return node
 

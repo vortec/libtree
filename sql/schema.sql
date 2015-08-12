@@ -24,7 +24,6 @@ CREATE TABLE nodes
 (
   id serial NOT NULL,
   parent integer,
-  type character varying(255),
   "position" smallint DEFAULT NULL,
   attributes jsonb NOT NULL,
   properties jsonb NOT NULL,

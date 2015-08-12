@@ -24,11 +24,12 @@ def make_persistance():
     return PostgreSQLPersistance(config['postgres']['test_details'])
 
 
-def get_or_create_node(per, parent, type, *args, **kwargs):
-    node_id = node_ids.get(type, None)
+def get_or_create_node(per, parent, attributes, *args, **kwargs):
+    xtype = attributes.get('type')
+    node_id = node_ids.get(xtype, None)
     if node_id is None:
-        node = insert_node(per, parent, type, *args, **kwargs)
-        node_ids[type] = node.id
+        node = insert_node(per, parent, attributes=attributes, *args, **kwargs)
+        node_ids[xtype] = node.id
         return node
     return get_node(per, node_id)
 
@@ -53,56 +54,76 @@ def per(request):
 @pytest.fixture
 def root(per):
     attrs = {
-        'title': 'Root'
+        'title': 'Root',
+        'type': 'root'
     }
     props = {
         'boolean': False,
         'string': 'a',
         'integer': 1
     }
-    return get_or_create_node(per, None, 'root', auto_position=False,
+    return get_or_create_node(per, None, auto_position=False,
                               attributes=attrs, properties=props)
 
 
 @pytest.fixture
 def node1(per, root):
-    return get_or_create_node(per, root, 'node1', position=4,
-                              auto_position=False)
+    attrs = {
+        'type': 'node1'
+    }
+    return get_or_create_node(per, root, position=4, auto_position=False,
+                              attributes=attrs)
 
 
 @pytest.fixture
 def node2(per, root):
+    attrs = {
+        'type': 'node2'
+    }
     props = {
         'boolean': True,
         'string': 'b',
         'foo': 'bar'
     }
-    return get_or_create_node(per, root, 'node2', position=5,
-                              auto_position=False, properties=props)
+    return get_or_create_node(per, root, position=5, auto_position=False,
+                              attributes=attrs, properties=props)
 
 
 @pytest.fixture
 def node3(per, root):
-    return get_or_create_node(per, root, 'node3', position=6,
-                              auto_position=False)
+    attrs = {
+        'type': 'node3'
+    }
+    return get_or_create_node(per, root, position=6, auto_position=False,
+                              attributes=attrs)
 
 
 @pytest.fixture
 def node2_1(per, node2):
-    return get_or_create_node(per, node2, 'node2-1', auto_position=False)
+    attrs = {
+        'type': 'node2_1'
+    }
+    return get_or_create_node(per, node2, auto_position=False,
+                              attributes=attrs)
 
 
 @pytest.fixture
 def node2_1_1(per, node2_1):
+    attrs = {
+        'type': 'node2_1_1'
+    }
     props = {
         'boolean': False,
         'string': 'c'
     }
-    return get_or_create_node(per, node2_1, 'node2-1-1', auto_position=False,
-                              properties=props)
+    return get_or_create_node(per, node2_1, auto_position=False,
+                              attributes=attrs, properties=props)
 
 
 @pytest.fixture
 def node2_leaf(per, node2_1_1):
-    return get_or_create_node(per, node2_1_1, 'node2-leaf',
-                              auto_position=False)
+    attrs = {
+        'type': 'node2_leaf'
+    }
+    return get_or_create_node(per, node2_1_1, auto_position=False,
+                              attributes=attrs)
