@@ -109,6 +109,7 @@ def delete_node(per, node, auto_position=True):
 def change_parent(per, node, new_parent, position=None, auto_position=True):
     """
     Move node and its subtree from its current to another parent node.
+    Return updated ``Node`` object with new parent set.
 
     :param node:
     :type node: Node or int
@@ -122,14 +123,15 @@ def change_parent(per, node, new_parent, position=None, auto_position=True):
                          value.
     :param bool auto_position: See :ref:`positioning`.
     """
-    if int(new_parent) in get_descendant_ids(per, node):
+    new_id = int(new_parent)
+    if new_id in get_descendant_ids(per, node):
         raise ValueError('Cannot move node into its own subtree.')
 
     if auto_position:
         if type(position) == int and position >= 0:
-            ensure_free_position(per, new_parent, position)
+            ensure_free_position(per, new_id, position)
         else:
-            position = find_highest_position(per, new_parent) + 1
+            position = find_highest_position(per, new_id) + 1
         set_position(per, node, position)
 
     sql = """
@@ -140,4 +142,8 @@ def change_parent(per, node, new_parent, position=None, auto_position=True):
         WHERE
           id=%s;
     """
-    per.execute(sql, (int(new_parent), int(node)))
+    per.execute(sql, (new_id, int(node)))
+
+    kwargs = node.to_dict()
+    kwargs['parent'] = new_id
+    return Node(**kwargs)

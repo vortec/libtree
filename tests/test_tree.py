@@ -54,7 +54,10 @@ def test_change_parent(per, root, node1, node2, node2_1, node2_1_1,
     # of node2-1.
 
     # Move node2-1 from node2 to node1
-    change_parent(per, node2_1, node1, auto_position=False)
+    _temp_node = change_parent(per, node2_1, node1, auto_position=False)
+
+    # Return value should have new parent set
+    assert _temp_node.parent == node1.id
 
     # node2-1 should have node1 as parent
     node = get_node(per, node2_1.id)
