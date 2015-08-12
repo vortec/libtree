@@ -23,7 +23,6 @@ Contents:
    tree
    query
    positioning
-   attributes
    properties
    persistance
    api

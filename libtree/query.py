@@ -239,17 +239,37 @@ def get_descendant_ids(per, node):
         yield int(result['node'])
 
 
-def get_properties(node):
+def get_properties(per, node):
+    sql = """
+        SELECT
+          properties
+        FROM
+          nodes
+        WHERE
+          id=%s;
+    """
+    per.execute(sql, (int(node), ))
+    result = per.fetchone()
+    return result[0]
+
+
+def get_inherited_properties(per, node):
     pass
 
 
-def get_inherited_properties(node):
-    pass
+def get_property(per, node, key):
+    sql = """
+    SELECT
+      properties->>%s
+    FROM
+      nodes
+    WHERE
+      id=%s;
+    """
+    per.execute(sql, (key, int(node)))
+    result = per.fetchone()
+    return result[0]
 
 
-def get_property(node, key):
-    pass
-
-
-def get_inherited_property(node, key):
+def get_inherited_property(per, node, key):
     pass
