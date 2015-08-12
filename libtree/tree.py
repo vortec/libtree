@@ -105,7 +105,8 @@ def delete_node(per, node, auto_position=True):
 def change_parent(per, node, new_parent, position=None, auto_position=True):
     """
     Move node and its subtree from its current to another parent node.
-    Return updated ``Node`` object with new parent set.
+    Return updated ``Node`` object with new parent set. Raises
+    ``ValueError`` if you try to move a node into its own subtree.
 
     :param node:
     :type node: Node or int
