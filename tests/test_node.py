@@ -9,3 +9,15 @@ def test_basic_representation():
 def test_title_representation():
     node = Node(11, 22, attributes={'title': 'my test'})
     assert repr(node) == "<Node id=11, title='my test'>"
+
+
+def test_to_dict_conversion():
+    kwargs = {
+        'id': 11,
+        'parent': 22,
+        'position': 4,
+        'attributes': {'a': 1},
+        'properties': {'b': 2}
+    }
+    node = Node(**kwargs)
+    assert node.to_dict() == kwargs

@@ -57,6 +57,15 @@ class Node(object):
     def __int__(self):
         return self.id
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'parent': self.parent,
+            'position': self.position,
+            'attributes': self.attributes,
+            'properties': self.properties
+        }
+
     def __repr__(self):
         if 'title' in self.attributes:
             ret = '<Node id={!r}, title={!r}>'
