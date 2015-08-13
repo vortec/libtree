@@ -10,12 +10,12 @@ After you've installed libtree correctly, you can create the table schema and cr
     per.install()
 
     # Create a few nodes to get going
-    root = insert_node(per, None, 'folder', attributes={'title': 'Root node'})
-    bin = insert_node(per, root, 'folder', attributes={'title': 'Binary folder'})
-    etc = insert_node(per, root, 'folder', attributes={'title': 'Config folder'})
-    bash = insert_node(per, etc, 'file', attributes={'title': 'Bash executable'})
-    hosts = insert_node(per, etc, 'file', attributes={'title': 'Hosts file'})
-    passwd = insert_node(per, etc, 'file', attributes={'title': 'Password file'})
+    root = insert_node(per, None, properties={'title': 'Root node'})
+    bin = insert_node(per, root, properties={'title': 'Binary folder'})
+    etc = insert_node(per, root, properties={'title': 'Config folder'})
+    bash = insert_node(per, etc, properties={'title': 'Bash executable'})
+    hosts = insert_node(per, etc, properties={'title': 'Hosts file'})
+    passwd = insert_node(per, etc, properties={'title': 'Password file'})
 
     # Get direct children of root node
     children = list(get_children(per, root))
