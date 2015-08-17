@@ -3,35 +3,39 @@
 Welcome to libtree's documentation!
 ===================================
 
-`libtree` is a Python library which assists you dealing with large, hierarchical data sets. Its main features are:
+**libtree** is a Python library which assists you in dealing with
+**large, hierarchical data sets**. It runs on top of **PostgreSQL 9.4**
+and is compatible with **Python 2.7, 3.4 and PyPy 3.2**.
 
-* handles billions of nodes
-* fast reads and fast writes
-* attribute inheritance (see :ref:`properties`)
-* no transaction requirements
-* memory efficient (iterators available everywhere)
+Why use **libtree**? Because...
 
-To use `libtree`, you need to have a running Postgres 9.4 server and either Python 2.7, 3.4 or PyPy3.
+* the API is **super simple** (see :ref:`api`)
+* it scales up to **billions of nodes** (see :ref:`db_model`)
+* the reads and writes are **blazingly fast** (see :ref:`benchmarks`)
+* it has **attribute inheritance** (see :ref:`api-properties`)
 
-Contents:
+But wait, **there's more**:
+
+* it doesn't tell you when to use **transactions**.
+* all tree logic happens **inside the database** and doesn't occupy your
+  precious CPU.
+* it's **memory efficient** because **iterators** are being used
+  everywhere where possible.
+* the testsuite covers **>90%** of the code base and is **fully integration
+  tested**.
+
+
+Contents
+========
 
 .. toctree::
    :maxdepth: 2
 
    installation
    quickstart
-   tree
-   query
-   positioning
-   properties
-   persistance
-   api
-
-
-
-Indices and tables
-==================
+   user_guide
+   api/index
+   benchmarks
+   db_model
 
 * :ref:`genindex`
-* :ref:`search`
-

@@ -106,7 +106,7 @@ def change_parent(per, node, new_parent, position=None, auto_position=True):
     """
     Move node and its subtree from its current to another parent node.
     Return updated ``Node`` object with new parent set. Raise
-    ``ValueError`` if ``new_parent`` is inside ``node``s subtree.
+    ``ValueError`` if ``new_parent`` is inside ``node`` s subtree.
 
     :param node:
     :type node: Node or int

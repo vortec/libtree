@@ -1,4 +1,4 @@
-.. _tree:
+.. _api-tree:
 
 Tree functions
 ==============

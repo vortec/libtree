@@ -1,6 +1,5 @@
 """
-Auto position
--------------
+**Auto position**
 
 ``libtree`` has a feature called `auto position` which is turned on by
 default and makes sure that whenever you insert, move or delete a node
@@ -32,8 +31,8 @@ This is default behaviour because most users expect a tree
 implementation to behave like this.
 
 
-Disable auto position
----------------------
+**Disable auto position**
+
 If you're working on a dataset in which you know the final positions of
 your nodes before feeding them into ``libtree``, you can disable auto
 position altogether. This means lesser queries to the database and thus,
@@ -47,8 +46,7 @@ To disable auto position you must pass ``auto_position=False`` to any
 function that manipulates the tree (see :ref:`tree`).
 
 
-API
----
+**API**
 
 Related: :func:`libtree.query.get_node_at_position`
 """

@@ -1,14 +1,22 @@
 class Node(object):
     """Immutable data-holding object which represents a tree node. Its
-    attributes are identical to the columns in the ``nodes`` table.
+    attributes are identical to the columns in the ``nodes`` table
+    (see :ref:`db_model`).
 
-    Since it's immutable, you must use functions like :func:`get_node`
-    or ``update_node()`` to talk to the database in any way
-    (see :ref:`tree`).
+    Since the object is immutable, you must retrieve a new instance
+    of the same node using :func:`libtree.query.get_node` to get
+    updated values.
+
+    To manipulate the values, you must use one of the following
+    functions:
+
+    * :func:`libtree.tree.change_parent`
+    * :ref:`api-positioning`
+    * :ref:`api-properties`
 
     Most ``libtree`` functions need a database ID in order to know on
     which data they should operate, but also accept ``Node`` objects
-    to make the handling with them easier.
+    to make handling with them easier.
 
     All parameters are optional and default to ``None``.
 
@@ -49,6 +57,7 @@ class Node(object):
         return self.id
 
     def to_dict(self):
+        """ Return dictionary containing all values of the object. """
         return {
             'id': self.id,
             'parent': self.parent,
@@ -66,16 +75,20 @@ class Node(object):
 
     @property
     def id(self):
+        """ Node ID """
         return self.__id
 
     @property
     def parent(self):
+        """ Parent ID """
         return self.__parent
 
     @property
     def position(self):
+        """ Position in between its siblings """
         return self.__position
 
     @property
     def properties(self):
+        """ Node properties """
         return self.__properties
