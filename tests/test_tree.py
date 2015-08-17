@@ -35,24 +35,24 @@ def test_insert_node_sets_position(node1):
 def test_change_parent(per, root, node1, node2, node2_1, node2_1_1,
                        node2_leaf):
     """
-        Tree layout before move:
-        /
-          - node1
-          - node2
-            - node2-1
-              - node2-1-1
-                - node2-leaf
-          - node3
+    Tree layout before move:
+    /
+      - node1
+      - node2
+        - node2-1
+          - node2-1-1
+            - node2-leaf
+      - node3
 
-        Expected tree layout after move:
+    Expected tree layout after move:
 
-        /
-          - node1
-            - node2-1
-              - node2-1-1
-                - node2-leaf
-          - node2
-          - node3
+    /
+      - node1
+        - node2-1
+          - node2-1-1
+            - node2-leaf
+      - node2
+      - node3
     """
     # We expect node2-1 to be child of node2 and node2-1-1 to be child
     # of node2-1.
