@@ -19,7 +19,7 @@ def get_tree_size(per):
 
 def get_root_node(per):
     """
-    Return root node. Raises ``ValueError`` if root node doesn't exist.
+    Return root node. Raise ``ValueError`` if root node doesn't exist.
     """
     sql = """
         SELECT
@@ -237,39 +237,3 @@ def get_descendant_ids(per, node):
     per.execute(sql, (int(node), ))
     for result in per:
         yield int(result['node'])
-
-
-def get_properties(per, node):
-    sql = """
-        SELECT
-          properties
-        FROM
-          nodes
-        WHERE
-          id=%s;
-    """
-    per.execute(sql, (int(node), ))
-    result = per.fetchone()
-    return result[0]
-
-
-def get_inherited_properties(per, node):
-    pass
-
-
-def get_property(per, node, key):
-    sql = """
-    SELECT
-      properties->>%s
-    FROM
-      nodes
-    WHERE
-      id=%s;
-    """
-    per.execute(sql, (key, int(node)))
-    result = per.fetchone()
-    return result[0]
-
-
-def get_inherited_property(per, node, key):
-    pass

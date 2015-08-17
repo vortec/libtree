@@ -2,3 +2,6 @@
 
 Properties
 ==========
+
+.. automodule:: libtree.properties
+   :members:
