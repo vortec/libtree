@@ -101,7 +101,7 @@ class PostgreSQLPersistance(object):
 
     def check_postgres_version(self):
         """
-        Raise ``EnvironmentError`` if Postgres server is running an
+        Raise ``EnvironmentError`` if PostgreSQL server is running an
         outdated version.
         """
         self._cursor.execute("SHOW server_version;")
