@@ -129,8 +129,8 @@ gets broken somehow, it's simple to fix:
 Boundaries
 ----------
 The ``id`` column is of type ``serial`` (32bit integer) and can
-therefore be as high as 2,147,483,647. When needed, changing it t
- ``bigserial`` (64bit integer) is simple but requires more space.
+therefore be as high as 2,147,483,647. When needed, changing it
+to ``bigserial`` (64bit integer) is simple but requires more space.
 
 
 Model Comparison
