@@ -22,7 +22,7 @@ def print_tree(per, start_node=None, indent='  ', _level=0):
     print('{}{}'.format(indent*_level, start_node))  # noqa
 
     for child in list(get_children(per, start_node)):
-        print_tree(per, child, _level=_level+1)
+        print_tree(per, child, indent=indent, _level=_level+1)
 
 
 def insert_node(per, parent, position=None, properties=None,
