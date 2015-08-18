@@ -74,11 +74,11 @@ order to save disk space and might change at a later point.
 
 Manipulating the tree is somewhat more complex. When inserting a node,
 the ancestor information of its parent must be copied and completed.
-When deleting a node, all traces of its children must be deleted from
-both tables. When moving a node, first all outdated ancestor information
-must be found and deleted. Then the new parents ancestor information
-must be copied for the node (and its descendants) that is being moved
-and completed.
+When deleting a node, all traces of it and its descendants must be
+deleted from both tables. When moving a node, first all outdated
+ancestor information must be found and deleted. Then the new parents
+ancestor information must be copied for the node (and its descendants)
+that is being moved and completed.
 
 There are different ways to implement Closure Table. Some people store
 the depth of each ancestor/descendant combination to make sorting
@@ -97,7 +97,7 @@ the size of the actual data. In the nodes table the columns ``id`` and
 same as the data.
 
 Maybe it's possible to remove indices, this needs benchmarking. But RAM
-and disk space became very cheap and doesn't really matter these days,
+and disk space became very cheap and don't really matter these days,
 right? ... right?
 
 
