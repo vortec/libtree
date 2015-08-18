@@ -3,10 +3,8 @@
 Database Model
 ==============
 `libtree` aims to support billions of nodes while guaranteeing fast
-reads and fast writes. Well-known SQL solutions, like the naive
-`Adjacency List` or the error-prone `Nested Set` have drawbacks which
-hinder performance in either direction.
-
+reads and fast writes. Well-known SQL solutions like Adjacency List or
+Nested Set have drawbacks which hinder performance in either direction.
 The best model to achieve high performance is called `Closure Table`,
 which is explained here.
 
@@ -41,9 +39,9 @@ The more interesting bit is the ancestor table::
       CONSTRAINT idx UNIQUE (node, ancestor)
     )
 
-In this table, every relation in the tree is stored. This means not only
+In this table, every tree relation is stored. This means not only
 child/parent, but also grandparent/grandchild relations. So if A is a
-parent of B, and B is a prant of C and C is a parent of D, we need to
+parent of B, and B is a parent of C and C is a parent of D, we need to
 store the following relations:
 
 +------+----------+
@@ -98,9 +96,9 @@ the size of the actual data. In the nodes table the columns ``id`` and
 ``parent`` are indexed, resulting in index sizes that are roughly the
 same as the data.
 
-Maybe it's possible to remove indices, this needs benchmarking. But disk
-space became very cheap and doesn't really matter these days, right? ...
-right?
+Maybe it's possible to remove indices, this needs benchmarking. But RAM
+and disk space became very cheap and doesn't really matter these days,
+right? ... right?
 
 
 Database Triggers
