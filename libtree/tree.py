@@ -7,22 +7,22 @@ from libtree.query import (get_children, get_descendant_ids, get_node,
                            get_root_node)
 
 
-def print_tree(per, start_node=None, indent=2, _level=0):
+def print_tree(per, start_node=None, indent='  ', _level=0):
     """
     Print tree to stdout.
 
     :param start_node: Starting point for tree output.
                        If ``None``, start at root node.
     :type start_node: int, Node or None
-    :param int indent: Amount of whitespaces per level (default: 2)
+    :param str indent: String to print per level (default: '  ')
     """
     if start_node is None:
         start_node = get_root_node(per)
 
-    print('{}{}'.format(' '*indent, start_node))  # noqa
+    print('{}{}'.format(indent*_level, start_node))  # noqa
 
     for child in list(get_children(per, start_node)):
-        print_tree(per, child, _level=_level+indent)
+        print_tree(per, child, _level=_level+1)
 
 
 def insert_node(per, parent, position=None, properties=None,
