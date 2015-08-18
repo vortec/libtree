@@ -1,0 +1,5 @@
+recursive-include benchmarks *
+recursive-include sql *
+global-exclude __pycache__
+global-exclude *.pyc
+global-exclude config.py
