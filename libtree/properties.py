@@ -30,7 +30,7 @@ def get_inherited_properties(per, node):
     return ret
 
 
-def get_inherited_property(per, node, key):
+def get_inherited_property_value(per, node, key):
     """
     Get the inherited value for a single property key.
 

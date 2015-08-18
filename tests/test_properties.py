@@ -1,11 +1,12 @@
 from libtree.properties import (get_inherited_properties,
-                                get_inherited_property, set_properties,
-                                set_property_value, update_properties)
+                                get_inherited_property_value,
+                                set_properties, set_property_value,
+                                update_properties)
 import pytest
 
 
-def test_get_inherited_property(per, node2):
-    assert get_inherited_property(per, node2, 'integer') == 1
+def test_get_inherited_property_value(per, node2):
+    assert get_inherited_property_value(per, node2, 'integer') == 1
 
 
 def test_get_inherited_properties_no_inheritance(per, root):
