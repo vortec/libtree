@@ -157,7 +157,7 @@ RECURSIVE statement.
 **Path Enumeration**
 
 A very good model if you don't mind `stringly typed
-<http://neologisms.rice.edu/index.php?a=term&d=1&t=14876`_ integrity and
+<http://neologisms.rice.edu/index.php?a=term&d=1&t=14876>`_ integrity and
 tremendous use of string functions in SQL queries. It should be fast for
 all types of queries but is not RI-compatible.
 
