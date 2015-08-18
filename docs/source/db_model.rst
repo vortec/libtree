@@ -133,8 +133,8 @@ therefore be as high as 2,147,483,647. When needed, changing it t
  ``bigserial`` (64bit integer) is simple but requires more space.
 
 
-Comparison to other models
---------------------------
+Model Comparison
+----------------
 **Closure Table**
 
 As mentioned before, Closure Table is a great database model to handle
