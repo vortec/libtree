@@ -41,7 +41,7 @@ def populate_tree(per, node, levels, per_level, auto_position, depth=1):
     for i in range(0, per_level):
         start = time()
         new_node = insert_node(per, node, auto_position=auto_position)
-        duration = time() - start
+        duration = (time() - start) * 1000
         stats.append(duration)
 
         if depth < levels:
@@ -60,9 +60,9 @@ def benchmark(per, levels, per_level, auto_position):
 
     start = time()
     per.commit()
-    duration_commit = time() - start
+    duration_commit = (time() - start) * 1000
 
-    output = '=> {}s per node, {}s total, {}s commit time'
+    output = '=> {:.4f}ms per node, {:.4f}s total, {:.4f}ms commit time'
     _average = average(stats)
     print(output.format(_average, duration, duration_commit))
     #print(len(stats))
@@ -78,11 +78,11 @@ def run(per):
     for levels, per_level in RUNS:
         per.flush_tables()
         per.commit()
-        output = '{} levels, {} nodes per level ({} nodes total)...'
+        output = '{} levels, {:,} nodes per level ({:,} nodes total)...'
         print(output.format(levels, per_level,
                             calculate_tree_size(levels, per_level)))
         benchmark(per, levels, per_level, False)
-    output = 'Overall insertion speed on average: {}s'
+    output = 'Average insertion speed (auto position off): {:.4f}ms'
     print(output.format(average(averages)))
 
     print()
@@ -90,11 +90,11 @@ def run(per):
     for levels, per_level in RUNS:
         per.flush_tables()
         per.commit()
-        output = '{} levels, {} nodes per level ({} nodes total)...'
+        output = '{} levels, {:,} nodes per level ({:,} nodes total)...'
         print(output.format(levels, per_level,
                             calculate_tree_size(levels, per_level)))
         benchmark(per, levels, per_level, True)
-    output = 'Overall insertion speed on average: {}s'
+    output = 'Average insertion speed (auto position on): {:.4f}ms'
     print(output.format(average(averages)))
 
 
