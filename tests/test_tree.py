@@ -17,9 +17,6 @@ def test_insert_node(per, root, node1, node2, node2_1, node2_1_1, node3):
     assert node2_1.parent == node2.id
     assert node2_1_1.parent == node2_1.id
     assert node3.parent == root.id
-    trace()
-    from libtree import print_tree
-    print_tree(per, indent='-')
 
 
 def test_insert_node_sets_properties(root):
