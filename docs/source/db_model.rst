@@ -128,16 +128,16 @@ gets broken somehow, it's simple to fix:
 
 Boundaries
 ----------
-The ``id`` column is of type ``serial`` and can therefore be as high as
-2,147,483,647. When needed, changing it to ``bigserial`` is simple but
-requires more disk space.
+The ``id`` column is of type ``serial`` (32bit integer) and can
+therefore be as high as 2,147,483,647. When needed, changing it t
+ ``bigserial`` (64bit integer) is simple but requires more space.
 
 
 Comparison to other models
 --------------------------
 **Closure Table**
 
-As mentioned before, Closure Table is the best database model to handle
+As mentioned before, Closure Table is a great database model to handle
 tree-like data. Its advantages are both read and write performance and
 also ease of implementation. It's recursion free and allows you to use
 referential integrity. The most complex and slowest part is when
