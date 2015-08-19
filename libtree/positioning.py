@@ -51,7 +51,7 @@ function that manipulates the tree (see :ref:`tree`).
 Related: :func:`libtree.query.get_node_at_position`
 """
 
-from libtree.query import get_node_at_position
+from libtree.query import get_node, get_node_at_position
 
 
 def ensure_free_position(per, node, position):
@@ -108,9 +108,26 @@ def set_position(per, node, position, auto_position=True):
 
     :param node:
     :type node: Node or int
-    :param int position:
+    :param int position: Position in between siblings. If 0, the node
+                         will be inserted at the beginning of the
+                         parents children. If -1, the node will be
+                         inserted the the end of the parents children.
+                         If `auto_position` is disabled, this is just a
+                         value.
+    :param bool auto_position: See :ref:`api-positioning`
     """
-    # TODO: run auto position!
+    if auto_position:
+        id = int(node)
+        if type(node) == int:
+            node = get_node(per, id)
+
+        if type(position) == int and position >= 0:
+            ensure_free_position(per, node.parent, position)
+        else:
+            position = find_highest_position(per, node.parent) + 1
+    else:
+        id = int(node)
+
     sql = """
         UPDATE
           nodes
@@ -120,6 +137,7 @@ def set_position(per, node, position, auto_position=True):
           id=%s;
     """
     per.execute(sql, (position, int(node)))
+    return position
 
 
 def shift_positions(per, node, position, offset):

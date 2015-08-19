@@ -12,6 +12,15 @@ def test_set_position(per, root):
     assert get_node(per, root.id).position == 0
 
 
+def test_set_position_autoposition(per, root, node1, node2, node3):
+    set_position(per, node1, 0, auto_position=True)
+    set_position(per, node2, 2, auto_position=True)
+    set_position(per, node3.id, -1, auto_position=True)
+    assert get_node(per, node1.id).position == 0
+    assert get_node(per, node2.id).position == 2
+    assert get_node(per, node3.id).position == node3.position + 1
+
+
 def test_set_positions_with_gap_in_sequence(per, node1, node2, node3):
     set_position(per, node1, 0, auto_position=False)
     set_position(per, node2, 1, auto_position=False)

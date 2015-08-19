@@ -1,7 +1,6 @@
 import json
 from libtree.node import Node
-from libtree.positioning import (ensure_free_position,
-                                 find_highest_position, set_position,
+from libtree.positioning import (ensure_free_position, find_highest_position,
                                  shift_positions)
 from libtree.query import (get_children, get_descendant_ids, get_node,
                            get_root_node)
@@ -51,6 +50,7 @@ def insert_node(per, parent, properties=None, position=None,
     if properties is None:
         properties = {}
 
+    # Can't run set_position() because the node doesn't exist yet
     if auto_position:
         if type(position) == int and position >= 0:
             ensure_free_position(per, parent, position)
@@ -69,9 +69,6 @@ def insert_node(per, parent, properties=None, position=None,
     node = Node(id, parent_id, position, properties)
 
     return node
-
-# IDEA: def mass_insert()
-# CREATE TEMP SEQUENCE
 
 
 def delete_node(per, node, auto_position=True):
@@ -118,27 +115,30 @@ def change_parent(per, node, new_parent, position=None, auto_position=True):
                          value.
     :param bool auto_position: See :ref:`api-positioning`.
     """
-    new_id = int(new_parent)
-    if new_id in get_descendant_ids(per, node):
+    new_parent_id = int(new_parent)
+    if new_parent_id in get_descendant_ids(per, node):
         raise ValueError('Cannot move node into its own subtree.')
 
+    # Can't run set_position() here because the node hasn't been moved yet,
+    # must do it manually
     if auto_position:
         if type(position) == int and position >= 0:
-            ensure_free_position(per, new_id, position)
+            ensure_free_position(per, new_parent_id, position)
         else:
-            position = find_highest_position(per, new_id) + 1
-        set_position(per, node, position)
+            position = find_highest_position(per, new_parent_id) + 1
 
     sql = """
         UPDATE
           nodes
         SET
-          parent=%s
+          parent=%s,
+          position=%s
         WHERE
           id=%s;
     """
-    per.execute(sql, (new_id, int(node)))
+    per.execute(sql, (new_parent_id, position, int(node)))
 
     kwargs = node.to_dict()
-    kwargs['parent'] = new_id
+    kwargs['parent'] = new_parent_id
+    kwargs['position'] = position
     return Node(**kwargs)
