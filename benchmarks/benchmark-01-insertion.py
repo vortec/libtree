@@ -1,5 +1,9 @@
 from libtree.tree import insert_node
 from time import time
+import sys
+
+
+sys.setrecursionlimit(15000)
 
 RUNS = (
     (1, 500),
@@ -24,7 +28,10 @@ RUNS = (
     (12, 2),
     (15, 2),
     #(17, 2),
-    ##(20, 2)
+    (20, 1),
+    (200, 1),
+    (2000, 1),
+    (10000, 1),
 )
 
 stats = list()
@@ -33,6 +40,8 @@ average = lambda a: sum(a) / len(a)
 
 
 def calculate_tree_size(levels, per_level):
+    if per_level == 1:
+        return levels
     return int(((1 - per_level ** (levels + 1)) / (1 - per_level)) - 1)
 
 
@@ -78,7 +87,7 @@ def run(per):
     for levels, per_level in RUNS:
         per.flush_tables()
         per.commit()
-        output = '{} levels, {:,} nodes per level ({:,} nodes total)...'
+        output = '{:,} levels, {:,} nodes per level ({:,} nodes total)...'
         print(output.format(levels, per_level,
                             calculate_tree_size(levels, per_level)))
         benchmark(per, levels, per_level, False)
