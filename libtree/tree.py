@@ -25,7 +25,7 @@ def print_tree(per, start_node=None, indent='  ', _level=0):
         print_tree(per, child, indent=indent, _level=_level+1)
 
 
-def insert_node(per, parent, position=None, properties=None,
+def insert_node(per, parent, properties=None, position=None,
                 auto_position=True):
     """
     Create a ``Node`` object, insert it into the tree and then return
@@ -34,17 +34,15 @@ def insert_node(per, parent, position=None, properties=None,
     :param parent: Reference to its parent node. If `None`, this will
                    be the root node.
     :type parent: Node or int
+    :param dict properties: Inheritable key/value pairs
+                            (see :ref:`api-properties`)
     :param int position: Position in between siblings. If 0, the node
                          will be inserted at the beginning of the
                          parents children. If -1, the node will be
                          inserted the the end of the parents children.
                          If `auto_position` is disabled, this is just a
                          value.
-    :param dict attributes: Non-inheritable key/value pairs
-                            (see :ref:`attributes`)
-    :param dict properties: Inheritable key/value pairs
-                             (see :ref:`properties`)
-    :param bool auto_position: See :ref:`positioning`
+    :param bool auto_position: See :ref:`api-positioning`
     """
     parent_id = None
     if parent is not None:
@@ -82,7 +80,7 @@ def delete_node(per, node, auto_position=True):
 
     :param node:
     :type node: Node or int
-    :param bool auto_position: See :ref:`positioning`
+    :param bool auto_position: See :ref:`api-positioning`
     """
     id = int(node)
 
@@ -118,7 +116,7 @@ def change_parent(per, node, new_parent, position=None, auto_position=True):
                          inserted the the end of the parents children.
                          If `auto_position` is disabled, this is just a
                          value.
-    :param bool auto_position: See :ref:`positioning`.
+    :param bool auto_position: See :ref:`api-positioning`.
     """
     new_id = int(new_parent)
     if new_id in get_descendant_ids(per, node):
