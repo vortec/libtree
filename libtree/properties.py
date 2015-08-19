@@ -52,7 +52,7 @@ def get_nodes_by_property_value(per, key, value):
     Inherited keys are not considered.
 
     :param str key: The key to search for
-    :param object value: The exact key to sarch for
+    :param object value: The exact value to sarch for
     """
     query = {key: value}
     for node in get_nodes_by_property_dict(per, query):
