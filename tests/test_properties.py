@@ -1,8 +1,35 @@
 from libtree.properties import (get_inherited_properties,
                                 get_inherited_property_value,
+                                get_nodes_by_property_dict,
+                                get_nodes_by_property_key,
+                                get_nodes_by_property_value,
                                 set_properties, set_property_value,
                                 update_properties)
 import pytest
+
+
+def test_get_nodes_by_property_dict(per, root):
+    query = {
+        'boolean': False,
+        'type': 'root'
+    }
+    results = get_nodes_by_property_dict(per, query)
+    ids = {child.id for child in results}
+    assert ids == {root.id}
+
+
+def test_get_nodes_by_property_key(per, root, node2, node2_1_1):
+    ids = {child.id for child in get_nodes_by_property_key(per, 'boolean')}
+    assert root.id in ids
+    assert node2.id in ids
+    assert node2_1_1.id in ids
+
+
+def test_get_nodes_by_property_value(per, root, node2_1_1):
+    results = get_nodes_by_property_value(per, 'boolean', False)
+    ids = {child.id for child in results}
+    assert root.id in ids
+    assert node2_1_1.id in ids
 
 
 def test_get_inherited_property_value(per, node2):

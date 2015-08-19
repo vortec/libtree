@@ -3,13 +3,70 @@ from libtree.query import get_ancestors, get_node
 import json
 
 
+def get_nodes_by_property_dict(per, query):
+    """
+    Return an iterator that yields a ``Node`` object of every node which
+    contains all key/value pairs of ``query`` in its property
+    dictionary. Inherited keys are not considered.
+
+    :param dict query: The dictionary to search for
+    """
+    sql = """
+        SELECT
+          *
+        FROM
+          nodes
+        WHERE
+          properties @> %s;
+    """
+    per.execute(sql, (json.dumps(query), ))
+    for result in per:
+        yield Node(**result)
+
+
+def get_nodes_by_property_key(per, key):
+    """
+    Return an iterator that yields a ``Node`` object of every node which
+    contains ``key`` in its property dictionary. Inherited keys are not
+    considered.
+
+    :param str key: The key to search for
+    """
+    sql = """
+        SELECT
+          *
+        FROM
+          nodes
+        WHERE
+          properties ? %s;
+    """
+    per.execute(sql, (key, ))
+    for result in per:
+        yield Node(**result)
+
+
+def get_nodes_by_property_value(per, key, value):
+    """
+    Return an iterator that yields a ``Node`` object of every node which
+    has ``key`` exactly set to ``value`` in its property dictionary.
+    Inherited keys are not considered.
+
+    :param str key: The key to search for
+    :param object value: The exact key to sarch for
+    """
+    query = {key: value}
+    for node in get_nodes_by_property_dict(per, query):
+        yield node
+
+
 def get_inherited_properties(per, node):
     """
     Get the entire inherited property dictionary.
 
     To calculate this, the trees path from root node till ``node`` will
     be traversed. For each level, the property dictionary will be merged
-    into the previous one.
+    into the previous one. This is a simple merge, only the first level
+    of keys will be combined.
 
     :param node:
     :type node: Node or int
