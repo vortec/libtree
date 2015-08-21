@@ -98,14 +98,18 @@ def xtest_get_ancestors_calls_vectorize_nodes(per, node2_leaf):
 def test_get_descendant_ids(per, root, node1, node2, node3, node2_1, node2_1_1,
                             node2_leaf):
     ids = get_descendant_ids(per, root)
-    nodes = {node1, node2, node3, node2_1, node2_1_1, node2_leaf}
-    expected = {node.id for node in nodes}
-    assert set(ids) == expected
+    expected_nodes = {node1, node2, node3, node2_1, node2_1_1, node2_leaf}
+    expected_ids = {node.id for node in expected_nodes}
+    assert set(ids) == expected_ids
 
 
-def test_get_descendants(per, root):
-    with pytest.raises(NotImplementedError):
-        get_descendants(per, root)
+def test_get_descendants(per, root, node1, node2, node3, node2_1, node2_1_1,
+                         node2_leaf):
+    nodes = get_descendants(per, root)
+    ids = {node.id for node in nodes}
+    expected_nodes = {node1, node2, node3, node2_1, node2_1_1, node2_leaf}
+    expected_ids = {node.id for node in expected_nodes}
+    assert ids == expected_ids
 
 
 def xtest_get_inherited_properties():

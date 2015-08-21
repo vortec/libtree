@@ -215,13 +215,36 @@ def get_ancestor_ids(per, node):
 
 
 def get_descendants(per, node):
-    raise NotImplementedError('This could create billions of Python objects.')
+    """
+    Return an iterator that yields the ID of every element while
+    traversing from ``node`` to the root node.
+
+    :param node:
+    :type node: Node or int
+    """
+    sql = """
+        SELECT
+          nodes.*
+        FROM
+          ancestors
+        INNER JOIN
+          nodes
+        ON
+          ancestors.node=nodes.id
+        WHERE
+          ancestors.ancestor=%s;
+    """
+    per.execute(sql, (int(node), ))
+    for result in per:
+        yield Node(**result)
 
 
 def get_descendant_ids(per, node):
     """
-    Return an iterator that yields the ID of each element in the nodes
-    subtree.
+    Return an iterator that yields a ``Node`` object of each element in
+    the nodes subtree. Be careful when converting this iterator to an
+    iterable (like list or set) because it could contain billions of
+    objects.
 
     :param node:
     :type node: Node or int
