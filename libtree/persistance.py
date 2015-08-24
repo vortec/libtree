@@ -122,13 +122,13 @@ class PostgreSQLPersistance(object):
     def create_schema(self):
         """ Create table schema. """
         script_folder = os.path.split(os.path.realpath(__file__))[0]
-        path = os.path.join(script_folder, '..', 'sql', 'schema.sql')
+        path = os.path.join(script_folder, 'sql', 'schema.sql')
         self._cursor.execute(open(path).read())
 
     def create_triggers(self):
         """ Create triggers. """
         script_folder = os.path.split(os.path.realpath(__file__))[0]
-        path = os.path.join(script_folder, '..', 'sql', 'triggers.sql')
+        path = os.path.join(script_folder, 'sql', 'triggers.sql')
         self._cursor.execute(open(path).read())
 
     def drop_tables(self):
