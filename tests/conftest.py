@@ -1,7 +1,15 @@
 # Copyright (c) 2015 CaT Concepts and Training GmbH
 
 
-from libtree.config import config
+try:
+    from libtree.config import config
+except ImportError:
+    config = {
+        'postgres': {
+            'test_details': 'dbname=test_libtree user=postgres'
+        }
+    }
+
 from libtree.persistance import PostgreSQLPersistance
 from libtree.query import get_node
 from libtree.tree import insert_node
