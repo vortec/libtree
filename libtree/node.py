@@ -1,3 +1,6 @@
+# Copyright (c) 2015 CaT Concepts and Training GmbH
+
+
 class Node(object):
     """Immutable data-holding object which represents a tree node. Its
     attributes are identical to the columns in the ``nodes`` table

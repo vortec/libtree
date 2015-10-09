@@ -1,3 +1,6 @@
+# Copyright (c) 2015 CaT Concepts and Training GmbH
+
+
 from libtree.node import *  # noqa
 from libtree.persistance import *  # noqa
 from libtree.properties import *  # noqa

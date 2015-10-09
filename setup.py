@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
-#!/usr/bin/env python
+# Copyright (c) 2015 CaT Concepts and Training GmbH
+
 
 try:
     from setuptools import setup, find_packages, Command

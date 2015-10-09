@@ -1,3 +1,6 @@
+# Copyright (c) 2015 CaT Concepts and Training GmbH
+
+
 from libtree.utils import vectorize_nodes
 
 

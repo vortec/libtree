@@ -1,3 +1,6 @@
+# Copyright (c) 2015 CaT Concepts and Training GmbH
+
+
 from libtree.tree import insert_node
 from time import time
 import sys

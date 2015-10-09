@@ -1,3 +1,6 @@
+# Copyright (c) 2015 CaT Concepts and Training GmbH
+
+
 from libtree.query import (get_ancestors, get_child_ids, get_children,
                            get_children_count, get_descendants,
                            get_descendant_ids, get_node, get_root_node,

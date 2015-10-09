@@ -1,3 +1,6 @@
+# Copyright (c) 2015 CaT Concepts and Training GmbH
+
+
 from libtree.tree import change_parent, delete_node, insert_node
 from libtree.query import (get_ancestor_ids, get_child_ids, get_children,
                            get_descendant_ids, get_node)

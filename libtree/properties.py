@@ -1,3 +1,6 @@
+# Copyright (c) 2015 CaT Concepts and Training GmbH
+
+
 from libtree.node import Node
 from libtree.query import get_ancestors, get_node
 import json

@@ -1,3 +1,6 @@
+# Copyright (c) 2015 CaT Concepts and Training GmbH
+
+
 from libtree.positioning import (ensure_free_position, find_highest_position,
                                  set_position, shift_positions,
                                  swap_node_positions)

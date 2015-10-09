@@ -1,3 +1,6 @@
+# Copyright (c) 2015 CaT Concepts and Training GmbH
+
+
 from libtree.properties import (get_inherited_properties,
                                 get_inherited_property_value,
                                 get_nodes_by_property_dict,

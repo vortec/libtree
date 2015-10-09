@@ -1,3 +1,6 @@
+# Copyright (c) 2015 CaT Concepts and Training GmbH
+
+
 from libtree.config import config
 from pdb import set_trace as trace
 from libtree.persistance import *

@@ -1,3 +1,6 @@
+# Copyright (c) 2015 CaT Concepts and Training GmbH
+
+
 import json
 from libtree.node import Node
 from libtree.positioning import (ensure_free_position, find_highest_position,

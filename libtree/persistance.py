@@ -1,3 +1,6 @@
+# Copyright (c) 2015 CaT Concepts and Training GmbH
+
+
 try:
     from psycopg2cffi import compat
 except ImportError:
