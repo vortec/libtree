@@ -1,14 +1,16 @@
 libtree
 =======
 
+[![Build Status](https://travis-ci.org/conceptsandtraining/libtree.svg?branch=master)](https://travis-ci.org/conceptsandtraining/libtree)
+
 **libtree** is a Python library which assists you in dealing with **large, hierarchical data sets**. It runs on top of **PostgreSQL 9.4** and is compatible with Python **2.7, 3.4 and PyPy 3.2**.
 
 Why use **libtree**? Because...
 
- - the API is **super simple** (see API)
- - it scales up to **billions of nodes** (see Database Model)
- - the reads and writes are **blazingly fast** (see Benchmarks)
- - it has **attribute inheritance** (see Property functions)
+ - the API is **super simple**
+ - it scales up to **billions of nodes**
+ - the reads and writes are **blazingly fast**
+ - it has **attribute inheritance**
 
 
 But wait, **there’s more**:
