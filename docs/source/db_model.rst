@@ -5,7 +5,7 @@ Database Model
 `libtree` aims to support billions of nodes while guaranteeing fast
 reads and fast writes. Well-known SQL solutions like Adjacency List or
 Nested Set have drawbacks which hinder performance in either direction.
-The best model to achieve high performance is called `Closure Table`,
+A very good model to achieve high performance is called `Closure Table`,
 which is explained here.
 
 
