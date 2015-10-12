@@ -12,5 +12,8 @@ before_script:
   - psql -c 'create database test_libtree;' -U postgres
 install:
     - pip install .
+    - pip install coveralls
 script:
     - py.test -v tests
+after_success:
+    - coveralls
