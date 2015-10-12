@@ -85,5 +85,5 @@ can be found at [ReadTheDocs.org](https://libtree.readthedocs.org/en/latest/).
 
 Authors
 =======
-libtree is written and maintained by Fabian Kochem for CaT Concepts and
+**libtree** is written and maintained by Fabian Kochem for CaT Concepts and
 Training GmbH.
