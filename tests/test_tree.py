@@ -150,3 +150,9 @@ def test_delete_node(per, node1, node2_1, node2_1_1, node2_leaf):
     assert set(get_ancestor_ids(per, node2_leaf)) == set()
     assert set(get_descendant_ids(per, node2_1_1)) == set()
     assert set(get_descendant_ids(per, node2_leaf)) == set()
+
+
+def test_delete_node_by_id(per, node1, node2_1):
+    delete_node(per, node2_1.id, auto_position=True)
+
+    assert set(get_child_ids(per, node1)) == set()
