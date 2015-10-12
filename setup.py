@@ -32,9 +32,20 @@ setup(
         psycopg2_dependency
     ],
 
-    # Various stuff (do not care about those)
     entry_points={},
     packages=find_packages(),
     zip_safe=False,
-    include_package_data=True
+    include_package_data=True,
+
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 3',
+        'Topic :: Database',
+        'Topic :: Software Development :: Libraries'
+    ],
 )
