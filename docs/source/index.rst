@@ -11,7 +11,8 @@ Why use **libtree**? Because...
 
 * the API is **super simple** (see :ref:`api`)
 * it scales up to **billions of nodes** (see :ref:`db_model`)
-* the reads and writes are **blazingly fast** (see :ref:`benchmarks`)
+* the reads and writes are **blazingly fast** (:ref:`benchmarks` will be
+  available soon)
 * it has **attribute inheritance** (see :ref:`api-properties`)
 
 But wait, **there's more**:
