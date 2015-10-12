@@ -36,7 +36,7 @@ class PyTest(TestCommand):
 
 
 if platform.python_implementation() == 'PyPy':
-    psycopg2_dependency = 'psycopg2cffi==2.7.1'
+    psycopg2_dependency = 'psycopg2cffi==2.7.2'
 else:
     psycopg2_dependency = 'psycopg2==2.6.1'
 

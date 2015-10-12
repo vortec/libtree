@@ -37,7 +37,8 @@ class PostgreSQLPersistance(object):
     def __init__(self, details, autocommit=False):
         connection = psycopg2.connect(details)
         connection.autocommit = autocommit
-        cursor = connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        factory = psycopg2.extras.RealDictCursor
+        cursor = connection.cursor(cursor_factory=factory)
 
         self._connection = connection
         self._cursor = cursor
@@ -72,14 +73,6 @@ class PostgreSQLPersistance(object):
         .
         """
         return self._cursor.execute(*args, **kwargs)
-
-    def executemany(self, *args, **kwargs):
-        """
-        See `executemany()
-        <http://initd.org/psycopg/docs/cursor.html#cursor.executemany>`_
-        .
-        """
-        return self._cursor.executemany(*args, **kwargs)
 
     def fetchone(self):
         """

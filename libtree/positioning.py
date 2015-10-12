@@ -97,7 +97,7 @@ def find_highest_position(per, node):
         parent=%s;
     """
     per.execute(sql, (id, ))
-    result = per.fetchone()[0]
+    result = per.fetchone()['max']
 
     if result is not None:
         return result

@@ -17,7 +17,7 @@ def get_tree_size(per):
     """
     per.execute(sql)
     result = per.fetchone()
-    return result[0]
+    return result['count']
 
 
 def get_root_node(per):
@@ -158,7 +158,7 @@ def get_children_count(per, node):
     """
     per.execute(sql, (int(node), ))
     result = per.fetchone()
-    return result[0]
+    return result['count']
 
 
 def get_ancestors(per, node, sort=True):
