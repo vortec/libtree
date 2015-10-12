@@ -52,10 +52,11 @@ def per(request):
 
     node_ids.clear()
     per.drop_tables()
-    per.create_schema()
-    per.create_triggers()
+    per.commit()
+    per.install()
 
     def fin():
+        per.flush_tables()
         per.rollback()
     request.addfinalizer(fin)
 
