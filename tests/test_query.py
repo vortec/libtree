@@ -1,4 +1,4 @@
-# Copyright (c) 2015 CaT Concepts and Training GmbH
+# Copyright (c) 2015 Fabian Kochem
 
 
 from libtree.query import (get_ancestors, get_child_ids, get_children,

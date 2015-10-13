@@ -1,4 +1,4 @@
-# Copyright (c) 2015 CaT Concepts and Training GmbH
+# Copyright (c) 2015 Fabian Kochem
 
 
 from libtree.positioning import (ensure_free_position, find_highest_position,
