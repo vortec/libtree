@@ -7,7 +7,8 @@ libtree
 
 **libtree** is a Python library which assists you in dealing with **large,
 hierarchical data sets**. It runs on top of **PostgreSQL 9.4** and is
-compatible with Python **2.7**, **3.4**, **3.5** and **PyPy 3**.
+compatible with **all major Python interpreters** (2.7, 3.3-3.5, PyPy2
+and PyPy3).
 
 Why use **libtree**? Because...
 
