@@ -2,6 +2,7 @@ libtree
 =======
 [![Build Status](https://travis-ci.org/conceptsandtraining/libtree.svg?branch=master)](https://travis-ci.org/conceptsandtraining/libtree)
 [![Coverage Status](https://coveralls.io/repos/conceptsandtraining/libtree/badge.svg?branch=master&service=github)](https://coveralls.io/github/conceptsandtraining/libtree?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/conceptsandtraining/libtree/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/conceptsandtraining/libtree/?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/libtree/badge/?version=latest)](https://libtree.readthedocs.org/en/latest/?badge=latest)
 
 
