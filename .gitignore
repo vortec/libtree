@@ -6,6 +6,7 @@
 junit/
 .cache
 .coverage
+.eggs
 .DS_Store
 .tox
 __pycache__
