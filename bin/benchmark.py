@@ -2,7 +2,7 @@
 
 
 from libtree.config import config
-from libtree.persistance import *
+from libtree.persistence import *
 from libtree.tree import *
 import os
 import sys
@@ -11,7 +11,7 @@ from time import time
 
 sys.setrecursionlimit(100000)
 
-per = PostgreSQLPersistance(config['postgres']['details'])
+per = PostgreSQLPersistence(config['postgres']['details'])
 
 stats = list()
 averages = list()

@@ -3,11 +3,11 @@
 
 from libtree.config import config
 from pdb import set_trace as trace
-from libtree.persistance import *
+from libtree.persistence import *
 import os
 from libtree.tree import *
 
-per = PostgreSQLPersistance(config['postgres']['details'])
+per = PostgreSQLPersistence(config['postgres']['details'])
 cache = {}
 
 per.drop_tables()

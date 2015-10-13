@@ -6,7 +6,7 @@ After you've installed libtree correctly, you can create the table schema and cr
     from libtree import *
 
     # Connect to Postgres and create tables
-    per = PostgreSQLPersistance("dbname=test_tree user=vortec")
+    per = PostgreSQLPersistence("dbname=test_tree user=vortec")
     per.install()
 
     # Create a few nodes to get going

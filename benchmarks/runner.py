@@ -2,11 +2,11 @@
 
 
 from libtree.config import config
-from libtree.persistance import PostgreSQLPersistance
+from libtree.persistence import PostgreSQLPersistence
 from glob import glob
 
 
-per = PostgreSQLPersistance(config['postgres']['benchmark_details'])
+per = PostgreSQLPersistence(config['postgres']['benchmark_details'])
 per.drop_tables()
 per.install()
 

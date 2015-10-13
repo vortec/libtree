@@ -16,7 +16,7 @@ import psycopg2.extras
 REQUIRED_POSTGRES_VERSION = (9, 4, 0)
 
 
-class PostgreSQLPersistance(object):
+class PostgreSQLPersistence(object):
     """
     Service-wrapping object which holds a connection to `PostgreSQL
     <postgresql.org>`_ using `psycopg2 <http://initd.org/psycopg/>`_ (or

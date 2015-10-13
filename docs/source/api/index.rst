@@ -11,4 +11,4 @@ API
    positioning
    properties
    node
-   persistance
+   persistence

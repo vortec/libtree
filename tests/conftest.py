@@ -10,7 +10,7 @@ except ImportError:
         }
     }
 
-from libtree.persistance import PostgreSQLPersistance
+from libtree.persistence import PostgreSQLPersistence
 from libtree.query import get_node
 from libtree.tree import insert_node
 import pytest
@@ -31,8 +31,8 @@ Create this structure:
 node_ids = {}
 
 
-def make_persistance():
-    return PostgreSQLPersistance(config['postgres']['test_details'])
+def make_persistence():
+    return PostgreSQLPersistence(config['postgres']['test_details'])
 
 
 def get_or_create_node(per, parent, properties, *args, **kwargs):
@@ -47,7 +47,7 @@ def get_or_create_node(per, parent, properties, *args, **kwargs):
 
 @pytest.fixture(scope='module')
 def per(request):
-    per = make_persistance()
+    per = make_persistence()
     per.set_autocommit(False)
 
     node_ids.clear()

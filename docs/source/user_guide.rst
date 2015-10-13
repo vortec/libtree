@@ -11,14 +11,15 @@ you don't have a database yet, create one now::
     $ createdb libtree
 
 Next, start a Python interpreter, import libtree and create a
-:ref:`api-persistance`. To make it connect to PostgreSQL, you must
+:ref:`api-persistence`. To make it connect to PostgreSQL, you must
 supply a `libpq connection string
-<http://www.postgresql.org/docs/current/static/libpq-connect.html#LIBPQ-CONNSTRING>`_. After that, you can install libtree::
+<http://www.postgresql.org/docs/current/static/libpq-connect.html#LIBPQ-CONNSTRING>`_.
+After that, you can install libtree::
 
     $ python
     Python 3.4.2 (default, Nov 12 2014, 10:43:21)
     >>> from libtree import *
-    >>> per = PostgreSQLPersistance("dbname=libtree user=vortec")
+    >>> per = PostgreSQLPersistence("dbname=libtree user=vortec")
     >>> per.install()
     >>> per.commit()
 
