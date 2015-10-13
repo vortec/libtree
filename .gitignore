@@ -5,6 +5,7 @@
 */__pycache__
 junit/
 .cache
+.coverage
 .DS_Store
 .tox
 __pycache__
