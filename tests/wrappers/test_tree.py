@@ -17,7 +17,7 @@ def test_it_takes_a_connection_pool(dsn):
 
 
 def test_it_takes_a_table_prefix():
-    prefix = '_vortec'
+    prefix = 'vortec_'
     assert Tree(pool=Mock(), prefix=prefix).prefix == prefix
 
 

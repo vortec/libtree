@@ -9,15 +9,18 @@ class Tree:
     """ """
     def __init__(self, connection=None, pool=None, prefix=''):
         if connection is None and pool is None:
-            msg = [
+            msg = (
                 "__init__() missing 1 required positional argument:",
                 "'connection' or 'pool"
-            ]
+            )
             raise TypeError(' '.join(msg))
 
         if connection is not None and pool is not None:
-            msg = 'Can only deal with either connection or pool object'
-            raise TypeError(msg)
+            msg = (
+                "__init__() accepts only 1 required positional argument:",
+                "'connection' or 'pool"
+            )
+            raise TypeError(' '.join(msg))
 
         self.connection = connection
         self.pool = pool
