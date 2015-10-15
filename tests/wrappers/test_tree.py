@@ -36,19 +36,48 @@ def test_cm_returns_a_transaction_object():
     tree = Tree(connection=conn)
     with tree() as transaction:
         assert transaction.__class__ == Transaction
+
+
+def test_cm_uses_assigned_transaction_object():
+    conn = Mock()
+    tree = Tree(connection=conn)
+    with tree() as transaction:
         assert transaction.connection is conn
 
 
-def xtest_cm_gets_connection_from_pool():
-    raise NotImplementedError
+def test_cm_uses_connection_from_pool():
+    pool, conn = Mock(), Mock()
+    pool.getconn.return_value = conn
+    tree = Tree(pool=pool)
+    with tree() as transaction:
+        assert transaction.connection is conn
 
 
-def xtest_cm_puts_connection_back_into_pool():
-    raise NotImplementedError
+def test_cm_puts_connection_back_into_pool():
+    pool, conn = Mock(), Mock()
+    pool.getconn.return_value = conn
+    tree = Tree(pool=pool)
+    with tree() as transaction:  # noqa
+        pass
+    assert pool.putconn.called
+    pool.putconn.assert_called_with(conn)
 
 
-def xtest_cm_commits_transaction():
-    raise NotImplementedError
+def test_cm_commits_transaction():
+    conn = Mock()
+    tree = Tree(connection=conn)
+    with tree() as transaction:  # noqa
+        pass
+    assert conn.commit.called
+
+
+def test_cm_rolls_back_transaction():
+    conn = Mock()
+    tree = Tree(connection=conn)
+    with pytest.raises(ValueError):
+        with tree() as transaction:  # noqa
+            raise ValueError()
+    assert conn.rollback.called
 
 
 def test_close():

@@ -6,40 +6,40 @@ from libtree.wrappers import Transaction
 
 
 class Tree:
-    """
-    connection = psycopg2.connect("dbname=foo")
-    pool = psycopg2.pool.ThreadedConnectionPool(maxconn=4, "dbname=foo")
-
-    tree = Tree(connection=connection)
-    tree = Tree(pool=pool, prefix='fabian_')
-
-    with tree() as transaction:
-        node = transaction.get_root_node()
-        node.position = 12
-        node.save()
-
-    """
+    """ """
     def __init__(self, connection=None, pool=None, prefix=''):
-        if connection is not None and pool is not None:
-            msg = 'Can only deal with either connection or pool object'
-            raise TypeError(msg)
-
-        if connection is not None:
-            self.connection = connection
-        elif pool is not None:
-            self.pool = pool
-        else:
+        if connection is None and pool is None:
             msg = [
                 "__init__() missing 1 required positional argument:",
                 "'connection' or 'pool"
             ]
             raise TypeError(' '.join(msg))
 
+        if connection is not None and pool is not None:
+            msg = 'Can only deal with either connection or pool object'
+            raise TypeError(msg)
+
+        self.connection = connection
+        self.pool = pool
         self.prefix = prefix
 
     @contextmanager
     def __call__(self):
-        yield Transaction(self.connection)
+        if self.pool is None:
+            _connection = self.connection
+        else:
+            _connection = self.pool.getconn()
+
+        try:
+            yield Transaction(_connection)
+        except Exception:
+            _connection.rollback()
+            raise
+
+        _connection.commit()
+
+        if self.pool is not None:
+            self.pool.putconn(_connection)
 
     def close(self):
         if self.pool is not None:
