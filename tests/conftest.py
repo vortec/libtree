@@ -31,10 +31,6 @@ Create this structure:
 node_ids = {}
 
 
-def make_persistence():
-    return PostgreSQLPersistence(config['postgres']['test_details'])
-
-
 def get_or_create_node(per, parent, properties, *args, **kwargs):
     xtype = properties.get('type')
     node_id = node_ids.get(xtype, None)
@@ -46,8 +42,13 @@ def get_or_create_node(per, parent, properties, *args, **kwargs):
 
 
 @pytest.fixture(scope='module')
-def per(request):
-    per = make_persistence()
+def dsn():
+    return config['postgres']['test_details']
+
+
+@pytest.fixture(scope='module')
+def per(request, dsn):
+    per = PostgreSQLPersistence(dsn)
     per.set_autocommit(False)
 
     node_ids.clear()
