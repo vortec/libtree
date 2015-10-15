@@ -51,6 +51,12 @@ def xtest_cm_commits_transaction():
     raise NotImplementedError
 
 
+def test_close():
+    pool = Mock()
+    Tree(pool=pool).close()
+    assert pool.closeall.called
+
+
 def xtest_check_postgres_version():
     raise NotImplementedError
 
