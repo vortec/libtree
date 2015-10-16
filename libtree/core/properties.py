@@ -1,8 +1,8 @@
 # Copyright (c) 2015 Fabian Kochem
 
 
-from libtree.node import Node
-from libtree.query import get_ancestors, get_node
+from libtree.core.node import Node
+from libtree.core.query import get_ancestors, get_node
 import json
 
 

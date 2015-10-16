@@ -1,13 +1,19 @@
 # Copyright (c) 2015 Fabian Kochem
 
 
-from libtree.wrappers import Transaction
+from libtree import Transaction
 from mock import Mock
 
 
-def test_it_takes_a_connection(dsn):
+def test_it_takes_a_connection():
     conn = Mock()
     assert Transaction(connection=conn).connection is conn
+
+
+def test_it_creates_a_cursor():
+    conn = Mock()
+    Transaction(connection=conn)
+    assert conn.cursor.called
 
 
 def test_commit():

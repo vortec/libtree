@@ -1,7 +1,7 @@
 # Copyright (c) 2015 Fabian Kochem
 
 
-from libtree.node import Node
+from libtree.core.node import Node
 from libtree.utils import vectorize_nodes
 
 

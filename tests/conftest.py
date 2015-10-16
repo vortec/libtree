@@ -10,9 +10,9 @@ except ImportError:
         }
     }
 
-from libtree.persistence import PostgreSQLPersistence
-from libtree.query import get_node
-from libtree.tree import insert_node
+from libtree.core.persistence import PostgreSQLPersistence
+from libtree.core.query import get_node
+from libtree.core.tree import insert_node
 import pytest
 
 

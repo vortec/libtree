@@ -1,15 +1,29 @@
 # Copyright (c) 2015 Fabian Kochem
 
 
+from psycopg2.extras import RealDictCursor
+
+
 class Transaction:
     def __init__(self, connection):
         self.connection = connection
+        self.cursor = connection.cursor(cursor_factory=RealDictCursor)
 
     def commit(self):
-        self.connection.commit()
+        """
+        See `commit()
+        <http://initd.org/psycopg/docs/connection.html#connection.commit>`_
+        .
+        """
+        return self.connection.commit()
 
     def rollback(self):
-        self.connection.rollback()
+        """
+        See `rollback()
+        <http://initd.org/psycopg/docs/connection.html#connection.rollback>`_
+        .
+        """
+        return self.connection.rollback()
 
     def print_tree(self):
         pass

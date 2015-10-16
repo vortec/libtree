@@ -54,7 +54,7 @@ function that manipulates the tree (see :ref:`tree`).
 Related: :func:`libtree.query.get_node_at_position`
 """
 
-from libtree.query import get_node, get_node_at_position
+from libtree.core.query import get_node, get_node_at_position
 
 
 def ensure_free_position(per, node, position):

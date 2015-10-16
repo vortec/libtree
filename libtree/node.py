@@ -1,97 +1,60 @@
-# Copyright (c) 2015 Fabian Kochem
+class Node:
+    def get(self):
+        pass
 
+    def save(self):
+        pass
 
-class Node(object):
-    """Immutable data-holding object which represents a tree node. Its
-    attributes are identical to the columns in the ``nodes`` table
-    (see :ref:`db_model`).
+    def insert_child(self):
+        pass
 
-    Since the object is immutable, you must retrieve a new instance
-    of the same node using :func:`libtree.query.get_node` to get
-    updated values.
+    def delete(self):
+        pass
 
-    To manipulate the values, you must use one of the following
-    functions:
+    def change_parent(self):
+        pass
 
-    * :func:`libtree.tree.change_parent`
-    * :ref:`api-positioning`
-    * :ref:`api-properties`
+    def shift_positions(self):
+        pass
 
-    Most ``libtree`` functions need a database ID in order to know on
-    which data they should operate, but also accept ``Node`` objects
-    to make handling with them easier.
+    def swap_node_positions(self):
+        pass
 
-    All parameters are optional and default to ``None``.
+    def get_inherited_properties(self):
+        pass
 
-    :param int id: ID of the node as returned from the database
-    :param parent: Reference to a parent node
-    :type parent: Node or int
-    :param int position: Position in between siblings
-                         (see :ref:`positioning`)
-    :param dict properties: Inheritable key/value pairs
-                             (see :ref:`properties`)
-    """
-    __slots__ = [
-        '_Node__id',
-        '_Node__parent',
-        '_Node__position',
-        '_Node__properties',
-    ]
+    def get_inherited_property_value(self):
+        pass
 
-    def __init__(self, id=None, parent=None, position=None, properties=None):
-        self.__id = None
-        if id is not None:
-            self.__id = int(id)
+    def set_properties(self):
+        pass
 
-        self.__parent = None
-        if parent is not None:
-            self.__parent = int(parent)
+    def update_properties(self):
+        pass
 
-        self.__position = None
-        if position is not None:
-            self.__position = int(position)
+    def set_property_value(self):
+        pass
 
-        if type(properties) == dict:
-            self.__properties = properties
-        else:
-            self.__properties = {}
+    def get_children(self):
+        pass
 
-    def __int__(self):
-        return self.id
+    def get_child_at_position(self):
+        pass
 
-    def to_dict(self):
-        """ Return dictionary containing all values of the object. """
-        return {
-            'id': self.id,
-            'parent': self.parent,
-            'position': self.position,
-            'properties': self.properties
-        }
+    def get_child_ids(self):
+        pass
 
-    def __repr__(self):
-        if 'title' in self.properties:
-            ret = '<Node id={!r}, title={!r}>'
-            return ret.format(self.id, self.properties['title'])
-        else:
-            ret = '<Node id={!r}, parent={!r}, position={!r}>'
-            return ret.format(self.id, self.parent, self.position)
+    def get_children_count(self):
+        pass
 
-    @property
-    def id(self):
-        """ Node ID """
-        return self.__id
+    def get_ancestors(self):
+        pass
 
-    @property
-    def parent(self):
-        """ Parent ID """
-        return self.__parent
+    def get_ancestor_ids(self):
+        pass
 
-    @property
-    def position(self):
-        """ Position in between its siblings """
-        return self.__position
+    def get_descendants(self):
+        pass
 
-    @property
-    def properties(self):
-        """ Node properties """
-        return self.__properties
+    def get_descendant_ids(self):
+        pass
