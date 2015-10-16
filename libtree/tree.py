@@ -35,14 +35,13 @@ class Tree:
 
         try:
             yield Transaction(_connection)
+            _connection.commit()
         except Exception:
             _connection.rollback()
             raise
-
-        _connection.commit()
-
-        if self.pool is not None:
-            self.pool.putconn(_connection)
+        finally:
+            if self.pool is not None:
+                self.pool.putconn(_connection)
 
     def close(self):
         if self.pool is not None:
