@@ -7,30 +7,30 @@ from mock import Mock
 
 def test_it_takes_a_connection():
     conn = Mock()
-    assert Transaction(connection=conn).connection is conn
+    assert Transaction(conn, Mock()).connection is conn
 
 
 def test_it_disables_autocommit():
     conn = Mock()
-    transaction = Transaction(connection=conn)
+    transaction = Transaction(conn, Mock())
     assert transaction.connection.autocommit is False
 
 
 def test_it_creates_a_cursor():
     conn = Mock()
-    Transaction(connection=conn)
+    Transaction(conn, Mock())
     assert conn.cursor.called
 
 
 def test_commit():
     conn = Mock()
-    Transaction(connection=conn).commit()
+    Transaction(conn, Mock()).commit()
     assert conn.commit.called
 
 
 def test_rollback():
     conn = Mock()
-    Transaction(connection=conn).rollback()
+    Transaction(conn, Mock()).rollback()
     assert conn.rollback.called
 
 

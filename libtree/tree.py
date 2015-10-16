@@ -2,12 +2,14 @@
 
 
 from contextlib import contextmanager
+from libtree.node import Node
 from libtree.transaction import Transaction
 
 
 class Tree:
     """ """
-    def __init__(self, connection=None, pool=None, prefix=''):
+    def __init__(self, connection=None, pool=None, prefix='',
+                 node_factory=Node):
         if connection is None and pool is None:
             msg = (
                 "__init__() missing 1 required positional argument:",
@@ -23,6 +25,7 @@ class Tree:
             raise TypeError(' '.join(msg))
 
         self.connection = connection
+        self.node_factory = node_factory
         self.pool = pool
         self.prefix = prefix
 
@@ -34,7 +37,7 @@ class Tree:
             _connection = self.pool.getconn()
 
         try:
-            yield Transaction(_connection)
+            yield Transaction(_connection, self.node_factory)
             _connection.commit()
         except Exception:
             _connection.rollback()

@@ -10,7 +10,7 @@ except ImportError:
         }
     }
 
-from libtree import Transaction
+from libtree import Node, Transaction
 from libtree.core.query import get_node
 from libtree.core.tree import insert_node
 import pytest
@@ -58,7 +58,7 @@ def dsn():
 @pytest.fixture(scope='module')
 def cur(request, dsn):
     connection = psycopg2.connect(dsn)
-    transaction = Transaction(connection)
+    transaction = Transaction(connection, Node)
 
     node_ids.clear()
     transaction.install()
