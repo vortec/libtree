@@ -40,14 +40,14 @@ Create this structure:
 node_ids = {}
 
 
-def get_or_create_node(per, parent, properties, *args, **kwargs):
+def get_or_create_node(cur, parent, properties, *args, **kwargs):
     xtype = properties.get('type')
     node_id = node_ids.get(xtype, None)
     if node_id is None:
-        node = insert_node(per, parent, properties=properties, *args, **kwargs)
+        node = insert_node(cur, parent, properties=properties, *args, **kwargs)
         node_ids[xtype] = node.id
         return node
-    return get_node(per, node_id)
+    return get_node(cur, node_id)
 
 
 @pytest.fixture(scope='module')
@@ -56,7 +56,7 @@ def dsn():
 
 
 @pytest.fixture(scope='module')
-def per(request, dsn):
+def cur(request, dsn):
     connection = psycopg2.connect(dsn)
     transaction = Transaction(connection)
 
@@ -73,74 +73,74 @@ def per(request, dsn):
 
 
 @pytest.fixture
-def root(per):
+def root(cur):
     props = {
         'title': 'Root',
         'type': 'root',
         'boolean': False,
         'integer': 1
     }
-    return get_or_create_node(per, None, auto_position=False, properties=props)
+    return get_or_create_node(cur, None, auto_position=False, properties=props)
 
 
 @pytest.fixture
-def node1(per, root):
+def node1(cur, root):
     props = {
         'type': 'node1',
         'title': 'Node 1'
     }
-    return get_or_create_node(per, root, position=4, auto_position=False,
+    return get_or_create_node(cur, root, position=4, auto_position=False,
                               properties=props)
 
 
 @pytest.fixture
-def node2(per, root):
+def node2(cur, root):
     props = {
         'type': 'node2',
         'title': 'Node 2',
         'boolean': True,
         'foo': 'bar'
     }
-    return get_or_create_node(per, root, position=5, auto_position=False,
+    return get_or_create_node(cur, root, position=5, auto_position=False,
                               properties=props)
 
 
 @pytest.fixture
-def node3(per, root):
+def node3(cur, root):
     props = {
         'type': 'node3',
         'title': 'Node 3'
     }
-    return get_or_create_node(per, root, position=6, auto_position=False,
+    return get_or_create_node(cur, root, position=6, auto_position=False,
                               properties=props)
 
 
 @pytest.fixture
-def node2_1(per, node2):
+def node2_1(cur, node2):
     props = {
         'type': 'node2_1',
         'title': 'Node 2-1'
     }
-    return get_or_create_node(per, node2, auto_position=False,
+    return get_or_create_node(cur, node2, auto_position=False,
                               properties=props)
 
 
 @pytest.fixture
-def node2_1_1(per, node2_1):
+def node2_1_1(cur, node2_1):
     props = {
         'type': 'node2_1_1',
         'title': 'Node 2-1-1',
         'boolean': False
     }
-    return get_or_create_node(per, node2_1, auto_position=False,
+    return get_or_create_node(cur, node2_1, auto_position=False,
                               properties=props)
 
 
 @pytest.fixture
-def node2_leaf(per, node2_1_1):
+def node2_leaf(cur, node2_1_1):
     props = {
         'type': 'node2_leaf',
         'title': 'Node 2-leaf'
     }
-    return get_or_create_node(per, node2_1_1, auto_position=False,
+    return get_or_create_node(cur, node2_1_1, auto_position=False,
                               properties=props)

@@ -11,45 +11,45 @@ from libtree.core.properties import (get_inherited_properties,
 import pytest
 
 
-def test_get_nodes_by_property_dict(per, root):
+def test_get_nodes_by_property_dict(cur, root):
     query = {
         'boolean': False,
         'type': 'root'
     }
-    results = get_nodes_by_property_dict(per, query)
+    results = get_nodes_by_property_dict(cur, query)
     ids = {child.id for child in results}
     assert ids == {root.id}
 
 
-def test_get_nodes_by_property_key(per, root, node2, node2_1_1):
-    ids = {child.id for child in get_nodes_by_property_key(per, 'boolean')}
+def test_get_nodes_by_property_key(cur, root, node2, node2_1_1):
+    ids = {child.id for child in get_nodes_by_property_key(cur, 'boolean')}
     assert root.id in ids
     assert node2.id in ids
     assert node2_1_1.id in ids
 
 
-def test_get_nodes_by_property_value(per, root, node2_1_1):
-    results = get_nodes_by_property_value(per, 'boolean', False)
+def test_get_nodes_by_property_value(cur, root, node2_1_1):
+    results = get_nodes_by_property_value(cur, 'boolean', False)
     ids = {child.id for child in results}
     assert root.id in ids
     assert node2_1_1.id in ids
 
 
-def test_get_inherited_property_value(per, node2):
-    assert get_inherited_property_value(per, node2, 'integer') == 1
+def test_get_inherited_property_value(cur, node2):
+    assert get_inherited_property_value(cur, node2, 'integer') == 1
 
 
-def test_get_inherited_properties_no_inheritance(per, root):
+def test_get_inherited_properties_no_inheritance(cur, root):
     expected = {
         'title': 'Root',
         'type': 'root',
         'boolean': False,
         'integer': 1
     }
-    assert get_inherited_properties(per, root) == expected
+    assert get_inherited_properties(cur, root) == expected
 
 
-def test_get_inherited_properties_simple_inheritance(per, node2):
+def test_get_inherited_properties_simple_inheritance(cur, node2):
     expected = {
         'title': 'Node 2',
         'type': 'node2',
@@ -57,10 +57,10 @@ def test_get_inherited_properties_simple_inheritance(per, node2):
         'foo': 'bar',
         'integer': 1
     }
-    assert get_inherited_properties(per, node2.id) == expected
+    assert get_inherited_properties(cur, node2.id) == expected
 
 
-def test_get_inherited_properties_multiple_inheritance(per, node2_1_1):
+def test_get_inherited_properties_multiple_inheritance(cur, node2_1_1):
     expected = {
         'title': 'Node 2-1-1',
         'type': 'node2_1_1',
@@ -68,35 +68,35 @@ def test_get_inherited_properties_multiple_inheritance(per, node2_1_1):
         'integer': 1,
         'foo': 'bar'
     }
-    assert get_inherited_properties(per, node2_1_1) == expected
+    assert get_inherited_properties(cur, node2_1_1) == expected
 
 
-def test_update_properties(per, root):
+def test_update_properties(cur, root):
     properties = root.properties.copy()
     properties['title'] = 'Root node'
     properties['new'] = 'property'
-    root = update_properties(per, root.id, properties)
+    root = update_properties(cur, root.id, properties)
 
     assert root.properties['title'] == 'Root node'
     assert root.properties['new'] == 'property'
 
 
-def test_update_properties_only_allows_dict(per, root):
+def test_update_properties_only_allows_dict(cur, root):
     with pytest.raises(TypeError):
-        update_properties(per, root, [])
+        update_properties(cur, root, [])
 
 
-def test_set_properties(per, root):
+def test_set_properties(cur, root):
     properties = {'title': 'My Root Node'}
-    root = set_properties(per, root.id, properties)
+    root = set_properties(cur, root.id, properties)
     assert root.properties == properties
 
 
-def test_set_properties_only_allows_dict(per, root):
+def test_set_properties_only_allows_dict(cur, root):
     with pytest.raises(TypeError):
-        set_properties(per, root, [])
+        set_properties(cur, root, [])
 
 
-def test_set_property_value(per, root):
-    root = set_property_value(per, root.id, 'title', 'Root')
+def test_set_property_value(cur, root):
+    root = set_property_value(cur, root.id, 'title', 'Root')
     assert root.properties['title'] == 'Root'

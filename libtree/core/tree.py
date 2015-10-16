@@ -10,7 +10,7 @@ from libtree.core.query import (get_children, get_descendant_ids, get_node,
                                 get_root_node)
 
 
-def print_tree(per, start_node=None, indent='  ', _level=0):
+def print_tree(cur, start_node=None, indent='  ', _level=0):
     """
     Print tree to stdout.
 
@@ -20,15 +20,15 @@ def print_tree(per, start_node=None, indent='  ', _level=0):
     :param str indent: String to print per level (default: '  ')
     """
     if start_node is None:
-        start_node = get_root_node(per)
+        start_node = get_root_node(cur)
 
     print('{}{}'.format(indent*_level, start_node))  # noqa
 
-    for child in list(get_children(per, start_node)):
-        print_tree(per, child, indent=indent, _level=_level+1)
+    for child in list(get_children(cur, start_node)):
+        print_tree(cur, child, indent=indent, _level=_level+1)
 
 
-def insert_node(per, parent, properties=None, position=None,
+def insert_node(cur, parent, properties=None, position=None,
                 auto_position=True):
     """
     Create a ``Node`` object, insert it into the tree and then return
@@ -57,9 +57,9 @@ def insert_node(per, parent, properties=None, position=None,
     # Can't run set_position() because the node doesn't exist yet
     if auto_position:
         if type(position) == int and position >= 0:
-            ensure_free_position(per, parent, position)
+            ensure_free_position(cur, parent, position)
         else:
-            position = find_highest_position(per, parent) + 1
+            position = find_highest_position(cur, parent) + 1
 
     sql = """
         INSERT INTO
@@ -68,16 +68,16 @@ def insert_node(per, parent, properties=None, position=None,
         VALUES
           (%s, %s, %s);
     """
-    per.execute(sql, (parent_id, position, json.dumps(properties)))
+    cur.execute(sql, (parent_id, position, json.dumps(properties)))
 
-    per.execute("SELECT LASTVAL();")
-    id = per.fetchone()['lastval']
+    cur.execute("SELECT LASTVAL();")
+    id = cur.fetchone()['lastval']
     node = Node(id, parent_id, position, properties)
 
     return node
 
 
-def delete_node(per, node, auto_position=True):
+def delete_node(cur, node, auto_position=True):
     """
     Delete node and its subtree.
 
@@ -89,7 +89,7 @@ def delete_node(per, node, auto_position=True):
 
     # Get Node object if integer (ID) was passed
     if auto_position and type(node) != Node:
-        node = get_node(per, id)
+        node = get_node(cur, id)
 
     sql = """
         DELETE FROM
@@ -97,13 +97,13 @@ def delete_node(per, node, auto_position=True):
         WHERE
           id=%s;
     """
-    per.execute(sql, (id, ))
+    cur.execute(sql, (id, ))
 
     if auto_position:
-        shift_positions(per, node.parent, node.position, -1)
+        shift_positions(cur, node.parent, node.position, -1)
 
 
-def change_parent(per, node, new_parent, position=None, auto_position=True):
+def change_parent(cur, node, new_parent, position=None, auto_position=True):
     """
     Move node and its subtree from its current to another parent node.
     Return updated ``Node`` object with new parent set. Raise
@@ -122,16 +122,16 @@ def change_parent(per, node, new_parent, position=None, auto_position=True):
     :param bool auto_position: See :ref:`api-positioning`.
     """
     new_parent_id = int(new_parent)
-    if new_parent_id in get_descendant_ids(per, node):
+    if new_parent_id in get_descendant_ids(cur, node):
         raise ValueError('Cannot move node into its own subtree.')
 
     # Can't run set_position() here because the node hasn't been moved yet,
     # must do it manually
     if auto_position:
         if type(position) == int and position >= 0:
-            ensure_free_position(per, new_parent_id, position)
+            ensure_free_position(cur, new_parent_id, position)
         else:
-            position = find_highest_position(per, new_parent_id) + 1
+            position = find_highest_position(cur, new_parent_id) + 1
 
     sql = """
         UPDATE
@@ -142,7 +142,7 @@ def change_parent(per, node, new_parent, position=None, auto_position=True):
         WHERE
           id=%s;
     """
-    per.execute(sql, (new_parent_id, position, int(node)))
+    cur.execute(sql, (new_parent_id, position, int(node)))
 
     kwargs = node.to_dict()
     kwargs['parent'] = new_parent_id

@@ -6,7 +6,7 @@ from libtree.core.query import get_ancestors, get_node
 import json
 
 
-def get_nodes_by_property_dict(per, query):
+def get_nodes_by_property_dict(cur, query):
     """
     Return an iterator that yields a ``Node`` object of every node which
     contains all key/value pairs of ``query`` in its property
@@ -22,12 +22,12 @@ def get_nodes_by_property_dict(per, query):
         WHERE
           properties @> %s;
     """
-    per.execute(sql, (json.dumps(query), ))
-    for result in per:
+    cur.execute(sql, (json.dumps(query), ))
+    for result in cur:
         yield Node(**result)
 
 
-def get_nodes_by_property_key(per, key):
+def get_nodes_by_property_key(cur, key):
     """
     Return an iterator that yields a ``Node`` object of every node which
     contains ``key`` in its property dictionary. Inherited keys are not
@@ -43,12 +43,12 @@ def get_nodes_by_property_key(per, key):
         WHERE
           properties ? %s;
     """
-    per.execute(sql, (key, ))
-    for result in per:
+    cur.execute(sql, (key, ))
+    for result in cur:
         yield Node(**result)
 
 
-def get_nodes_by_property_value(per, key, value):
+def get_nodes_by_property_value(cur, key, value):
     """
     Return an iterator that yields a ``Node`` object of every node which
     has ``key`` exactly set to ``value`` in its property dictionary.
@@ -58,11 +58,11 @@ def get_nodes_by_property_value(per, key, value):
     :param object value: The exact value to sarch for
     """
     query = {key: value}
-    for node in get_nodes_by_property_dict(per, query):
+    for node in get_nodes_by_property_dict(cur, query):
         yield node
 
 
-def get_inherited_properties(per, node):
+def get_inherited_properties(cur, node):
     """
     Get the entire inherited property dictionary.
 
@@ -78,9 +78,9 @@ def get_inherited_properties(per, node):
     ret = {}
     id = int(node)
     if type(node) == int:
-        node = get_node(per, id)
+        node = get_node(cur, id)
 
-    ancestors = list(get_ancestors(per, id))
+    ancestors = list(get_ancestors(cur, id))
 
     for ancestor in ancestors:
         ret.update(ancestor.properties)
@@ -90,7 +90,7 @@ def get_inherited_properties(per, node):
     return ret
 
 
-def get_inherited_property_value(per, node, key):
+def get_inherited_property_value(cur, node, key):
     """
     Get the inherited value for a single property key.
 
@@ -98,10 +98,10 @@ def get_inherited_property_value(per, node, key):
     :type node: Node or int
     :param key: str
     """
-    return get_inherited_properties(per, node)[key]
+    return get_inherited_properties(cur, node)[key]
 
 
-def set_properties(per, node, new_properties):
+def set_properties(cur, node, new_properties):
     """
     Set the property dictionary to ``new_properties``.
     Return ``Node`` object with updated properties.
@@ -115,7 +115,7 @@ def set_properties(per, node, new_properties):
 
     id = int(node)
     if type(node) == int:
-        node = get_node(per, id)
+        node = get_node(cur, id)
 
     sql = """
         UPDATE
@@ -125,14 +125,14 @@ def set_properties(per, node, new_properties):
         WHERE
           id=%s;
     """
-    per.execute(sql, (json.dumps(new_properties), int(node)))
+    cur.execute(sql, (json.dumps(new_properties), int(node)))
 
     kwargs = node.to_dict()
     kwargs['properties'] = new_properties
     return Node(**kwargs)
 
 
-def update_properties(per, node, new_properties):
+def update_properties(cur, node, new_properties):
     """
     Update existing property dictionary with another dictionary.
     Return ``Node`` object with updated properties.
@@ -146,14 +146,14 @@ def update_properties(per, node, new_properties):
 
     id = int(node)
     if type(node) == int:
-        node = get_node(per, id)
+        node = get_node(cur, id)
 
     properties = node.properties.copy()
     properties.update(new_properties)
-    return set_properties(per, node, properties)
+    return set_properties(cur, node, properties)
 
 
-def set_property_value(per, node, key, value):
+def set_property_value(cur, node, key, value):
     """
     Set the value for a single property key.
     Return ``Node`` object with updated properties.
@@ -165,11 +165,11 @@ def set_property_value(per, node, key, value):
     """
     id = int(node)
     if type(node) == int:
-        node = get_node(per, id)
+        node = get_node(cur, id)
 
     properties = node.properties.copy()
     properties[key] = value
-    set_properties(per, node, properties)
+    set_properties(cur, node, properties)
 
     kwargs = node.to_dict()
     kwargs['properties'] = properties

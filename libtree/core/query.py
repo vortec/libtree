@@ -5,7 +5,7 @@ from libtree.core.node import Node
 from libtree.utils import vectorize_nodes
 
 
-def get_tree_size(per):
+def get_tree_size(cur):
     """
     Return the total amount of tree nodes.
     """
@@ -15,12 +15,12 @@ def get_tree_size(per):
       FROM
         nodes;
     """
-    per.execute(sql)
-    result = per.fetchone()
+    cur.execute(sql)
+    result = cur.fetchone()
     return result['count']
 
 
-def get_root_node(per):
+def get_root_node(cur):
     """
     Return root node. Raise ``ValueError`` if root node doesn't exist.
     """
@@ -32,8 +32,8 @@ def get_root_node(per):
         WHERE
           parent IS NULL;
     """
-    per.execute(sql)
-    result = per.fetchone()
+    cur.execute(sql)
+    result = cur.fetchone()
 
     if result is None:
         raise ValueError('No root node.')
@@ -41,7 +41,7 @@ def get_root_node(per):
         return Node(**result)
 
 
-def get_node(per, id):
+def get_node(cur, id):
     """
     Return ``Node`` object for given ``id``. Raises ``ValueError`` if
     ID doesn't exist.
@@ -59,8 +59,8 @@ def get_node(per, id):
         WHERE
           id = %s;
     """
-    per.execute(sql, (id, ))
-    result = per.fetchone()
+    cur.execute(sql, (id, ))
+    result = cur.fetchone()
 
     if result is None:
         raise ValueError('Node does not exist.')
@@ -68,7 +68,7 @@ def get_node(per, id):
         return Node(**result)
 
 
-def get_node_at_position(per, node, position):
+def get_node_at_position(cur, node, position):
     """
     Return node at ``position`` in the children of ``node``.
 
@@ -87,8 +87,8 @@ def get_node_at_position(per, node, position):
         position=%s
     """
 
-    per.execute(sql, (int(node), position))
-    result = per.fetchone()
+    cur.execute(sql, (int(node), position))
+    result = cur.fetchone()
 
     if result is None:
         raise ValueError('Node does not exist.')
@@ -96,7 +96,7 @@ def get_node_at_position(per, node, position):
         return Node(**result)
 
 
-def get_children(per, node):
+def get_children(cur, node):
     """
     Return an iterator that yields a ``Node`` object of every immediate
     child.
@@ -114,12 +114,12 @@ def get_children(per, node):
         ORDER BY
           position;
     """
-    per.execute(sql, (int(node), ))
-    for result in per:
+    cur.execute(sql, (int(node), ))
+    for result in cur:
         yield Node(**result)
 
 
-def get_child_ids(per, node):
+def get_child_ids(cur, node):
     """
     Return an iterator that yields the ID of every immediate child.
 
@@ -136,12 +136,12 @@ def get_child_ids(per, node):
         ORDER BY
           position;
     """
-    per.execute(sql, (int(node), ))
-    for result in per:
+    cur.execute(sql, (int(node), ))
+    for result in cur:
         yield int(result['id'])
 
 
-def get_children_count(per, node):
+def get_children_count(cur, node):
     """
     Get amount of immediate children.
 
@@ -156,12 +156,12 @@ def get_children_count(per, node):
       WHERE
         parent=%s;
     """
-    per.execute(sql, (int(node), ))
-    result = per.fetchone()
+    cur.execute(sql, (int(node), ))
+    result = cur.fetchone()
     return result['count']
 
 
-def get_ancestors(per, node, sort=True):
+def get_ancestors(cur, node, sort=True):
     """
     Return an iterator that yields a ``Node`` object of every element
     while traversing from ``node`` to the root node.
@@ -184,18 +184,18 @@ def get_ancestors(per, node, sort=True):
         WHERE
           ancestors.node=%s;
     """
-    per.execute(sql, (int(node), ))
+    cur.execute(sql, (int(node), ))
 
     if sort:
         make_node = lambda r: Node(**r)
-        for node in vectorize_nodes(map(make_node, per)):
+        for node in vectorize_nodes(map(make_node, cur)):
             yield node
     else:
-        for result in per:
+        for result in cur:
             yield Node(**result)
 
 
-def get_ancestor_ids(per, node):
+def get_ancestor_ids(cur, node):
     """
     Return an iterator that yields the ID of every element while
     traversing from ``node`` to the root node.
@@ -212,12 +212,12 @@ def get_ancestor_ids(per, node):
         WHERE
           node=%s;
     """
-    per.execute(sql, (int(node), ))
-    for result in per:
+    cur.execute(sql, (int(node), ))
+    for result in cur:
         yield int(result['ancestor'])
 
 
-def get_descendants(per, node):
+def get_descendants(cur, node):
     """
     Return an iterator that yields the ID of every element while
     traversing from ``node`` to the root node.
@@ -237,12 +237,12 @@ def get_descendants(per, node):
         WHERE
           ancestors.ancestor=%s;
     """
-    per.execute(sql, (int(node), ))
-    for result in per:
+    cur.execute(sql, (int(node), ))
+    for result in cur:
         yield Node(**result)
 
 
-def get_descendant_ids(per, node):
+def get_descendant_ids(cur, node):
     """
     Return an iterator that yields a ``Node`` object of each element in
     the nodes subtree. Be careful when converting this iterator to an
@@ -260,6 +260,6 @@ def get_descendant_ids(per, node):
         WHERE
           ancestor=%s;
     """
-    per.execute(sql, (int(node), ))
-    for result in per:
+    cur.execute(sql, (int(node), ))
+    for result in cur:
         yield int(result['node'])
