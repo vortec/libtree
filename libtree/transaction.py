@@ -1,6 +1,13 @@
 # Copyright (c) 2015 Fabian Kochem
 
 
+try:
+    from psycopg2cffi import compat
+except ImportError:
+    pass
+else:
+    compat.register()
+
 from psycopg2.extras import RealDictCursor
 
 
