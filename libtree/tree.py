@@ -47,12 +47,5 @@ class Tree:
     def close(self):
         if self.pool is not None:
             self.pool.closeall()
-
-    def drop_tables(self):
-        pass
-
-    def flush_tables(self):
-        pass
-
-    def install(self):
-        pass
+        else:
+            self.connection.close()

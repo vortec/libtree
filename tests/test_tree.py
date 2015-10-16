@@ -80,23 +80,13 @@ def test_cm_rolls_back_transaction():
     assert conn.rollback.called
 
 
-def test_close():
+def test_close_connection():
+    conn = Mock()
+    Tree(connection=conn).close()
+    assert conn.close.called
+
+
+def test_close_pool():
     pool = Mock()
     Tree(pool=pool).close()
     assert pool.closeall.called
-
-
-def xtest_check_postgres_version():
-    raise NotImplementedError
-
-
-def xtest_install():
-    raise NotImplementedError
-
-
-def xtest_drop_tables():
-    raise NotImplementedError
-
-
-def xtest_flush_tables():
-    raise NotImplementedError

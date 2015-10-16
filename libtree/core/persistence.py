@@ -117,22 +117,26 @@ class PostgreSQLPersistence(object):
 
     def create_schema(self):
         """ Create table schema. """
+        print('use of create_schema() is deprecated')
         script_folder = os.path.split(os.path.realpath(__file__))[0]
         path = os.path.join(script_folder, '..', 'sql', 'schema.sql')
         self._cursor.execute(open(path).read())
 
     def create_triggers(self):
         """ Create triggers. """
+        print('use of create_triggers() is deprecated')
         script_folder = os.path.split(os.path.realpath(__file__))[0]
         path = os.path.join(script_folder, '..', 'sql', 'triggers.sql')
         self._cursor.execute(open(path).read())
 
     def drop_tables(self):
         """ Drop all tables. """
+        print('use of drop_tables() is deprecated')
         self._cursor.execute("DROP TABLE IF EXISTS nodes;")
         self._cursor.execute("DROP TABLE IF EXISTS ancestors;")
 
     def flush_tables(self):
         """ Empty all tables. """
+        print('use of flush_tables() is deprecated')
         self._cursor.execute("TRUNCATE TABLE nodes RESTART IDENTITY;")
         self._cursor.execute("TRUNCATE TABLE ancestors;")

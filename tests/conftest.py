@@ -10,10 +10,19 @@ except ImportError:
         }
     }
 
-from libtree.core.persistence import PostgreSQLPersistence
+from libtree import Transaction
 from libtree.core.query import get_node
 from libtree.core.tree import insert_node
 import pytest
+
+try:
+    from psycopg2cffi import compat
+except ImportError:
+    pass
+else:
+    compat.register()
+
+import psycopg2
 
 
 """
@@ -48,20 +57,19 @@ def dsn():
 
 @pytest.fixture(scope='module')
 def per(request, dsn):
-    per = PostgreSQLPersistence(dsn)
-    per.set_autocommit(False)
+    connection = psycopg2.connect(dsn)
+    transaction = Transaction(connection)
 
     node_ids.clear()
-    per.drop_tables()
-    per.commit()
-    per.install()
+    transaction.install()
+    transaction.commit()
 
     def fin():
-        per.flush_tables()
-        per.rollback()
+        transaction.uninstall()
+        transaction.commit()
     request.addfinalizer(fin)
 
-    return per
+    return transaction.cursor
 
 
 @pytest.fixture

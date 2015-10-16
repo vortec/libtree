@@ -69,7 +69,9 @@ def insert_node(per, parent, properties=None, position=None,
           (%s, %s, %s);
     """
     per.execute(sql, (parent_id, position, json.dumps(properties)))
-    id = per.get_last_row_id()
+
+    per.execute("SELECT LASTVAL();")
+    id = per.fetchone()['lastval']
     node = Node(id, parent_id, position, properties)
 
     return node

@@ -10,9 +10,12 @@ else:
 
 from psycopg2.extras import RealDictCursor
 
+from libtree.core import database
+
 
 class Transaction:
     def __init__(self, connection):
+        connection.autocommit = False  # We handle transactions manually
         self.connection = connection
         self.cursor = connection.cursor(cursor_factory=RealDictCursor)
 
@@ -31,6 +34,16 @@ class Transaction:
         .
         """
         return self.connection.rollback()
+
+    def install(self):
+        database.create_schema(self.cursor)
+        database.create_triggers(self.cursor)
+
+    def uninstall(self):
+        database.drop_tables(self.cursor)
+
+    def clear(self):
+        database.flush_tables(self.cursor)
 
     def print_tree(self):
         pass
