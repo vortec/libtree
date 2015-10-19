@@ -13,6 +13,7 @@ from libtree import core
 
 
 class Transaction:
+    """ """
     def __init__(self, connection, node_factory):
         connection.autocommit = False  # We handle transactions manually
         self.connection = connection

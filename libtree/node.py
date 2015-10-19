@@ -1,4 +1,5 @@
 class Node:
+    """ """
     def __init__(self, transaction, xid):
         self.transaction = transaction
         self.xid = xid

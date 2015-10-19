@@ -7,15 +7,15 @@ class Node(object):
     (see :ref:`db_model`).
 
     Since the object is immutable, you must retrieve a new instance
-    of the same node using :func:`libtree.query.get_node` to get
+    of the same node using :func:`libtree.core.query.get_node` to get
     updated values.
 
     To manipulate the values, you must use one of the following
     functions:
 
-    * :func:`libtree.tree.change_parent`
-    * :ref:`api-positioning`
-    * :ref:`api-properties`
+    * :func:`libtree.core.tree.change_parent`
+    * :ref:`coreapi-positioning`
+    * :ref:`coreapi-properties`
 
     Most ``libtree`` functions need a database ID in order to know on
     which data they should operate, but also accept ``Node`` objects
@@ -27,9 +27,9 @@ class Node(object):
     :param parent: Reference to a parent node
     :type parent: Node or int
     :param int position: Position in between siblings
-                         (see :ref:`positioning`)
+                         (see :ref:`coreapi-positioning`)
     :param dict properties: Inheritable key/value pairs
-                             (see :ref:`properties`)
+                             (see :ref:`coreapi-properties`)
     """
     __slots__ = [
         '_Node__id',

@@ -38,14 +38,14 @@ def insert_node(cur, parent, properties=None, position=None,
                    be the root node.
     :type parent: Node or int
     :param dict properties: Inheritable key/value pairs
-                            (see :ref:`api-properties`)
+                            (see :ref:`coreapi-properties`)
     :param int position: Position in between siblings. If 0, the node
                          will be inserted at the beginning of the
                          parents children. If -1, the node will be
                          inserted the the end of the parents children.
                          If `auto_position` is disabled, this is just a
                          value.
-    :param bool auto_position: See :ref:`api-positioning`
+    :param bool auto_position: See :ref:`coreapi-positioning`
     """
     parent_id = None
     if parent is not None:
@@ -83,7 +83,7 @@ def delete_node(cur, node, auto_position=True):
 
     :param node:
     :type node: Node or int
-    :param bool auto_position: See :ref:`api-positioning`
+    :param bool auto_position: See :ref:`coreapi-positioning`
     """
     id = int(node)
 
@@ -119,7 +119,7 @@ def change_parent(cur, node, new_parent, position=None, auto_position=True):
                          inserted the the end of the parents children.
                          If `auto_position` is disabled, this is just a
                          value.
-    :param bool auto_position: See :ref:`api-positioning`.
+    :param bool auto_position: See :ref:`coreapi-positioning`.
     """
     new_parent_id = int(new_parent)
     if new_parent_id in get_descendant_ids(cur, node):

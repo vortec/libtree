@@ -1,14 +1,14 @@
-.. _api:
+.. _coreapi:
 
-API
+Core API
 ========
 
 .. toctree::
    :maxdepth: 2
 
-   tree
-   query
+   database
+   node
    positioning
    properties
-   node
-   persistence
+   query
+   tree
