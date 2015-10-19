@@ -31,26 +31,26 @@ def test_it_cant_deal_with_both_connection_and_pool():
         Tree(connection=Mock(), pool=Mock())
 
 
-def test_cm_returns_a_transaction_object():
+def test_make_transaction_returns_a_transaction_object():
     conn = Mock()
     tree = Tree(connection=conn)
-    with tree() as transaction:
-        assert transaction.__class__ == Transaction
+    transaction = tree.make_transaction()
+    assert transaction.__class__ == Transaction
 
 
-def test_cm_uses_assigned_transaction_object():
+def test_returned_transaction_uses_assigned_transaction_object():
     conn = Mock()
     tree = Tree(connection=conn)
-    with tree() as transaction:
-        assert transaction.connection is conn
+    transaction = tree.make_transaction()
+    assert transaction.connection is conn
 
 
-def test_cm_uses_connection_from_pool():
+def test_returned_transaction_uses_connection_from_pool():
     pool, conn = Mock(), Mock()
     pool.getconn.return_value = conn
     tree = Tree(pool=pool)
-    with tree() as transaction:
-        assert transaction.connection is conn
+    transaction = tree.make_transaction()
+    assert transaction.connection is conn
 
 
 def test_cm_puts_connection_back_into_pool():

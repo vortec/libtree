@@ -31,20 +31,26 @@ class Tree:
 
     @contextmanager
     def __call__(self):
+        transaction = self.make_transaction()
+        connection = transaction.connection
+
+        try:
+            yield transaction
+            connection.commit()
+        except Exception:
+            connection.rollback()
+            raise
+        finally:
+            if self.pool is not None:
+                self.pool.putconn(connection)
+
+    def make_transaction(self):
         if self.pool is None:
             _connection = self.connection
         else:
             _connection = self.pool.getconn()
 
-        try:
-            yield Transaction(_connection, self.node_factory)
-            _connection.commit()
-        except Exception:
-            _connection.rollback()
-            raise
-        finally:
-            if self.pool is not None:
-                self.pool.putconn(_connection)
+        return Transaction(_connection, self.node_factory)
 
     def close(self):
         if self.pool is not None:
