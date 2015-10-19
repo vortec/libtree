@@ -89,6 +89,7 @@ CREATE CONSTRAINT TRIGGER update_ancestors_after_delete
 AFTER DELETE
 ON nodes
 FOR EACH ROW
+WHEN (pg_trigger_depth() = 0)
 EXECUTE PROCEDURE update_ancestors_after_delete();
 
 
