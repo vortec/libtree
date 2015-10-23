@@ -4,10 +4,12 @@
 from libtree import Node
 
 
-def xtest_it_compares_against_other_nodes():
-    assert nd1 == nd2
-    assert nd1 is nd2
-    raise NotImplementedError
+def test_it_compares_against_other_nodes(trans, nd1, nd2):
+    node1a = Node(trans, nd1.id)
+    node1b = Node(trans, nd1.id)
+    node2 = Node(trans, nd2.id)
+    assert node1a == node1b
+    assert node1a != node2
 
 
 def test_get_parent(trans, nd2_1_1, nd2_leaf):

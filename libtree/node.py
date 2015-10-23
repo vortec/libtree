@@ -12,6 +12,11 @@ class Node:
 
         self._cursor = transaction.cursor
 
+    def __eq__(self, other):
+        nd_self = self._node_data
+        nd_other = core.get_node(self._cursor, other.id)
+        return nd_self.to_dict() == nd_other.to_dict()
+
     def insert_child(self):
         pass
 
