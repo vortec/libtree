@@ -13,9 +13,14 @@ class Node:
         self._cursor = transaction.cursor
 
     def __eq__(self, other):
-        nd_self = self._node_data
-        nd_other = core.get_node(self._cursor, other.id)
-        return nd_self.to_dict() == nd_other.to_dict()
+        if type(other) == self.__class__:
+            nd_self = self._node_data
+            nd_other = core.get_node(self._cursor, other.id)
+            return nd_self.to_dict() == nd_other.to_dict()
+        return False
+
+    def __len__(self):
+        return core.get_children_count(self._cursor, self.id)
 
     @property
     def _node_data(self):
@@ -33,6 +38,34 @@ class Node:
     def properties(self):
         return self._node_data.properties
 
+    @property
+    def inherited_properties(self):
+        return core.get_inherited_properties(self._cursor, self.id)
+
+    @property
+    def children(self):
+        ret = []
+        for _id in core.get_child_ids(self._cursor, self.id):
+            node = Node(self.transaction, _id)
+            ret.append(node)
+        return ret
+
+    @property
+    def ancestors(self):
+        ret = []
+        for _id in core.get_ancestor_ids(self._cursor, self.id):
+            node = Node(self.transaction, _id)
+            ret.append(node)
+        return ret
+
+    @property
+    def descendants(self):
+        ret = []
+        for _id in core.get_descendant_ids(self._cursor, self.id):
+            node = Node(self.transaction, _id)
+            ret.append(node)
+        return ret
+
     def delete(self):
         return core.delete_node(self._cursor, self.id)
 
@@ -48,47 +81,11 @@ class Node:
     def set_position(self, new_position):
         pass
 
-    def shift_positions(self):
-        pass
-
-    def swap_node_positions(self):
-        pass
-
-    def get_inherited_properties(self):
-        pass
-
-    def get_inherited_property_value(self):
-        pass
+    def swap_position(self, other):
+        core.swap_node_positions(self._cursor, self.id, other.id)
 
     def set_properties(self):
         pass
 
-    def update_properties(self):
-        pass
-
-    def set_property_value(self):
-        pass
-
-    def get_children(self):
-        pass
-
     def get_child_at_position(self, position):
-        pass
-
-    def get_child_ids(self):
-        pass
-
-    def get_children_count(self):
-        pass
-
-    def get_ancestors(self):
-        pass
-
-    def get_ancestor_ids(self):
-        pass
-
-    def get_descendants(self):
-        pass
-
-    def get_descendant_ids(self):
-        pass
+        return core.get_node_at_position(self._cursor, self.id, position)

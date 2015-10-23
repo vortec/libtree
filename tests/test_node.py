@@ -5,12 +5,17 @@ from libtree import core, Node
 from mock import patch
 
 
-def test_it_compares_against_other_nodes(trans, nd1, nd2):
+def test_it_compares_other_nodes(trans, nd1, nd2):
     node1a = Node(trans, nd1.id)
     node1b = Node(trans, nd1.id)
     node2 = Node(trans, nd2.id)
     assert node1a == node1b
     assert node1a != node2
+
+
+def test_it_wont_compared_other_types(trans, nd1, nd2):
+    node = Node(trans, nd1.id)
+    assert node != nd1
 
 
 def test_get_parent(trans, nd2_1_1, nd2_leaf):
@@ -29,9 +34,35 @@ def test_get_properties(trans, nd3):
     assert node.properties == nd3.properties
 
 
+def test_get_children_count(trans, cur, root):
+    node = Node(trans, root)
+    assert len(node) == core.get_children_count(cur, root.id)
+
+
+def test_get_children(trans, nd2, nd2_1):
+    node = Node(trans, nd2.id)
+    children = node.children
+    assert type(children) == list
+    assert type(children[0]) == Node
+    assert children[0].id == nd2_1.id
+    assert len(children) == len(node)
+
+
+def test_get_ancestors(trans, root, nd2, nd2_1):
+    node = Node(trans, nd2_1.id)
+    ancestors = [Node(trans, nd2.id), Node(trans, root.id)]
+    assert node.ancestors == ancestors
+
+
+def test_get_descendants(trans, nd2_1, nd2_1_1, nd2_leaf):
+    node = Node(trans, nd2_1.id)
+    descendants = [Node(trans, nd2_1_1.id), Node(trans, nd2_leaf.id)]
+    assert node.descendants == descendants
+
+
 @patch.object(core, 'insert_node')
-def test_insert_child(mock, trans, cur, nd3):
-    node = Node(trans, nd3.id)
+def test_insert_child(mock, trans, cur):
+    node = Node(trans, 1)
     properties = {'type': 'new_child'}
     node.insert_child(properties)
     mock.assert_called_with(cur, node.id, properties, position=-1,
@@ -39,31 +70,34 @@ def test_insert_child(mock, trans, cur, nd3):
 
 
 @patch.object(core, 'delete_node')
-def test_delete(mock, trans, cur, nd3):
-    node = Node(trans, nd3.id)
+def test_delete(mock, trans, cur):
+    node = Node(trans, 1)
     node.delete()
     mock.assert_called_with(cur, node.id)
 
 
 @patch.object(core, 'change_parent')
-def test_delete(mock, trans, cur, nd2_leaf, nd3):
-    node = Node(trans, nd2_leaf.id)
-    target_node = Node(trans, nd3.id)
+def test_move(mock, trans, cur):
+    node = Node(trans, 1)
+    target_node = Node(trans, 2)
     node.move(target_node)
     mock.assert_called_with(cur, node.id, target_node.id, position=-1,
                             auto_position=True)
 
 
-def xtest_shift_positions():
-    raise NotImplementedError
+@patch.object(core, 'swap_node_positions')
+def test_swap_position(mock, trans, cur):
+    node1 = Node(trans, 1)
+    node2 = Node(trans, 2)
+    node1.swap_position(node2)
+    mock.assert_called_with(cur, node1.id, node2.id)
 
 
-def xtest_swap_node_positions():
-    raise NotImplementedError
-
-
-def xtest_get_inherited_properties():
-    raise NotImplementedError
+@patch.object(core, 'get_inherited_properties')
+def test_get_inherited_properties(mock, trans, cur):
+    node = Node(trans, 1)
+    node.inherited_properties
+    mock.assert_called_with(cur, node.id)
 
 
 def xtest_get_inherited_property_value():
@@ -74,41 +108,8 @@ def xtest_set_properties():
     raise NotImplementedError
 
 
-def xtest_update_properties():
-    raise NotImplementedError
-
-
-def xtest_set_property_value():
-    raise NotImplementedError
-
-
-def xtest_get_children():
-    raise NotImplementedError
-
-
-def xtest_get_child_at_position():
-    raise NotImplementedError
-
-
-def xtest_get_child_ids():
-    raise NotImplementedError
-
-
-def xtest_get_children_count():
-    raise NotImplementedError
-
-
-def xtest_get_ancestors():
-    raise NotImplementedError
-
-
-def xtest_get_ancestor_ids():
-    raise NotImplementedError
-
-
-def xtest_get_descendants():
-    raise NotImplementedError
-
-
-def xtest_get_descendant_ids():
-    raise NotImplementedError
+@patch.object(core, 'get_node_at_position')
+def test_get_child_at_position(mock, trans, cur):
+    node = Node(trans, 1)
+    node.get_child_at_position(2)
+    mock.assert_called_with(cur, 1, 2)
