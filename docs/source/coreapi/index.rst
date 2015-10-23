@@ -7,7 +7,7 @@ Core API
    :maxdepth: 2
 
    database
-   node
+   node_data
    positioning
    properties
    query

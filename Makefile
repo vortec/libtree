@@ -24,6 +24,7 @@ clean:
 	find . -name '*.pyc' -exec rm -f {} \;
 	find libtree -name "__pycache__" | xargs rm -rf
 	find tests -name "__pycache__" | xargs rm -rf
+	make -C docs clean
 	rm -f coverage.xml
 	rm -rf *.egg-info
 	rm -rf .cache/

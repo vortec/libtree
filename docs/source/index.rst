@@ -10,7 +10,7 @@ and PyPy3).
 
 Why use **libtree**? Because...
 
-* the API is **super simple** (see :ref:`coreapi`)
+* the API is **super simple** (see :ref:`quickstart`)
 * it scales up to **billions of nodes** (see :ref:`db_model`)
 * the reads and writes are **blazingly fast** (:ref:`benchmarks` will be
   available soon)
