@@ -55,42 +55,34 @@ class Transaction:
     def install(self):
         core.create_schema(self.cursor)
         core.create_triggers(self.cursor)
+        return True
 
     def uninstall(self):
-        core.drop_tables(self.cursor)
+        return core.drop_tables(self.cursor)
 
     def clear(self):
-        core.flush_tables(self.cursor)
+        return core.flush_tables(self.cursor)
 
     def print_tree(self):
-        pass
+        return core.print_tree(self.cursor)
 
     def get_tree_size(self):
         return core.get_tree_size(self.cursor)
 
     def get_root_node(self):
-        pass
+        return core.get_root_node(self.cursor)
 
-    def insert_root_node(self):
-        pass
+    def insert_root_node(self, properties=None):
+        return core.insert_root_node(self.cursor, properties)
 
-    def get_node(self):
-        pass
+    def get_node(self, xid):
+        return core.get_node(self.cursor, xid)
 
-    def get_node_at_position(self):
-        pass
+    def get_nodes_by_property_dict(self, query):
+        return core.get_nodes_by_property_dict(self.cursor, query)
 
-    def get_nodes_by_property_dict(self):
-        pass
+    def get_nodes_by_property_key(self, key):
+        return core.get_nodes_by_property_key(self.cursor, key)
 
-    def get_nodes_by_property_key(self):
-        pass
-
-    def get_nodes_by_property_value(self):
-        pass
-
-    def get_child_at_position(self, node_id, position):
-        pass
-        # node_data = core.get_child_at_position(self.cursor, position)
-        # return self.make_node(node_data.xid)
-        # return self.transaction.(xid)
+    def get_nodes_by_property_value(self, key, value):
+        return core.get_nodes_by_property_value(self.cursor, key, value)

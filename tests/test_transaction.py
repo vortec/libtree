@@ -1,8 +1,8 @@
 # Copyright (c) 2015 Fabian Kochem
 
 
-from libtree import Transaction
-from mock import Mock, MagicMock
+from libtree import core, Transaction
+from mock import Mock, MagicMock, patch
 
 
 def test_it_takes_a_connection():
@@ -42,49 +42,81 @@ def test_is_compatible_postgres_version():
     assert transaction.is_compatible_postgres_version() is False
 
 
-def xtest_install():
-    raise NotImplementedError
+@patch.object(core, 'create_schema')
+@patch.object(core, 'create_triggers')
+def test_install(mock1, mock2):
+    transaction = Transaction(Mock(), Mock())
+    transaction.install()
+    mock1.assert_called_with(transaction.cursor)
+    mock2.assert_called_with(transaction.cursor)
 
 
-def xtest_uninstall():
-    raise NotImplementedError
+@patch.object(core, 'drop_tables')
+def test_uninstall(mock):
+    transaction = Transaction(Mock(), Mock())
+    transaction.uninstall()
+    mock.assert_called_with(transaction.cursor)
 
 
-def xtest_clear():
-    raise NotImplementedError
+@patch.object(core, 'flush_tables')
+def test_clear(mock):
+    transaction = Transaction(Mock(), Mock())
+    transaction.clear()
+    mock.assert_called_with(transaction.cursor)
 
 
-def xtest_print_tree():
-    raise NotImplementedError
+@patch.object(core, 'print_tree')
+def test_print_tree(mock):
+    transaction = Transaction(Mock(), Mock())
+    transaction.print_tree()
+    mock.assert_called_with(transaction.cursor)
 
 
-def xtest_get_tree_size():
-    raise NotImplementedError
+@patch.object(core, 'get_tree_size')
+def test_get_tree_size(mock):
+    transaction = Transaction(Mock(), Mock())
+    transaction.get_tree_size()
+    mock.assert_called_with(transaction.cursor)
 
 
-def xtest_get_root_node():
-    raise NotImplementedError
+@patch.object(core, 'get_root_node')
+def test_get_root_node(mock):
+    transaction = Transaction(Mock(), Mock())
+    transaction.get_root_node()
+    mock.assert_called_with(transaction.cursor)
 
 
-def xtest_insert_root_node():
-    raise NotImplementedError
+@patch.object(core, 'insert_root_node')
+def xtest_insert_root_node(mock):
+    transaction = Transaction(Mock(), Mock())
+    transaction.insert_root_node()
+    mock.assert_called_with(transaction.cursor)
 
 
-def xtest_get_node():
-    raise NotImplementedError
+@patch.object(core, 'get_node')
+def test_get_node(mock):
+    transaction = Transaction(Mock(), Mock())
+    transaction.get_node(1337)
+    mock.assert_called_with(transaction.cursor, 1337)
 
 
-def xtest_get_node_at_position():
-    raise NotImplementedError
+@patch.object(core, 'get_nodes_by_property_dict')
+def test_get_nodes_by_property_dict(mock):
+    transaction = Transaction(Mock(), Mock())
+    query = {'key': 'value'}
+    transaction.get_nodes_by_property_dict(query)
+    mock.assert_called_with(transaction.cursor, query)
 
 
-def xtest_get_nodes_by_property_dict():
-    raise NotImplementedError
+@patch.object(core, 'get_nodes_by_property_key')
+def test_get_nodes_by_property_key(mock):
+    transaction = Transaction(Mock(), Mock())
+    transaction.get_nodes_by_property_key('foobar')
+    mock.assert_called_with(transaction.cursor, 'foobar')
 
 
-def xtest_get_nodes_by_property_key():
-    raise NotImplementedError
-
-
-def xtest_get_nodes_by_property_value():
-    raise NotImplementedError
+@patch.object(core, 'get_nodes_by_property_value')
+def test_get_nodes_by_property_value(mock):
+    transaction = Transaction(Mock(), Mock())
+    transaction.get_nodes_by_property_value('key', 'value')
+    mock.assert_called_with(transaction.cursor, 'key', 'value')
