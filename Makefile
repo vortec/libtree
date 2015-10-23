@@ -26,6 +26,8 @@ clean:
 	find tests -name "__pycache__" | xargs rm -rf
 	rm -f coverage.xml
 	rm -rf *.egg-info
+	rm -rf .cache/
+	rm -rf .eggs/
 	rm -rf .tox/
 	rm -rf build/
 	rm -rf docs/build/
