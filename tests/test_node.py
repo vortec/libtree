@@ -41,11 +41,8 @@ def test_get_children_count(trans, cur, root):
 
 def test_get_children(trans, nd2, nd2_1):
     node = Node(trans, nd2.id)
-    children = node.children
-    assert type(children) == list
-    assert type(children[0]) == Node
-    assert children[0].id == nd2_1.id
-    assert len(children) == len(node)
+    children = [Node(trans, nd2_1.id)]
+    assert node.children == children
 
 
 def test_get_ancestors(trans, root, nd2, nd2_1):

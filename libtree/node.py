@@ -13,14 +13,14 @@ class Node:
         self._cursor = transaction.cursor
 
     def __eq__(self, other):
-        if type(other) == self.__class__:
+        if other.__class__ == Node:
             nd_self = self._node_data
             nd_other = core.get_node(self._cursor, other.id)
             return nd_self.to_dict() == nd_other.to_dict()
         return False
 
     def __len__(self):
-        return core.get_children_count(self._cursor, self.id)
+        return int(core.get_children_count(self._cursor, self.id))
 
     @property
     def _node_data(self):
