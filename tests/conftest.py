@@ -40,7 +40,7 @@ Create this structure:
 node_ids = {}
 
 
-def get_or_create_node(cur, parent, properties, *args, **kwargs):
+def get_or_create_nd(cur, parent, properties, *args, **kwargs):
     xtype = properties.get('type')
     node_id = node_ids.get(xtype, None)
     if node_id is None:
@@ -85,7 +85,7 @@ def root(cur):
         'boolean': False,
         'integer': 1
     }
-    return get_or_create_node(cur, None, auto_position=False, properties=props)
+    return get_or_create_nd(cur, None, auto_position=False, properties=props)
 
 
 @pytest.fixture
@@ -94,8 +94,8 @@ def nd1(cur, root):
         'type': 'nd1',
         'title': 'Node 1'
     }
-    return get_or_create_node(cur, root, position=4, auto_position=False,
-                              properties=props)
+    return get_or_create_nd(cur, root, position=4, auto_position=False,
+                            properties=props)
 
 
 @pytest.fixture
@@ -106,8 +106,8 @@ def nd2(cur, root):
         'boolean': True,
         'foo': 'bar'
     }
-    return get_or_create_node(cur, root, position=5, auto_position=False,
-                              properties=props)
+    return get_or_create_nd(cur, root, position=5, auto_position=False,
+                            properties=props)
 
 
 @pytest.fixture
@@ -116,8 +116,8 @@ def nd3(cur, root):
         'type': 'nd3',
         'title': 'Node 3'
     }
-    return get_or_create_node(cur, root, position=6, auto_position=False,
-                              properties=props)
+    return get_or_create_nd(cur, root, position=6, auto_position=False,
+                            properties=props)
 
 
 @pytest.fixture
@@ -126,8 +126,8 @@ def nd2_1(cur, nd2):
         'type': 'nd2_1',
         'title': 'Node 2-1'
     }
-    return get_or_create_node(cur, nd2, auto_position=False,
-                              properties=props)
+    return get_or_create_nd(cur, nd2, auto_position=False,
+                            properties=props)
 
 
 @pytest.fixture
@@ -137,8 +137,8 @@ def nd2_1_1(cur, nd2_1):
         'title': 'Node 2-1-1',
         'boolean': False
     }
-    return get_or_create_node(cur, nd2_1, auto_position=False,
-                              properties=props)
+    return get_or_create_nd(cur, nd2_1, auto_position=False,
+                            properties=props)
 
 
 @pytest.fixture
@@ -147,5 +147,5 @@ def nd2_leaf(cur, nd2_1_1):
         'type': 'nd2_leaf',
         'title': 'Node 2-leaf'
     }
-    return get_or_create_node(cur, nd2_1_1, auto_position=False,
-                              properties=props)
+    return get_or_create_nd(cur, nd2_1_1, auto_position=False,
+                            properties=props)
