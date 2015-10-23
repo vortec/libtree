@@ -56,7 +56,7 @@ def dsn():
 
 
 @pytest.fixture(scope='module')
-def cur(request, dsn):
+def trans(request, dsn):
     connection = psycopg2.connect(dsn)
     transaction = Transaction(connection, Node)
 
@@ -69,7 +69,12 @@ def cur(request, dsn):
         transaction.commit()
     request.addfinalizer(fin)
 
-    return transaction.cursor
+    return transaction
+
+
+@pytest.fixture(scope='module')
+def cur(trans):
+    return trans.cursor
 
 
 @pytest.fixture

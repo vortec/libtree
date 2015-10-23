@@ -66,7 +66,7 @@ class Transaction:
         pass
 
     def get_tree_size(self):
-        pass
+        return core.get_tree_size(self.cursor)
 
     def get_root_node(self):
         pass
