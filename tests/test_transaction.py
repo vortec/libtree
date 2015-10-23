@@ -2,7 +2,7 @@
 
 
 from libtree import core, Transaction
-from mock import Mock, MagicMock, patch
+from mock import Mock, patch
 
 
 def test_it_takes_a_connection():
@@ -34,12 +34,11 @@ def test_rollback():
     assert conn.rollback.called
 
 
-def test_is_compatible_postgres_version():
-    transaction = Transaction(MagicMock(), Mock())
-    transaction.cursor.fetchone.return_value = {'server_version': '9.4.1'}
-    assert transaction.is_compatible_postgres_version() is True
-    transaction.cursor.fetchone.return_value = {'server_version': '9.3.8'}
-    assert transaction.is_compatible_postgres_version() is False
+@patch.object(core, 'is_compatible_postgres_version')
+def test_is_compatible_postgres_version(mock):
+    transaction = Transaction(Mock(), Mock())
+    transaction.is_compatible_postgres_version()
+    mock.assert_called_with(transaction.cursor)
 
 
 @patch.object(core, 'create_schema')

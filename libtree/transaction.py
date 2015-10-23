@@ -12,9 +12,6 @@ from psycopg2.extras import RealDictCursor
 from libtree import core
 
 
-REQUIRED_POSTGRES_VERSION = (9, 4, 0)
-
-
 class Transaction:
     """ """
     def __init__(self, connection, node_factory):
@@ -47,10 +44,7 @@ class Transaction:
 
     def is_compatible_postgres_version(self):
         """ """
-        self.cursor.execute("SHOW server_version;")
-        result = self.cursor.fetchone()['server_version']
-        server_version = tuple(map(int, result.split('.')))
-        return server_version >= REQUIRED_POSTGRES_VERSION
+        return core.is_compatible_postgres_version(self.cursor)
 
     def install(self):
         core.create_schema(self.cursor)
