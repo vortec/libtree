@@ -1,7 +1,8 @@
 # Copyright (c) 2015 Fabian Kochem
 
 
-from libtree import Node
+from libtree import core, Node
+from mock import patch
 
 
 def test_it_compares_against_other_nodes(trans, nd1, nd2):
@@ -28,16 +29,29 @@ def test_get_properties(trans, nd3):
     assert node.properties == nd3.properties
 
 
-def xtest_insert_child():
-    raise NotImplementedError
+@patch.object(core, 'insert_node')
+def test_insert_child(mock, trans, cur, nd3):
+    node = Node(trans, nd3.id)
+    properties = {'type': 'new_child'}
+    node.insert_child(properties)
+    mock.assert_called_with(cur, node.id, properties, position=-1,
+                            auto_position=True)
 
 
-def xtest_delete():
-    raise NotImplementedError
+@patch.object(core, 'delete_node')
+def test_delete(mock, trans, cur, nd3):
+    node = Node(trans, nd3.id)
+    node.delete()
+    mock.assert_called_with(cur, node.id)
 
 
-def xtest_change_parent():
-    raise NotImplementedError
+@patch.object(core, 'change_parent')
+def test_delete(mock, trans, cur, nd2_leaf, nd3):
+    node = Node(trans, nd2_leaf.id)
+    target_node = Node(trans, nd3.id)
+    node.move(target_node)
+    mock.assert_called_with(cur, node.id, target_node.id, position=-1,
+                            auto_position=True)
 
 
 def xtest_shift_positions():

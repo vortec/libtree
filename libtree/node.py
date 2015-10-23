@@ -17,12 +17,6 @@ class Node:
         nd_other = core.get_node(self._cursor, other.id)
         return nd_self.to_dict() == nd_other.to_dict()
 
-    def insert_child(self):
-        pass
-
-    def delete(self):
-        pass
-
     @property
     def _node_data(self):
         return core.get_node(self._cursor, self.id)
@@ -39,11 +33,19 @@ class Node:
     def properties(self):
         return self._node_data.properties
 
-    def set_position(self, new_position):
-        pass
-        # core.set_position(self.transaction.cursor, self.xid, new_position)
+    def delete(self):
+        return core.delete_node(self._cursor, self.id)
 
-    def change_parent(self):
+    def insert_child(self, properties=None, position=-1):
+        node_data = core.insert_node(self._cursor, self.id, properties,
+                                     position=position, auto_position=True)
+        return Node(self.transaction, node_data.id)
+
+    def move(self, target, position=-1):
+        core.change_parent(self._cursor, self.id, target.id,
+                           position=position, auto_position=True)
+
+    def set_position(self, new_position):
         pass
 
     def shift_positions(self):
@@ -69,17 +71,9 @@ class Node:
 
     def get_children(self):
         pass
-        # children = core.get_children(self.transaction.cursor, self.data.id)
-        # return [Node]
 
     def get_child_at_position(self, position):
         pass
-        # return self.transaction.get_child_at_position(self.xid, position)
-
-        # node_data = core.get_child_at_position(self.transaction.cursor,
-        # position)
-        # return self.transaction.make_node(node_data.xid)
-        # return self.transaction.(xid)
 
     def get_child_ids(self):
         pass
