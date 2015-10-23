@@ -1,15 +1,15 @@
 # Copyright (c) 2015 Fabian Kochem
 
 
-from libtree.core.node import Node
+from libtree.core.node_data import NodeData
 from libtree.core.query import get_ancestors, get_node
 import json
 
 
 def get_nodes_by_property_dict(cur, query):
     """
-    Return an iterator that yields a ``Node`` object of every node which
-    contains all key/value pairs of ``query`` in its property
+    Return an iterator that yields a ``NodeData`` object of every node
+    which contains all key/value pairs of ``query`` in its property
     dictionary. Inherited keys are not considered.
 
     :param dict query: The dictionary to search for
@@ -24,14 +24,14 @@ def get_nodes_by_property_dict(cur, query):
     """
     cur.execute(sql, (json.dumps(query), ))
     for result in cur:
-        yield Node(**result)
+        yield NodeData(**result)
 
 
 def get_nodes_by_property_key(cur, key):
     """
-    Return an iterator that yields a ``Node`` object of every node which
-    contains ``key`` in its property dictionary. Inherited keys are not
-    considered.
+    Return an iterator that yields a ``NodeData`` object of every node
+    which contains ``key`` in its property dictionary. Inherited keys
+    are not considered.
 
     :param str key: The key to search for
     """
@@ -45,14 +45,14 @@ def get_nodes_by_property_key(cur, key):
     """
     cur.execute(sql, (key, ))
     for result in cur:
-        yield Node(**result)
+        yield NodeData(**result)
 
 
 def get_nodes_by_property_value(cur, key, value):
     """
-    Return an iterator that yields a ``Node`` object of every node which
-    has ``key`` exactly set to ``value`` in its property dictionary.
-    Inherited keys are not considered.
+    Return an iterator that yields a ``NodeData`` object of every node
+    which has ``key`` exactly set to ``value`` in its property
+    dictionary. Inherited keys are not considered.
 
     :param str key: The key to search for
     :param object value: The exact value to sarch for
@@ -104,7 +104,7 @@ def get_inherited_property_value(cur, node, key):
 def set_properties(cur, node, new_properties):
     """
     Set the property dictionary to ``new_properties``.
-    Return ``Node`` object with updated properties.
+    Return ``NodeData`` object with updated properties.
 
     :param node:
     :type node: Node or int
@@ -129,13 +129,13 @@ def set_properties(cur, node, new_properties):
 
     kwargs = node.to_dict()
     kwargs['properties'] = new_properties
-    return Node(**kwargs)
+    return NodeData(**kwargs)
 
 
 def update_properties(cur, node, new_properties):
     """
     Update existing property dictionary with another dictionary.
-    Return ``Node`` object with updated properties.
+    Return ``NodeData`` object with updated properties.
 
     :param node:
     :type node: Node or int
@@ -156,7 +156,7 @@ def update_properties(cur, node, new_properties):
 def set_property_value(cur, node, key, value):
     """
     Set the value for a single property key.
-    Return ``Node`` object with updated properties.
+    Return ``NodeData`` object with updated properties.
 
     :param node:
     :type node: Node or int
@@ -173,4 +173,4 @@ def set_property_value(cur, node, key, value):
 
     kwargs = node.to_dict()
     kwargs['properties'] = properties
-    return Node(**kwargs)
+    return NodeData(**kwargs)

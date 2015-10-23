@@ -1,7 +1,7 @@
 # Copyright (c) 2015 Fabian Kochem
 
 
-class Node(object):
+class NodeData(object):
     """Immutable data-holding object which represents a tree node. Its
     attributes are identical to the columns in the ``nodes`` table
     (see :ref:`db_model`).
@@ -32,10 +32,10 @@ class Node(object):
                              (see :ref:`coreapi-properties`)
     """
     __slots__ = [
-        '_Node__id',
-        '_Node__parent',
-        '_Node__position',
-        '_Node__properties',
+        '_NodeData__id',
+        '_NodeData__parent',
+        '_NodeData__position',
+        '_NodeData__properties',
     ]
 
     def __init__(self, id=None, parent=None, position=None, properties=None):
@@ -70,10 +70,10 @@ class Node(object):
 
     def __repr__(self):
         if 'title' in self.properties:
-            ret = '<Node id={!r}, title={!r}>'
+            ret = '<NodeData id={!r}, title={!r}>'
             return ret.format(self.id, self.properties['title'])
         else:
-            ret = '<Node id={!r}, parent={!r}, position={!r}>'
+            ret = '<NodeData id={!r}, parent={!r}, position={!r}>'
             return ret.format(self.id, self.parent, self.position)
 
     @property

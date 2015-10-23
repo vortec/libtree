@@ -2,7 +2,7 @@
 
 
 import json
-from libtree.core.node import Node
+from libtree.core.node_data import NodeData
 from libtree.core.positioning import (ensure_free_position,
                                       find_highest_position,
                                       shift_positions)
@@ -16,7 +16,7 @@ def print_tree(cur, start_node=None, indent='  ', _level=0):
 
     :param start_node: Starting point for tree output.
                        If ``None``, start at root node.
-    :type start_node: int, Node or None
+    :type start_node: int, Node, NodaData or None
     :param str indent: String to print per level (default: '  ')
     """
     if start_node is None:
@@ -72,7 +72,7 @@ def insert_node(cur, parent, properties=None, position=None,
 
     cur.execute("SELECT LASTVAL();")
     id = cur.fetchone()['lastval']
-    node = Node(id, parent_id, position, properties)
+    node = NodeData(id, parent_id, position, properties)
 
     return node
 
@@ -88,7 +88,7 @@ def delete_node(cur, node, auto_position=True):
     id = int(node)
 
     # Get Node object if integer (ID) was passed
-    if auto_position and type(node) != Node:
+    if auto_position and type(node) != NodeData:
         node = get_node(cur, id)
 
     sql = """
@@ -147,4 +147,4 @@ def change_parent(cur, node, new_parent, position=None, auto_position=True):
     kwargs = node.to_dict()
     kwargs['parent'] = new_parent_id
     kwargs['position'] = position
-    return Node(**kwargs)
+    return NodeData(**kwargs)

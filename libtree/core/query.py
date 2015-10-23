@@ -1,7 +1,7 @@
 # Copyright (c) 2015 Fabian Kochem
 
 
-from libtree.core.node import Node
+from libtree.core.node_data import NodeData
 from libtree.utils import vectorize_nodes
 
 
@@ -38,13 +38,13 @@ def get_root_node(cur):
     if result is None:
         raise ValueError('No root node.')
     else:
-        return Node(**result)
+        return NodeData(**result)
 
 
 def get_node(cur, id):
     """
-    Return ``Node`` object for given ``id``. Raises ``ValueError`` if
-    ID doesn't exist.
+    Return ``NodeData`` object for given ``id``. Raises ``ValueError``
+    if ID doesn't exist.
 
     :param int id: Database ID
     """
@@ -65,7 +65,7 @@ def get_node(cur, id):
     if result is None:
         raise ValueError('Node does not exist.')
     else:
-        return Node(**result)
+        return NodeData(**result)
 
 
 def get_node_at_position(cur, node, position):
@@ -93,13 +93,13 @@ def get_node_at_position(cur, node, position):
     if result is None:
         raise ValueError('Node does not exist.')
     else:
-        return Node(**result)
+        return NodeData(**result)
 
 
 def get_children(cur, node):
     """
-    Return an iterator that yields a ``Node`` object of every immediate
-    child.
+    Return an iterator that yields a ``NodeData`` object of every
+    immediate child.
 
     :param node:
     :type node: Node or int
@@ -116,7 +116,7 @@ def get_children(cur, node):
     """
     cur.execute(sql, (int(node), ))
     for result in cur:
-        yield Node(**result)
+        yield NodeData(**result)
 
 
 def get_child_ids(cur, node):
@@ -163,8 +163,8 @@ def get_children_count(cur, node):
 
 def get_ancestors(cur, node, sort=True):
     """
-    Return an iterator that yields a ``Node`` object of every element
-    while traversing from ``node`` to the root node.
+    Return an iterator that yields a ``NodeData`` object of every
+    element while traversing from ``node`` to the root node.
 
     :param node:
     :type node: Node or int
@@ -187,12 +187,12 @@ def get_ancestors(cur, node, sort=True):
     cur.execute(sql, (int(node), ))
 
     if sort:
-        make_node = lambda r: Node(**r)
+        make_node = lambda r: NodeData(**r)
         for node in vectorize_nodes(map(make_node, cur)):
             yield node
     else:
         for result in cur:
-            yield Node(**result)
+            yield NodeData(**result)
 
 
 def get_ancestor_ids(cur, node):
@@ -239,13 +239,13 @@ def get_descendants(cur, node):
     """
     cur.execute(sql, (int(node), ))
     for result in cur:
-        yield Node(**result)
+        yield NodeData(**result)
 
 
 def get_descendant_ids(cur, node):
     """
-    Return an iterator that yields a ``Node`` object of each element in
-    the nodes subtree. Be careful when converting this iterator to an
+    Return an iterator that yields a ``NodeData`` object of each element
+    in the nodes subtree. Be careful when converting this iterator to an
     iterable (like list or set) because it could contain billions of
     objects.
 
