@@ -69,8 +69,8 @@ class Transaction:
     def insert_root_node(self, properties=None):
         return core.insert_node(self.cursor, properties)
 
-    def get_node(self, xid):
-        return core.get_node(self.cursor, xid)
+    def get_node(self, node_id):
+        return core.get_node(self.cursor, node_id)
 
     def get_nodes_by_property_dict(self, query):
         return core.get_nodes_by_property_dict(self.cursor, query)

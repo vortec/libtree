@@ -1,11 +1,16 @@
 # Copyright (c) 2015 Fabian Kochem
 
 
+from libtree import core
+
+
 class Node:
     """ """
-    def __init__(self, transaction, xid):
+    def __init__(self, transaction, id):
         self.transaction = transaction
-        self.xid = xid
+        self.id = id
+
+        self._cursor = transaction.cursor
 
     def insert_child(self):
         pass
@@ -14,9 +19,20 @@ class Node:
         pass
 
     @property
+    def _node_data(self):
+        return core.get_node(self._cursor, self.id)
+
+    @property
+    def parent(self):
+        return Node(self.transaction, self._node_data.parent)
+
+    @property
     def position(self):
-        pass
-        # return core.get_node(self.xid).property
+        return self._node_data.position
+
+    @property
+    def properties(self):
+        return self._node_data.properties
 
     def set_position(self, new_position):
         pass
