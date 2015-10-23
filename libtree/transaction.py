@@ -64,19 +64,34 @@ class Transaction:
         return core.get_tree_size(self.cursor)
 
     def get_root_node(self):
-        return core.get_root_node(self.cursor)
+        node_id = core.get_root_node(self.cursor).id
+        return self.node_factory(self, node_id)
 
     def insert_root_node(self, properties=None):
-        return core.insert_node(self.cursor, properties)
+        node_id = core.insert_node(self.cursor, properties).id
+        return self.node_factory(self, node_id)
 
     def get_node(self, node_id):
-        return core.get_node(self.cursor, node_id)
+        node_id = core.get_node(self.cursor, node_id).id
+        return self.node_factory(self, node_id)
 
     def get_nodes_by_property_dict(self, query):
-        return core.get_nodes_by_property_dict(self.cursor, query)
+        ret = []
+        for _id in core.get_nodes_by_property_dict(self.cursor, query):
+            node = self.node_factory(self, _id)
+            ret.append(node)
+        return ret
 
     def get_nodes_by_property_key(self, key):
-        return core.get_nodes_by_property_key(self.cursor, key)
+        ret = []
+        for _id in core.get_nodes_by_property_key(self.cursor, key):
+            node = self.node_factory(self, _id)
+            ret.append(node)
+        return ret
 
     def get_nodes_by_property_value(self, key, value):
-        return core.get_nodes_by_property_value(self.cursor, key, value)
+        ret = []
+        for _id in core.get_nodes_by_property_value(self.cursor, key, value):
+            node = self.node_factory(self, _id)
+            ret.append(node)
+        return ret
