@@ -12,6 +12,14 @@ class Node:
 
         self._cursor = transaction.cursor
 
+    def __repr__(self):
+        if 'title' in self.properties:
+            ret = '<Node id={!r}, title={!r}>'
+            return ret.format(self.id, self.properties['title'])
+        else:
+            ret = '<Node id={!r}, parent={!r}, position={!r}>'
+            return ret.format(self.id, self.parent, self.position)
+
     def __eq__(self, other):
         if other.__class__ == Node:
             nd_self = self._node_data
