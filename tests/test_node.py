@@ -2,8 +2,8 @@
 
 
 def xtest_it_compares_against_other_nodes():
-    assert node1 == node2
-    assert node1 is node2
+    assert nd1 == nd2
+    assert nd1 is nd2
     raise NotImplementedError
 
 

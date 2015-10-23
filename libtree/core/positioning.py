@@ -178,14 +178,14 @@ def shift_positions(cur, node, position, offset):
     cur.execute(sql, (id, position))
 
 
-def swap_node_positions(cur, node1, node2):
+def swap_node_positions(cur, nd1, nd2):
     """
-    Swap positions of ``node1`` and ``node2``.
+    Swap positions of ``nd1`` and ``nd2``.
 
-    :param node1:
-    :type node1: Node or int
-    :param node2:
-    :type node2: Node or int
+    :param nd1:
+    :type nd1: Node or int
+    :param nd2:
+    :type nd2: Node or int
     """
-    set_position(cur, node1, node2.position, auto_position=False)
-    set_position(cur, node2, node1.position, auto_position=False)
+    set_position(cur, nd1, nd2.position, auto_position=False)
+    set_position(cur, nd2, nd1.position, auto_position=False)

@@ -13,13 +13,13 @@ def test_insert_root_node_with_auto_position(cur):
     delete_node(cur, root)
 
 
-def test_insert_node(cur, root, node1, node2, node2_1, node2_1_1, node3):
+def test_insert_node(cur, root, nd1, nd2, nd2_1, nd2_1_1, nd3):
     assert root.parent is None
-    assert node1.parent == root.id
-    assert node2.parent == root.id
-    assert node2_1.parent == node2.id
-    assert node2_1_1.parent == node2_1.id
-    assert node3.parent == root.id
+    assert nd1.parent == root.id
+    assert nd2.parent == root.id
+    assert nd2_1.parent == nd2.id
+    assert nd2_1_1.parent == nd2_1.id
+    assert nd3.parent == root.id
 
 
 def test_insert_node_sets_properties(root):
@@ -31,128 +31,128 @@ def test_insert_node_sets_properties(root):
     }
 
 
-def test_insert_node_sets_position(node1):
-    assert node1.position == 4
+def test_insert_node_sets_position(nd1):
+    assert nd1.position == 4
 
 
-def test_change_parent(cur, root, node1, node2, node2_1, node2_1_1,
-                       node2_leaf):
+def test_change_parent(cur, root, nd1, nd2, nd2_1, nd2_1_1,
+                       nd2_leaf):
     """
     Tree layout before move:
     /
-      - node1
-      - node2
-        - node2-1
-          - node2-1-1
-            - node2-leaf
-      - node3
+      - nd1
+      - nd2
+        - nd2-1
+          - nd2-1-1
+            - nd2-leaf
+      - nd3
 
     Expected tree layout after move:
 
     /
-      - node1
-        - node2-1
-          - node2-1-1
-            - node2-leaf
-      - node2
-      - node3
+      - nd1
+        - nd2-1
+          - nd2-1-1
+            - nd2-leaf
+      - nd2
+      - nd3
     """
-    # We expect node2-1 to be child of node2 and node2-1-1 to be child
-    # of node2-1.
+    # We expect nd2-1 to be child of nd2 and nd2-1-1 to be child
+    # of nd2-1.
 
-    # Move node2-1 from node2 to node1
-    _temp_node = change_parent(cur, node2_1, node1, auto_position=False)
+    # Move nd2-1 from nd2 to nd1
+    _temp_node = change_parent(cur, nd2_1, nd1, auto_position=False)
 
     # Return value should have new parent set
-    assert _temp_node.parent == node1.id
+    assert _temp_node.parent == nd1.id
 
-    # node2-1 should have node1 as parent
-    node = get_node(cur, node2_1.id)
-    assert node.parent == node1.id
+    # nd2-1 should have nd1 as parent
+    node = get_node(cur, nd2_1.id)
+    assert node.parent == nd1.id
 
-    # node2-1-1 should still have the same parent (node2-1)
-    child_node = get_node(cur, node2_1_1.id)
-    assert child_node.parent == node2_1.id
+    # nd2-1-1 should still have the same parent (nd2-1)
+    child_node = get_node(cur, nd2_1_1.id)
+    assert child_node.parent == nd2_1.id
 
-    # node2-leaf should still have the same parent (node2-1-1)
-    child_node = get_node(cur, node2_leaf.id)
-    assert child_node.parent == node2_1_1.id
+    # nd2-leaf should still have the same parent (nd2-1-1)
+    child_node = get_node(cur, nd2_leaf.id)
+    assert child_node.parent == nd2_1_1.id
 
-    # The ancestor set of node2-1 should now contain node1 and root
-    assert set(get_ancestor_ids(cur, node2_1)) == {root.id, node1.id}
+    # The ancestor set of nd2-1 should now contain nd1 and root
+    assert set(get_ancestor_ids(cur, nd2_1)) == {root.id, nd1.id}
 
-    # The ancestor set of node2-1-1 should now contain node2-1, node1 and root
-    expected = {root.id, node1.id, node2_1.id}
-    assert set(get_ancestor_ids(cur, node2_1_1)) == expected
+    # The ancestor set of nd2-1-1 should now contain nd2-1, nd1 and root
+    expected = {root.id, nd1.id, nd2_1.id}
+    assert set(get_ancestor_ids(cur, nd2_1_1)) == expected
 
-    # The ancestor set of node2-leaf should now contain node-2-1-1, node2-1,
-    # node1 and root
-    expected = {root.id, node1.id, node2_1.id, node2_1_1.id}
-    assert set(get_ancestor_ids(cur, node2_leaf)) == expected
+    # The ancestor set of nd2-leaf should now contain node-2-1-1, nd2-1,
+    # nd1 and root
+    expected = {root.id, nd1.id, nd2_1.id, nd2_1_1.id}
+    assert set(get_ancestor_ids(cur, nd2_leaf)) == expected
 
-    # The ancestor set of node2 should now only contain root
-    assert set(get_ancestor_ids(cur, node2)) == {root.id}
+    # The ancestor set of nd2 should now only contain root
+    assert set(get_ancestor_ids(cur, nd2)) == {root.id}
 
-    # Check if node2-1, node2-1-1 and node2-leaf are part of node1's descendant
+    # Check if nd2-1, nd2-1-1 and nd2-leaf are part of nd1's descendant
     # set now
-    expected = {node2_1.id, node2_1_1.id, node2_leaf.id}
-    assert set(get_descendant_ids(cur, node1)) == expected
+    expected = {nd2_1.id, nd2_1_1.id, nd2_leaf.id}
+    assert set(get_descendant_ids(cur, nd1)) == expected
 
-    # node2's descendant set should be empty now
-    assert set(get_descendant_ids(cur, node2)) == set()
+    # nd2's descendant set should be empty now
+    assert set(get_descendant_ids(cur, nd2)) == set()
 
     # Last but not least, the children function proof what we checked above too
-    assert len(set(get_children(cur, node1))) == 1
-    assert len(set(get_children(cur, node2))) == 0
+    assert len(set(get_children(cur, nd1))) == 1
+    assert len(set(get_children(cur, nd2))) == 0
 
 
-def test_change_parent_dont_move_into_own_subtree(cur, node1, node2_1):
+def test_change_parent_dont_move_into_own_subtree(cur, nd1, nd2_1):
     with pytest.raises(ValueError):
-        change_parent(cur, node1, node2_1)
+        change_parent(cur, nd1, nd2_1)
 
 
-def test_delete_node(cur, node1, node2_1, node2_1_1, node2_leaf):
+def test_delete_node(cur, nd1, nd2_1, nd2_1_1, nd2_leaf):
     """
         Tree layout before delete:
         /
-          - node1
-            - node2-1
-              - node2-1-1
-                - node2-leaf
-          - node2
-          - node3
+          - nd1
+            - nd2-1
+              - nd2-1-1
+                - nd2-leaf
+          - nd2
+          - nd3
 
         Expected tree layout after move:
         /
-          - node1
-            - node2-1
-          - node2
-          - node3
+          - nd1
+            - nd2-1
+          - nd2
+          - nd3
     """
-    delete_node(cur, node2_1_1, auto_position=False)
+    delete_node(cur, nd2_1_1, auto_position=False)
 
     # Deleted node doesn't exist anymore
     with pytest.raises(ValueError):
-        get_node(cur, node2_1_1.id)
+        get_node(cur, nd2_1_1.id)
 
-    # node2-1 has no children and no descendants
-    assert set(get_child_ids(cur, node2_1)) == set()
-    assert set(get_child_ids(cur, node2_1_1)) == set()
-    assert set(get_descendant_ids(cur, node2_1)) == set()
+    # nd2-1 has no children and no descendants
+    assert set(get_child_ids(cur, nd2_1)) == set()
+    assert set(get_child_ids(cur, nd2_1_1)) == set()
+    assert set(get_descendant_ids(cur, nd2_1)) == set()
 
-    # node1 just contains node2-1
-    assert set(get_child_ids(cur, node1)) == {node2_1.id}
-    assert set(get_descendant_ids(cur, node1)) == {node2_1.id}
+    # nd1 just contains nd2-1
+    assert set(get_child_ids(cur, nd1)) == {nd2_1.id}
+    assert set(get_descendant_ids(cur, nd1)) == {nd2_1.id}
 
-    # Ancestor and descendant sets of node2-1-1 and node2-leaf are empty
+    # Ancestor and descendant sets of nd2-1-1 and nd2-leaf are empty
     # (or raise error in the future because they don't exist anymore)
-    assert set(get_ancestor_ids(cur, node2_1_1)) == set()
-    assert set(get_ancestor_ids(cur, node2_leaf)) == set()
-    assert set(get_descendant_ids(cur, node2_1_1)) == set()
-    assert set(get_descendant_ids(cur, node2_leaf)) == set()
+    assert set(get_ancestor_ids(cur, nd2_1_1)) == set()
+    assert set(get_ancestor_ids(cur, nd2_leaf)) == set()
+    assert set(get_descendant_ids(cur, nd2_1_1)) == set()
+    assert set(get_descendant_ids(cur, nd2_leaf)) == set()
 
 
-def test_delete_node_by_id(cur, node1, node2_1):
-    delete_node(cur, node2_1.id, auto_position=True)
+def test_delete_node_by_id(cur, nd1, nd2_1):
+    delete_node(cur, nd2_1.id, auto_position=True)
 
-    assert set(get_child_ids(cur, node1)) == set()
+    assert set(get_child_ids(cur, nd1)) == set()

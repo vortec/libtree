@@ -29,12 +29,12 @@ import psycopg2
 Create this structure:
 
 /
-  - node1
-  - node2
-    - node2-1
-      - node2-1-1
-        - node2-leaf
-  - node3
+  - nd1
+  - nd2
+    - nd2-1
+      - nd2-1-1
+        - nd2-leaf
+  - nd3
 """
 
 node_ids = {}
@@ -89,9 +89,9 @@ def root(cur):
 
 
 @pytest.fixture
-def node1(cur, root):
+def nd1(cur, root):
     props = {
-        'type': 'node1',
+        'type': 'nd1',
         'title': 'Node 1'
     }
     return get_or_create_node(cur, root, position=4, auto_position=False,
@@ -99,9 +99,9 @@ def node1(cur, root):
 
 
 @pytest.fixture
-def node2(cur, root):
+def nd2(cur, root):
     props = {
-        'type': 'node2',
+        'type': 'nd2',
         'title': 'Node 2',
         'boolean': True,
         'foo': 'bar'
@@ -111,9 +111,9 @@ def node2(cur, root):
 
 
 @pytest.fixture
-def node3(cur, root):
+def nd3(cur, root):
     props = {
-        'type': 'node3',
+        'type': 'nd3',
         'title': 'Node 3'
     }
     return get_or_create_node(cur, root, position=6, auto_position=False,
@@ -121,31 +121,31 @@ def node3(cur, root):
 
 
 @pytest.fixture
-def node2_1(cur, node2):
+def nd2_1(cur, nd2):
     props = {
-        'type': 'node2_1',
+        'type': 'nd2_1',
         'title': 'Node 2-1'
     }
-    return get_or_create_node(cur, node2, auto_position=False,
+    return get_or_create_node(cur, nd2, auto_position=False,
                               properties=props)
 
 
 @pytest.fixture
-def node2_1_1(cur, node2_1):
+def nd2_1_1(cur, nd2_1):
     props = {
-        'type': 'node2_1_1',
+        'type': 'nd2_1_1',
         'title': 'Node 2-1-1',
         'boolean': False
     }
-    return get_or_create_node(cur, node2_1, auto_position=False,
+    return get_or_create_node(cur, nd2_1, auto_position=False,
                               properties=props)
 
 
 @pytest.fixture
-def node2_leaf(cur, node2_1_1):
+def nd2_leaf(cur, nd2_1_1):
     props = {
-        'type': 'node2_leaf',
+        'type': 'nd2_leaf',
         'title': 'Node 2-leaf'
     }
-    return get_or_create_node(cur, node2_1_1, auto_position=False,
+    return get_or_create_node(cur, nd2_1_1, auto_position=False,
                               properties=props)

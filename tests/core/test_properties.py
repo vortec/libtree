@@ -21,22 +21,22 @@ def test_get_nodes_by_property_dict(cur, root):
     assert ids == {root.id}
 
 
-def test_get_nodes_by_property_key(cur, root, node2, node2_1_1):
+def test_get_nodes_by_property_key(cur, root, nd2, nd2_1_1):
     ids = {child.id for child in get_nodes_by_property_key(cur, 'boolean')}
     assert root.id in ids
-    assert node2.id in ids
-    assert node2_1_1.id in ids
+    assert nd2.id in ids
+    assert nd2_1_1.id in ids
 
 
-def test_get_nodes_by_property_value(cur, root, node2_1_1):
+def test_get_nodes_by_property_value(cur, root, nd2_1_1):
     results = get_nodes_by_property_value(cur, 'boolean', False)
     ids = {child.id for child in results}
     assert root.id in ids
-    assert node2_1_1.id in ids
+    assert nd2_1_1.id in ids
 
 
-def test_get_inherited_property_value(cur, node2):
-    assert get_inherited_property_value(cur, node2, 'integer') == 1
+def test_get_inherited_property_value(cur, nd2):
+    assert get_inherited_property_value(cur, nd2, 'integer') == 1
 
 
 def test_get_inherited_properties_no_inheritance(cur, root):
@@ -49,26 +49,26 @@ def test_get_inherited_properties_no_inheritance(cur, root):
     assert get_inherited_properties(cur, root) == expected
 
 
-def test_get_inherited_properties_simple_inheritance(cur, node2):
+def test_get_inherited_properties_simple_inheritance(cur, nd2):
     expected = {
         'title': 'Node 2',
-        'type': 'node2',
+        'type': 'nd2',
         'boolean': True,
         'foo': 'bar',
         'integer': 1
     }
-    assert get_inherited_properties(cur, node2.id) == expected
+    assert get_inherited_properties(cur, nd2.id) == expected
 
 
-def test_get_inherited_properties_multiple_inheritance(cur, node2_1_1):
+def test_get_inherited_properties_multiple_inheritance(cur, nd2_1_1):
     expected = {
         'title': 'Node 2-1-1',
-        'type': 'node2_1_1',
+        'type': 'nd2_1_1',
         'boolean': False,
         'integer': 1,
         'foo': 'bar'
     }
-    assert get_inherited_properties(cur, node2_1_1) == expected
+    assert get_inherited_properties(cur, nd2_1_1) == expected
 
 
 def test_update_properties(cur, root):
