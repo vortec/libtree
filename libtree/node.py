@@ -1,3 +1,6 @@
+# Copyright (c) 2015 Fabian Kochem
+
+
 class Node:
     """ """
     def __init__(self, transaction, xid):

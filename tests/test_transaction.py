@@ -2,7 +2,7 @@
 
 
 from libtree import Transaction
-from mock import Mock
+from mock import Mock, MagicMock
 
 
 def test_it_takes_a_connection():
@@ -34,8 +34,12 @@ def test_rollback():
     assert conn.rollback.called
 
 
-def xtest_check_postgres_version():
-    raise NotImplementedError
+def test_is_compatible_postgres_version():
+    transaction = Transaction(MagicMock(), Mock())
+    transaction.cursor.fetchone.return_value = {'server_version': '9.4.1'}
+    assert transaction.is_compatible_postgres_version() is True
+    transaction.cursor.fetchone.return_value = {'server_version': '9.3.8'}
+    assert transaction.is_compatible_postgres_version() is False
 
 
 def xtest_install():
