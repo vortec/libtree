@@ -67,7 +67,7 @@ class Transaction:
         return core.get_root_node(self.cursor)
 
     def insert_root_node(self, properties=None):
-        return core.insert_root_node(self.cursor, properties)
+        return core.insert_node(self.cursor, properties)
 
     def get_node(self, xid):
         return core.get_node(self.cursor, xid)

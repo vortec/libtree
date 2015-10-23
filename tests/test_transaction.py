@@ -85,11 +85,11 @@ def test_get_root_node(mock):
     mock.assert_called_with(transaction.cursor)
 
 
-@patch.object(core, 'insert_root_node')
-def xtest_insert_root_node(mock):
+@patch.object(core, 'insert_node')
+def test_insert_root_node(mock):
     transaction = Transaction(Mock(), Mock())
     transaction.insert_root_node()
-    mock.assert_called_with(transaction.cursor)
+    mock.assert_called_with(transaction.cursor, None)
 
 
 @patch.object(core, 'get_node')
