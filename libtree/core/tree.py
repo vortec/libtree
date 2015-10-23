@@ -144,6 +144,9 @@ def change_parent(cur, node, new_parent, position=None, auto_position=True):
     """
     cur.execute(sql, (new_parent_id, position, int(node)))
 
+    if type(node) == int:
+      node = get_node(cur, node)
+
     kwargs = node.to_dict()
     kwargs['parent'] = new_parent_id
     kwargs['position'] = position

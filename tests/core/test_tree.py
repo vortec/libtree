@@ -61,7 +61,7 @@ def test_change_parent(cur, root, nd1, nd2, nd2_1, nd2_1_1,
     # of nd2-1.
 
     # Move nd2-1 from nd2 to nd1
-    _temp_node = change_parent(cur, nd2_1, nd1, auto_position=False)
+    _temp_node = change_parent(cur, nd2_1.id, nd1, auto_position=False)
 
     # Return value should have new parent set
     assert _temp_node.parent == nd1.id
