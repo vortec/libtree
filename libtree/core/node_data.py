@@ -2,7 +2,8 @@
 
 
 class NodeData(object):
-    """Immutable data-holding object which represents a tree node. Its
+    """
+    Immutable data-holding object which represents tree node data. Its
     attributes are identical to the columns in the ``nodes`` table
     (see :ref:`db_model`).
 
@@ -29,7 +30,7 @@ class NodeData(object):
     :param int position: Position in between siblings
                          (see :ref:`coreapi-positioning`)
     :param dict properties: Inheritable key/value pairs
-                             (see :ref:`coreapi-properties`)
+                            (see :ref:`coreapi-properties`)
     """
     __slots__ = [
         '_NodeData__id',
