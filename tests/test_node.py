@@ -12,7 +12,7 @@ def test_basic_representation(trans, root):
 
 def test_title_representation(trans, nd1):
     node = Node(trans, nd1.id)
-    expected = "<Node id={}, title='Node 1'>".format(nd1.id)
+    expected = '<Node id={}, title=Node 1>'.format(nd1.id)
     assert repr(node) == expected
 
 

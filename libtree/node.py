@@ -14,7 +14,7 @@ class Node:
 
     def __repr__(self):
         if 'title' in self.properties:
-            ret = '<Node id={!r}, title={!r}>'
+            ret = '<Node id={!r}, title={!s}>'
             return ret.format(self.id, self.properties['title'])
         else:
             ret = '<Node id={!r}>'
