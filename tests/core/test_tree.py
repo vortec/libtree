@@ -24,7 +24,6 @@ def test_insert_node(cur, root, nd1, nd2, nd2_1, nd2_1_1, nd3):
 
 def test_insert_node_sets_properties(root):
     assert root.properties == {
-        'title': 'Root',
         'type': 'root',
         'boolean': False,
         'integer': 1

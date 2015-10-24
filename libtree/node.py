@@ -17,8 +17,8 @@ class Node:
             ret = '<Node id={!r}, title={!r}>'
             return ret.format(self.id, self.properties['title'])
         else:
-            ret = '<Node id={!r}, parent={!r}, position={!r}>'
-            return ret.format(self.id, self.parent, self.position)
+            ret = '<Node id={!r}>'
+            return ret.format(self.id)
 
     def __eq__(self, other):
         if other.__class__ == Node:

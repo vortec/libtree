@@ -5,6 +5,16 @@ from libtree import core, Node
 from mock import patch
 
 
+def test_basic_representation(trans, root):
+    node = Node(trans, root.id)
+    assert repr(node) == '<Node id={}>'.format(root.id, root.position)
+
+
+def test_title_representation(trans, nd1):
+    node = Node(trans, nd1.id)
+    assert repr(node) == "<Node id=11, title='Node 1'>"
+
+
 def test_it_compares_other_nodes(trans, nd1, nd2):
     node1a = Node(trans, nd1.id)
     node1b = Node(trans, nd1.id)

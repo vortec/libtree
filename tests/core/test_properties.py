@@ -41,7 +41,6 @@ def test_get_inherited_property_value(cur, nd2):
 
 def test_get_inherited_properties_no_inheritance(cur, root):
     expected = {
-        'title': 'Root',
         'type': 'root',
         'boolean': False,
         'integer': 1

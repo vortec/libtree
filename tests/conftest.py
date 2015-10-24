@@ -80,7 +80,6 @@ def cur(trans):
 @pytest.fixture
 def root(cur):
     props = {
-        'title': 'Root',
         'type': 'root',
         'boolean': False,
         'integer': 1
