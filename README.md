@@ -13,7 +13,7 @@ and PyPy3).
 
 Why use **libtree**? Because...
 
- - the API is **super simple**
+ - the usage is **super simple**
  - it scales up to **billions of nodes**
  - the reads and writes are **blazingly fast**
  - it supports **attribute inheritance**
@@ -21,15 +21,15 @@ Why use **libtree**? Because...
 
 But there's even more, **libtree**...
 
- - lets you decide when and how to deal with **transactions**
- - is **memory efficient** because iterators are widely available
+ - offers **thread-safety** by working inside transactions
  - enforces **integrity** by moving tree logic to inside the database
- - is **fully integration tested**, the testsuite covers >90% of the code
+ - provides a **convenient** high level API and **fast** low level functions
+ - core is **fully integration tested**, the testsuite covers >90% of the code
 
 
 Installation
 ============
-Install libtree directly via pip:
+Install **libtree** directly via ``pip`:
 
 ```bash
 $ pip install libtree
@@ -39,7 +39,7 @@ $ pip install libtree
 Quickstart
 ==========
 Start the interactive Python interpreter of your choice to start working with
-``libtree``::
+**libtree**:
 
 ```python
 # Imports
@@ -95,11 +95,12 @@ with tree() as transaction:
 
 Documentation
 =============
-The full documentation including API reference and database model description
-can be found at [ReadTheDocs.org](https://libtree.readthedocs.org/en/latest/).
+The **full documentation** including **API reference** and **database model**
+description can be found at
+**[ReadTheDocs.org](https://libtree.readthedocs.org/en/latest/)**.
 
 
 Authors
 =======
-**libtree** is written and maintained by Fabian Kochem for CaT Concepts and
-Training GmbH.
+**libtree** is written and maintained by **Fabian Kochem** for **CaT Concepts
+and Training GmbH**.
