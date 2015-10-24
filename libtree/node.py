@@ -86,14 +86,15 @@ class Node:
         core.change_parent(self._cursor, self.id, target.id,
                            position=position, auto_position=True)
 
-    def set_position(self, new_position):
-        pass
-
     def swap_position(self, other):
         core.swap_node_positions(self._cursor, self.id, other.id)
 
-    def set_properties(self):
-        pass
+    def set_properties(self, properties):
+        core.set_properties(self._cursor, self.id, properties)
+
+    def set_position(self, new_position):
+        core.set_position(self._cursor, self.id, new_position,
+                          auto_position=True)
 
     def get_child_at_position(self, position):
         return core.get_node_at_position(self._cursor, self.id, position)

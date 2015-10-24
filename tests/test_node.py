@@ -12,7 +12,8 @@ def test_basic_representation(trans, root):
 
 def test_title_representation(trans, nd1):
     node = Node(trans, nd1.id)
-    assert repr(node) == "<Node id=11, title='Node 1'>"
+    expected = "<Node id={}, title='Node 1'>".format(nd1.id)
+    assert repr(node) == expected
 
 
 def test_it_compares_other_nodes(trans, nd1, nd2):
@@ -107,12 +108,18 @@ def test_get_inherited_properties(mock, trans, cur):
     mock.assert_called_with(cur, node.id)
 
 
-def xtest_get_inherited_property_value():
-    raise NotImplementedError
+@patch.object(core, 'set_properties')
+def test_set_properties(mock, trans, cur):
+    node = Node(trans, 1)
+    node.set_properties({'foo': 'bar'})
+    mock.assert_called_with(cur, node.id, {'foo': 'bar'})
 
 
-def xtest_set_properties():
-    raise NotImplementedError
+@patch.object(core, 'set_position')
+def test_set_position(mock, trans, cur):
+    node = Node(trans, 1)
+    node.set_position(1337)
+    mock.assert_called_with(cur, node.id, 1337, auto_position=True)
 
 
 @patch.object(core, 'get_node_at_position')
