@@ -77,21 +77,21 @@ class Transaction:
 
     def get_nodes_by_property_dict(self, query):
         ret = []
-        for _id in core.get_nodes_by_property_dict(self.cursor, query):
-            node = self.node_factory(self, _id)
+        for _node in core.get_nodes_by_property_dict(self.cursor, query):
+            node = self.node_factory(self, _node.id)
             ret.append(node)
         return ret
 
     def get_nodes_by_property_key(self, key):
         ret = []
-        for _id in core.get_nodes_by_property_key(self.cursor, key):
-            node = self.node_factory(self, _id)
+        for _node in core.get_nodes_by_property_key(self.cursor, key):
+            node = self.node_factory(self, _node.id)
             ret.append(node)
         return ret
 
     def get_nodes_by_property_value(self, key, value):
         ret = []
-        for _id in core.get_nodes_by_property_value(self.cursor, key, value):
-            node = self.node_factory(self, _id)
+        for _node in core.get_nodes_by_property_value(self.cursor, key, value):
+            node = self.node_factory(self, _node.id)
             ret.append(node)
         return ret

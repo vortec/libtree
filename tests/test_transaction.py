@@ -101,6 +101,7 @@ def test_get_node(mock):
 
 @patch.object(core, 'get_nodes_by_property_dict')
 def test_get_nodes_by_property_dict(mock):
+    mock.return_value = [Mock(id=1), Mock(id=2)]
     transaction = Transaction(Mock(), Mock())
     query = {'key': 'value'}
     transaction.get_nodes_by_property_dict(query)
@@ -109,6 +110,7 @@ def test_get_nodes_by_property_dict(mock):
 
 @patch.object(core, 'get_nodes_by_property_key')
 def test_get_nodes_by_property_key(mock):
+    mock.return_value = [Mock(id=1), Mock(id=2)]
     transaction = Transaction(Mock(), Mock())
     transaction.get_nodes_by_property_key('foobar')
     mock.assert_called_with(transaction.cursor, 'foobar')
@@ -116,6 +118,7 @@ def test_get_nodes_by_property_key(mock):
 
 @patch.object(core, 'get_nodes_by_property_value')
 def test_get_nodes_by_property_value(mock):
+    mock.return_value = [Mock(id=1), Mock(id=2)]
     transaction = Transaction(Mock(), Mock())
     transaction.get_nodes_by_property_value('key', 'value')
     mock.assert_called_with(transaction.cursor, 'key', 'value')
