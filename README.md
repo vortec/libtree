@@ -24,12 +24,12 @@ But there's even more, **libtree**...
  - offers **thread-safety** by working inside transactions
  - enforces **integrity** by moving tree logic to inside the database
  - provides a **convenient** high level API and **fast** low level functions
- - core is **fully integration tested**, the testsuite covers >90% of the code
+ - core is **fully integration tested**, the testsuite covers **>90%** of the code
 
 
 Installation
 ============
-Install **libtree** directly via ``pip`:
+Install **libtree** directly via ``pip``:
 
 ```bash
 $ pip install libtree
