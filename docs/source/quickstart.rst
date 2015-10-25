@@ -1,40 +1,57 @@
+.. _quickstart:
+
 Quickstart
 ==========
 
-After you've installed libtree correctly, you can create the table schema and create some nodes::
+Install ``libtree`` via ``pip install libtree``. Then start the
+interactive Python interpreter of your choice to start working with
+``libtree``::
 
-    from libtree import *
+    # Imports
+    from libtree import Tree
+    import psycopg2
 
-    # Connect to Postgres and create tables
-    per = PostgreSQLPersistence("dbname=test_tree user=vortec")
-    per.install()
+    # Connect to PostgreSQL
+    connection = psycopg2.connect("dbname=test_tree user=vortec")
+    tree = Tree(connection)
 
-    # Create a few nodes to get going
-    root = insert_node(per, None, properties={'title': 'Root node'})
-    bin = insert_node(per, root, properties={'title': 'Binary folder'})
-    etc = insert_node(per, root, properties={'title': 'Config folder'})
-    bash = insert_node(per, etc, properties={'title': 'Bash executable'})
-    hosts = insert_node(per, etc, properties={'title': 'Hosts file'})
-    passwd = insert_node(per, etc, properties={'title': 'Password file'})
+    # Start working with libtree inside a database transaction
+    with tree() as transaction:
 
-    # Get direct children of root node
-    children = list(get_children(per, root))
-    print(children)
-    # Output:
-    # [<Node id=2, title='Binary folder'>, <Node id=3, title='Config folder'>]
+        # Create tables
+        transaction.install()
 
-    # Move bash node into correct parent node
-    change_parent(per, bash, bin)
+        # Create nodes
+        root = transaction.insert_root_node()
+        binx = root.insert_child({'title': 'Binary folder'})
+        bash = binx.insert_child({'title': 'Bash executable', 'chmod': 755})
+        etc = root.insert_child({'title': 'Config folder'})
+        hosts = etc.insert_child({'title': 'Hosts file'})
+        passwd = etc.insert_child({'title': 'Password file', 'chmod': 644})
 
-    # Print entire tree
-    print_tree(per)
-    # Output:
-    # <Node id=1, title='Root node'>
-    #   <Node id=2, title='Binary folder'>
-    #     <Node id=4, title='Bash executable'>
-    #   <Node id=3, title='Config folder'>
-    #     <Node id=5, title='Hosts file'>
-    #     <Node id=6, title='Password file'>
+        # Direct attribute access
+        root.children  # => binx, etc
+        len(root)  # => 2
+        binx.parent  # => root
+        bash.ancestors  # => binx, root
+        root.descendants  # => binx, bash, etc, hosts, passwd
 
-    # Commit transaction
-    per.commit()
+        # Query by property
+        transaction.get_nodes_by_property_key('chmod')  # bash, passwd
+        transaction.get_nodes_by_property_dict({'chmod': 644})  # passwd
+
+        # Move bash node into etc node
+        bash.move(etc)
+        etc.children  # => hosts, passwd, bash
+        bash.set_position(1)
+        etc.children  # => hosts, bash, passwd
+
+        # Print entire tree
+        transaction.print_tree()
+        # Output:
+        # <NodeData id=1, parent=None, position=0>
+        #   <NodeData id=2, title='Binary folder'>
+        #   <NodeData id=4, title='Config folder'>
+        #     <NodeData id=5, title='Hosts file'>
+        #     <NodeData id=6, title='Password file'>
+        #     <NodeData id=3, title='Bash executable'>

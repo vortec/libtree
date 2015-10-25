@@ -46,7 +46,7 @@ at all. Don't worry - libtree supports those cases perfectly well - but
 it might be confusing in the end.
 
 To disable auto position you must pass ``auto_position=False`` to any
-function that manipulates the tree (see :ref:`tree`).
+function that manipulates the tree (see :ref:`coreapi-tree`).
 
 
 **API**
@@ -54,10 +54,10 @@ function that manipulates the tree (see :ref:`tree`).
 Related: :func:`libtree.query.get_node_at_position`
 """
 
-from libtree.query import get_node, get_node_at_position
+from libtree.core.query import get_node, get_node_at_position
 
 
-def ensure_free_position(per, node, position):
+def ensure_free_position(cur, node, position):
     """
     Move siblings away to have a free slot at ``position`` in the
     children of ``node``.
@@ -67,16 +67,16 @@ def ensure_free_position(per, node, position):
     :param int position:
     """
     try:
-        get_node_at_position(per, node, position)
+        get_node_at_position(cur, node, position)
         node_exists_at_position = True
     except ValueError:
         node_exists_at_position = False
 
     if node_exists_at_position:
-        shift_positions(per, node, position, +1)
+        shift_positions(cur, node, position, +1)
 
 
-def find_highest_position(per, node):
+def find_highest_position(cur, node):
     """
     Return highest, not occupied position in the children of ``node``.
 
@@ -96,8 +96,8 @@ def find_highest_position(per, node):
       WHERE
         parent=%s;
     """
-    per.execute(sql, (id, ))
-    result = per.fetchone()['max']
+    cur.execute(sql, (id, ))
+    result = cur.fetchone()['max']
 
     if result is not None:
         return result
@@ -105,7 +105,7 @@ def find_highest_position(per, node):
         return -1
 
 
-def set_position(per, node, position, auto_position=True):
+def set_position(cur, node, position, auto_position=True):
     """
     Set ``position`` for ``node``.
 
@@ -117,17 +117,17 @@ def set_position(per, node, position, auto_position=True):
                          inserted the the end of the parents children.
                          If `auto_position` is disabled, this is just a
                          value.
-    :param bool auto_position: See :ref:`api-positioning`
+    :param bool auto_position: See :ref:`coreapi-positioning`
     """
     if auto_position:
         id = int(node)
         if type(node) == int:
-            node = get_node(per, id)
+            node = get_node(cur, id)
 
         if type(position) == int and position >= 0:
-            ensure_free_position(per, node.parent, position)
+            ensure_free_position(cur, node.parent, position)
         else:
-            position = find_highest_position(per, node.parent) + 1
+            position = find_highest_position(cur, node.parent) + 1
     else:
         id = int(node)
 
@@ -139,11 +139,11 @@ def set_position(per, node, position, auto_position=True):
         WHERE
           id=%s;
     """
-    per.execute(sql, (position, int(node)))
+    cur.execute(sql, (position, int(node)))
     return position
 
 
-def shift_positions(per, node, position, offset):
+def shift_positions(cur, node, position, offset):
     """
     Shift all children of ``node`` at ``position`` by ``offset``.
 
@@ -175,10 +175,10 @@ def shift_positions(per, node, position, offset):
         delta = '{}'.format(offset)
 
     sql = sql.format(delta)
-    per.execute(sql, (id, position))
+    cur.execute(sql, (id, position))
 
 
-def swap_node_positions(per, node1, node2):
+def swap_node_positions(cur, node1, node2):
     """
     Swap positions of ``node1`` and ``node2``.
 
@@ -187,5 +187,5 @@ def swap_node_positions(per, node1, node2):
     :param node2:
     :type node2: Node or int
     """
-    set_position(per, node1, node2.position, auto_position=False)
-    set_position(per, node2, node1.position, auto_position=False)
+    set_position(cur, node1, node2.position, auto_position=False)
+    set_position(cur, node2, node1.position, auto_position=False)

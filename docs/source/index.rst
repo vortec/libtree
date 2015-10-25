@@ -10,21 +10,18 @@ and PyPy3).
 
 Why use **libtree**? Because...
 
-* the API is **super simple** (see :ref:`api`)
+* the usage is **super simple** (see :ref:`quickstart`)
 * it scales up to **billions of nodes** (see :ref:`db_model`)
 * the reads and writes are **blazingly fast** (:ref:`benchmarks` will be
   available soon)
-* it has **attribute inheritance** (see :ref:`api-properties`)
+* it supports **attribute inheritance** (see :ref:`coreapi-properties`)
 
-But wait, **there's more**:
+But there's even more, **libtree**...
 
-* it doesn't tell you when to use **transactions**.
-* all tree logic happens **inside the database** and doesn't occupy your
-  precious CPU.
-* it's **memory efficient** because **iterators** are being used
-  everywhere where possible.
-* the testsuite covers **>90%** of the code base and is **fully integration
-  tested**.
+* offers **thread-safety** by working inside transactions
+* enforces **integrity** by moving tree logic to inside the database
+* provides a **convenient** high level API and **fast** low level functions
+* core is **fully integration tested**, the testsuite covers >90% of the code
 
 
 Contents
@@ -36,7 +33,8 @@ Contents
    installation
    quickstart
    user_guide
-   api/index
+   publicapi/index
+   coreapi/index
    benchmarks
    db_model
 

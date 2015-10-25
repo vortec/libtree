@@ -1,7 +1,7 @@
-.. _api-tree:
+.. _publicapi-tree:
 
-Tree functions
-==============
+Tree class
+==========
 
 .. automodule:: libtree.tree
    :members:

@@ -54,7 +54,8 @@ setup(
         psycopg2_dependency
     ],
     tests_require=[
-        'pytest'
+        'pytest',
+        'mock'
     ],
 
     cmdclass={

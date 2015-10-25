@@ -1,7 +1,7 @@
 Installation
 ============
 
-Install libtree directly via
+Install libtree directly via::
 
     $ pip install libtree
 
