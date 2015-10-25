@@ -31,13 +31,10 @@ def delete_node_worst_case(transaction):
 
 def iterate_get_ancestors(transaction):
     node = _get_node_by_title(transaction, "0x0x0x0x0x0x0x0")
-
     def method():
         nonlocal node
-
         for a in node.ancestors:
             pass
-
     return method
 
 
