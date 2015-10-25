@@ -37,4 +37,4 @@ class Benchmark():
             s_all = [format_duration(t) for t in self.results]
             s += "(min={} avg={} max={} all={})".format(s_min,
                                                         s_avg, s_max, s_all)
-        return " ".join(s)
+        return s
