@@ -49,8 +49,8 @@ def run():
         for benchmark in benchmarks_to_run:
             print(benchmark.name.ljust(30), end="")
             sys.stdout.flush()
-            benchmark.run(per._connection)
-            print(benchmark)
+            duration = benchmark.run(per._connection)
+            print(duration)
 
     else:
         print("No benchmarks to run")
