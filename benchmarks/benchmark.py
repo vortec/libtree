@@ -14,7 +14,7 @@ class Benchmark():
         self.repeat = repeat
         self.name = name
 
-    def run(self, conn):
+    def run(self, transaction):
         self.results = []
         for x in range(self.repeat):
             start = default_timer()
@@ -22,5 +22,5 @@ class Benchmark():
             end = default_timer()
             elapsed = end - start
             self.results.append(elapsed)
-            conn.rollback()
+            transaction.rollback()
         return min(self.results)

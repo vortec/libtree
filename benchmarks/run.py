@@ -1,6 +1,7 @@
 import sys
 import argparse
-from libtree import PostgreSQLPersistence
+import psycopg2
+from libtree import Tree
 from utils import postgres_create_db, postgres_analyze_db, generate_tree, format_duration
 from benchmarks import create_benchmarks
 
@@ -21,39 +22,43 @@ def run():
     if config['generate_tree']:
         # drop existing database and recreate
         postgres_create_db(config['postgres_db'], DBNAME)
-        per = PostgreSQLPersistence(config['benchmark_db'])
-        per.create_schema()
-        per.create_triggers()
 
-        # create tree with test data
-        generate_tree(per, config['levels'], config['per_level'])
-        per.commit()
+        connection = psycopg2.connect(config['benchmark_db'])
+        tree = Tree(connection)
 
-    per = PostgreSQLPersistence(config['benchmark_db'])
-    postgres_analyze_db(per._cursor)
+        with tree() as transaction:
+            transaction.install()
+            # create tree with test data
+            generate_tree(per, config['levels'], config['per_level'])
 
-    # build a list of benchmarks to run
-    benchmarks = create_benchmarks(per, config)
-    benchmarks_to_run = []
-    filter_benchmarks = config['filter_benchmarks']
+    connection = psycopg2.connect(config['benchmark_db'])
+    tree = Tree(connection)
 
-    for b in benchmarks:
-        if not filter_benchmarks or filter_benchmarks in b.name:
-            benchmarks_to_run.append(b)
+    with tree() as transaction:
+        postgres_analyze_db(transaction.cursor)
 
-    print()
+        # build a list of benchmarks to run
+        benchmarks = create_benchmarks(transaction, config)
+        benchmarks_to_run = []
+        filter_benchmarks = config['filter_benchmarks']
 
-    if len(benchmarks_to_run):
-        print("Running benchmarks..")
+        for b in benchmarks:
+            if not filter_benchmarks or filter_benchmarks in b.name:
+                benchmarks_to_run.append(b)
 
-        for benchmark in benchmarks_to_run:
-            print(benchmark.name.ljust(30), end="")
-            sys.stdout.flush()
-            duration = benchmark.run(per._connection)
-            print(format_duration(duration))
+        print()
 
-    else:
-        print("No benchmarks to run")
+        if len(benchmarks_to_run):
+            print("Running benchmarks..")
+
+            for benchmark in benchmarks_to_run:
+                print(benchmark.name.ljust(30), end="")
+                sys.stdout.flush()
+                duration = benchmark.run(transaction)
+                print(format_duration(duration))
+
+        else:
+            print("No benchmarks to run")
 
 
 if __name__ == "__main__":
