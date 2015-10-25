@@ -29,7 +29,7 @@ def run():
         with tree() as transaction:
             transaction.install()
             # create tree with test data
-            generate_tree(per, config['levels'], config['per_level'])
+            generate_tree(transaction, config['levels'], config['per_level'])
 
     connection = psycopg2.connect(config['benchmark_db'])
     tree = Tree(connection)

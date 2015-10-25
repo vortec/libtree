@@ -4,6 +4,7 @@ import libtree
 
 CURSOR_UP_ONE = '\x1b[1A'
 ERASE_LINE = '\x1b[2K'
+REFRESH_TERMINAL_DELAY = 30
 
 
 def postgres_create_db(dsn, dbname):
@@ -31,16 +32,18 @@ def calculate_tree_size(levels, per_level):
     return int(((1 - per_level ** (levels + 1)) / (1 - per_level)) - 1)
 
 
-def generate_tree(per, levels, per_level):
+def generate_tree(transaction, levels, per_level):
     def insert_node(*args, **kwargs):
         # wrap libtree.insert_node so we can print the current progress
-        nonlocal n_inserted
-        node = libtree.insert_node(*args, **kwargs)
-
+        nonlocal n_inserted, expected_nodes
+        node = libtree.core.insert_node(*args, **kwargs)
         n_inserted += 1
-        if n_inserted > 1:
-            print(CURSOR_UP_ONE + ERASE_LINE, end="")
-        print(n_inserted)
+        
+        # only print progress at certain points 
+        if not n_inserted % REFRESH_TERMINAL_DELAY or n_inserted == expected_nodes:
+            if n_inserted > REFRESH_TERMINAL_DELAY:
+                print(CURSOR_UP_ONE + ERASE_LINE, end="")
+            print(n_inserted)
 
         return node
 
@@ -52,15 +55,16 @@ def generate_tree(per, levels, per_level):
             title = "".join(map(str, label2))
             properties = {"title": title}
             node = insert_node(
-                per, parent, properties, position=x, auto_position=False)
+                transaction.cursor, parent, properties, position=x, auto_position=False)
             if current_depth < levels:
                 insert_children(node, label2, current_depth + 1)
 
     n_inserted = 0
     expected_nodes = calculate_tree_size(levels, per_level)
     print("generating tree with {} nodes..".format(expected_nodes))
-    root = insert_node(per, None, properties={"title": "0"})
+    root = insert_node(transaction.cursor, None, properties={"title": "0"})
     insert_children(root, [0])
+    print("done")
 
 
 def format_duration(seconds):
