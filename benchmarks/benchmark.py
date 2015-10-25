@@ -1,6 +1,5 @@
 import time
 import sys
-from utils import format_duration
 
 if sys.platform == "win32":
     default_timer = time.clock

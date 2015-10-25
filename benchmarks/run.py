@@ -1,7 +1,7 @@
 import sys
 import argparse
 from libtree import PostgreSQLPersistence
-from utils import postgres_create_db, postgres_analyze_db, generate_tree
+from utils import postgres_create_db, postgres_analyze_db, generate_tree, format_duration
 from benchmarks import create_benchmarks
 
 DBNAME = 'benchmark_libtree'
@@ -50,7 +50,7 @@ def run():
             print(benchmark.name.ljust(30), end="")
             sys.stdout.flush()
             duration = benchmark.run(per._connection)
-            print(duration)
+            print(format_duration(duration))
 
     else:
         print("No benchmarks to run")

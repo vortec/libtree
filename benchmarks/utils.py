@@ -2,6 +2,9 @@ import psycopg2
 import math
 import libtree
 
+CURSOR_UP_ONE = '\x1b[1A'
+ERASE_LINE = '\x1b[2K'
+
 
 def postgres_create_db(dsn, dbname):
     conn = psycopg2.connect(dsn)
@@ -32,13 +35,14 @@ def generate_tree(per, levels, per_level):
     def insert_node(*args, **kwargs):
         # wrap libtree.insert_node so we can print the current progress
         nonlocal n_inserted
-        libtree.insert_node(*args, **kwargs)
+        node = libtree.insert_node(*args, **kwargs)
+
         n_inserted += 1
-        CURSOR_UP_ONE = '\x1b[1A'
-        ERASE_LINE = '\x1b[2K'
         if n_inserted > 1:
             print(CURSOR_UP_ONE + ERASE_LINE, end="")
         print(n_inserted)
+
+        return node
 
     def insert_children(parent, label, current_depth=1):
         label.append("x")
