@@ -29,6 +29,17 @@ def calculate_tree_size(levels, per_level):
 
 
 def generate_tree(per, levels, per_level):
+    def insert_node(*args, **kwargs):
+        # wrap libtree.insert_node so we can print the current progress
+        nonlocal n_inserted
+        libtree.insert_node(*args, **kwargs)
+        n_inserted += 1
+        CURSOR_UP_ONE = '\x1b[1A'
+        ERASE_LINE = '\x1b[2K'
+        if n_inserted > 1:
+            print(CURSOR_UP_ONE + ERASE_LINE, end="")
+        print(n_inserted)
+
     def insert_children(parent, label, current_depth=1):
         label.append("x")
         for x in range(per_level):
@@ -36,13 +47,15 @@ def generate_tree(per, levels, per_level):
             label2.append(x)
             title = "".join(map(str, label2))
             properties = {"title": title}
-            node = libtree.insert_node(
+            node = insert_node(
                 per, parent, properties, position=x, auto_position=False)
             if current_depth < levels:
                 insert_children(node, label2, current_depth + 1)
+
+    n_inserted = 0
     expected_nodes = calculate_tree_size(levels, per_level)
     print("generating tree with {} nodes..".format(expected_nodes))
-    root = libtree.insert_node(per, None, properties={"title": "0"})
+    root = insert_node(per, None, properties={"title": "0"})
     insert_children(root, [0])
 
 
