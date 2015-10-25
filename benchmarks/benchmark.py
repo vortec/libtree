@@ -9,7 +9,7 @@ else:
 
 class Benchmark():
 
-    def __init__(self, func, name, repeat=5):
+    def __init__(self, func, name, repeat=3):
         self.func = func
         self.repeat = repeat
         self.name = name

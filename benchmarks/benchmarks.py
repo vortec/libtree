@@ -7,16 +7,16 @@ def _get_node_by_title(transaction, title):
     return nodes[0] if nodes else None
 
 
-# def change_parent_worst_case(transaction):
-#     node = _get_node_by_title(transaction, "0x0")
-#     new_parent = _get_node_by_title(transaction, "0x1")
-#     return lambda: libtree.change_parent(transaction, node, new_parent)
+def change_parent_worst_case(transaction):
+    node = _get_node_by_title(transaction, "0x0")
+    new_parent = _get_node_by_title(transaction, "0x1")
+    return lambda: node.move(new_parent)
 
 
-# def change_parent_best_case(transaction):
-#     node = _get_node_by_title(transaction, "0x0x0x0x0x0x0x1")
-#     new_parent = _get_node_by_title(transaction, "0x0x0x0x0x0")
-#     return lambda: libtree.change_parent(transaction, node, new_parent)
+def change_parent_best_case(transaction):
+    node = _get_node_by_title(transaction, "0x0x0x0x0x0x0x1")
+    new_parent = _get_node_by_title(transaction, "0x0x0x0x0x0")
+    return lambda: node.move(new_parent)
 
 
 def delete_node_best_case(transaction):
@@ -34,7 +34,7 @@ def iterate_get_ancestors(transaction):
 
     def method():
         nonlocal node
-        
+
         for a in node.ancestors:
             pass
 
@@ -83,14 +83,14 @@ def create_benchmarks(transaction, config):
             delete_node_best_case(transaction),
             "delete_node_best_case"
         ),
-        # Benchmark(
-        #     change_parent_worst_case(transaction),
-        #     "change_parent_worst_case"
-        # ),
-        # Benchmark(
-        #     change_parent_best_case(transaction),
-        #     "change_parent_best_case"
-        # ),
+        Benchmark(
+            change_parent_worst_case(transaction),
+            "change_parent_worst_case"
+        ),
+        Benchmark(
+            change_parent_best_case(transaction),
+            "change_parent_best_case"
+        ),
         Benchmark(
             iterate_get_ancestors(transaction),
             "iterate_get_ancestors"
