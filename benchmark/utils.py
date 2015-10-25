@@ -59,13 +59,18 @@ def generate_tree(per, levels, per_level):
     insert_children(root, [0])
 
 
-def format_duration(n):
+def format_duration(seconds):
+    """
+    pretty-print a duration.
+
+    :param float seconds: duration to be formatted.
+    """
     units = ["s", "ms", 'us', "ns"]
     scaling = [1, 1e3, 1e6, 1e9]
-    if n > 0.0 and n < 1000.0:
-        order = min(-int(math.floor(math.log10(n)) // 3), 3)
-    elif n >= 1000.0:
+    if seconds > 0.0 and seconds < 1000.0:
+        order = min(-int(math.floor(math.log10(seconds)) // 3), 3)
+    elif seconds >= 1000.0:
         order = 0
     else:
         order = 3
-    return "{:.2f}{}".format(n * scaling[order], units[order])
+    return "{:.2f}{}".format(seconds * scaling[order], units[order])
