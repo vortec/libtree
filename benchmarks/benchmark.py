@@ -9,10 +9,13 @@ else:
 
 class Benchmark():
 
-    def __init__(self, func, name="", repeat=5):
+    def __init__(self, func, name, repeat=5):
         self.func = func
         self.repeat = repeat
         self.name = name
+
+    def __str__(self):
+        return "<Benchmark {}>".format(self.name)
 
     def run(self, transaction):
         self.results = []
