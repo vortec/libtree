@@ -102,8 +102,6 @@ class Transaction:
         Get a set of nodes which have all key/value pairs of ``query``
         in their properties. Inherited properties are not considered.
 
-        TODO: make set
-
         :param dict query: The dictionary to search for
         """
         ret = set()
@@ -117,8 +115,6 @@ class Transaction:
         Get a set of nodes which have a property named ``key`` in their
         properties. Inherited properties are not considered.
 
-        TODO: make set
-
         :param str key: The key to search for
         """
         ret = set()
@@ -131,8 +127,6 @@ class Transaction:
         """
         Get a set of nodes which have a property ``key`` with value
         ``value``. Inherited properties are not considered.
-
-        TODO: make set
 
         :param str key: The key to search for
         :param object value: The exact value to sarch for
