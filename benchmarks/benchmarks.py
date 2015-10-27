@@ -4,7 +4,7 @@ import libtree
 
 def _get_node_by_title(transaction, title):
     nodes = transaction.get_nodes_by_property_value("title", title)
-    return nodes[0] if nodes else None
+    return nodes.pop() if nodes else None
 
 
 def change_parent_worst_case(transaction):
