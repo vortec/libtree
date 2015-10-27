@@ -34,6 +34,10 @@ def flush_tables(cur):
 
 
 def is_compatible_postgres_version(cur):
+    """
+    Determine whether PostgreSQL server version is compatible with
+    libtree.
+    """
     cur.execute("SHOW server_version;")
     result = cur.fetchone()['server_version']
     server_version = tuple(map(int, result.split('.')))

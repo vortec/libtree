@@ -15,8 +15,8 @@ class NodeData(object):
     functions:
 
     * :func:`libtree.core.tree.change_parent`
-    * :ref:`coreapi-positioning`
-    * :ref:`coreapi-properties`
+    * :ref:`core-positioning`
+    * :ref:`core-properties`
 
     Most ``libtree`` functions need a database ID in order to know on
     which data they should operate, but also accept ``Node`` objects
@@ -28,9 +28,9 @@ class NodeData(object):
     :param parent: Reference to a parent node
     :type parent: Node or int
     :param int position: Position in between siblings
-                         (see :ref:`coreapi-positioning`)
+                         (see :ref:`core-positioning`)
     :param dict properties: Inheritable key/value pairs
-                            (see :ref:`coreapi-properties`)
+                            (see :ref:`core-properties`)
     """
     __slots__ = [
         '_NodeData__id',

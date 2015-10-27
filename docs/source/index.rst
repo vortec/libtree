@@ -14,7 +14,7 @@ Why use **libtree**? Because...
 * it scales up to **billions of nodes** (see :ref:`db_model`)
 * the reads and writes are **blazingly fast** (:ref:`benchmarks` will be
   available soon)
-* it supports **attribute inheritance** (see :ref:`coreapi-properties`)
+* it supports **attribute inheritance** (see :ref:`core-properties`)
 
 But there's even more, **libtree**...
 
@@ -33,8 +33,10 @@ Contents
    installation
    quickstart
    user_guide
-   publicapi/index
-   coreapi/index
+   tree
+   transaction
+   node
+   core/index
    benchmarks
    db_model
 

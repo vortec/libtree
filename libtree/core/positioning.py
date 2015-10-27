@@ -46,7 +46,7 @@ at all. Don't worry - libtree supports those cases perfectly well - but
 it might be confusing in the end.
 
 To disable auto position you must pass ``auto_position=False`` to any
-function that manipulates the tree (see :ref:`coreapi-tree`).
+function that manipulates the tree (see :ref:`core-tree`).
 
 
 **API**
@@ -117,7 +117,7 @@ def set_position(cur, node, position, auto_position=True):
                          inserted the the end of the parents children.
                          If `auto_position` is disabled, this is just a
                          value.
-    :param bool auto_position: See :ref:`coreapi-positioning`
+    :param bool auto_position: See :ref:`core-positioning`
     """
     if auto_position:
         id = int(node)

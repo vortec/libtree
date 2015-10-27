@@ -1,4 +1,4 @@
-.. _coreapi-properties:
+.. _core-properties:
 
 Property functions
 ==================

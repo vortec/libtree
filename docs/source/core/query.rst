@@ -1,4 +1,4 @@
-.. _coreapi-query:
+.. _core-query:
 
 Query functions
 ===============

@@ -1,4 +1,4 @@
-.. _coreapi-database:
+.. _corefuncs-database:
 
 Database functions
 ==================

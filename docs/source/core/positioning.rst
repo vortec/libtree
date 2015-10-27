@@ -1,4 +1,4 @@
-.. _coreapi-positioning:
+.. _core-positioning:
 
 Positioning functions
 =====================

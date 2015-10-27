@@ -11,9 +11,8 @@ you don't have a database yet, create one now::
     $ createdb libtree
 
 Next, start a Python interpreter, import libtree and create a
-:ref:`publicapi-tree` object. To make it connect to PostgreSQL, you
-must create a `psycopg2` connection.
-After that, you can install libtree::
+:ref:`tree` object. To make it connect to PostgreSQL, you must create a
+`psycopg2` connection. After that, you can install libtree::
 
     $ python
     Python 3.4.2 (default, Nov 12 2014, 10:43:21)

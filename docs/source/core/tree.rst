@@ -1,4 +1,4 @@
-.. _coreapi-tree:
+.. _core-tree:
 
 Tree functions
 ==============

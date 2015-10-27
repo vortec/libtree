@@ -6,7 +6,20 @@ from libtree import core
 
 class Node:
     """
-    Objects which represents a tree node inside a
+    Representation of a tree node and entrypoint for local tree
+    operations.
+
+    Its a thin wrapper around the underlaying core functions. It does
+    not contain any data besides the database ID and must therefore
+    query the database every time the value of an attribute like
+    ``parent`` has been requested. This decision has been made to avoid
+    race conditions when working in concurrent or distributed
+    environments, but comes at the cost of slower runtime execution
+    speeds. If this becomes a problem for you, grab the the
+    corresponding :class:`libtree.core.node_data.NodeData` object via
+    :attr:`libtree.node.Node.node_data`.
+
+    This object is tightly coupled to a
     :class:`libtree.transaction.Transaction` object. It behaves like a
     partial which passes a database cursor and node ID into every
     :mod:`libtree.core` function. It also has a few convenience features
@@ -17,6 +30,7 @@ class Node:
     :type transaction: Transaction
     :param int id: Database node ID
     .. automethod:: __len__
+    .. automethod:: __eq__
 
     """
     __slots__ = [
@@ -24,6 +38,7 @@ class Node:
         'id',
         'transaction'
     ]
+
     def __init__(self, transaction, id):
         self.transaction = transaction
         self.id = id
@@ -39,8 +54,9 @@ class Node:
             return ret.format(self.id)
 
     def __eq__(self, other):
+        """ Determine if this node is equal to ``other``. """
         if other.__class__ == Node:
-            nd_self = self._node_data
+            nd_self = self.node_data
             nd_other = core.get_node(self._cursor, other.id)
             return nd_self.to_dict() == nd_other.to_dict()
         return False
@@ -50,36 +66,36 @@ class Node:
         return int(core.get_children_count(self._cursor, self.id))
 
     @property
-    def _node_data(self):
+    def node_data(self):
         """
-        Return a :class:`libtree.core.node_data.NodeData` object for
+        Get a :class:`libtree.core.node_data.NodeData` object for
         current node ID from database.
         """
         return core.get_node(self._cursor, self.id)
 
     @property
     def parent(self):
-        """ Return parent node. """
-        return Node(self.transaction, self._node_data.parent)
+        """ Get parent node. """
+        return Node(self.transaction, self.node_data.parent)
 
     @property
     def position(self):
-        """ Return position in between sibling nodes. """
-        return self._node_data.position
+        """ Get position in between sibling nodes. """
+        return self.node_data.position
 
     @property
     def properties(self):
-        """ Return property dictionary. """
-        return self._node_data.properties
+        """ Get property dictionary. """
+        return self.node_data.properties
 
     @property
     def inherited_properties(self):
-        """ Return inherited property dictionary. """
+        """ Get inherited property dictionary. """
         return core.get_inherited_properties(self._cursor, self.id)
 
     @property
     def children(self):
-        """ Return list of immediate child nodes. """
+        """ Get list of immediate child nodes. """
         ret = []
         for _id in core.get_child_ids(self._cursor, self.id):
             node = Node(self.transaction, _id)
@@ -88,7 +104,7 @@ class Node:
 
     @property
     def ancestors(self):
-        """ Return list of ancestor nodes. """
+        """ Get list of ancestor nodes. """
         ret = []
         for _id in core.get_ancestor_ids(self._cursor, self.id):
             node = Node(self.transaction, _id)
@@ -97,7 +113,7 @@ class Node:
 
     @property
     def descendants(self):
-        """ Return list of descendant nodes. """
+        """ Get list of descendant nodes. """
         ret = []
         for _id in core.get_descendant_ids(self._cursor, self.id):
             node = Node(self.transaction, _id)
@@ -113,7 +129,7 @@ class Node:
         Create a child node and return it.
 
         :param dict properties: Inheritable key/value pairs
-                                (see :ref:`coreapi-properties`)
+                                (see :ref:`core-properties`)
         :param int position: Position in between siblings. If 0, the
                              node will be inserted at the beginning of
                              the parents children. If -1, the node will
@@ -173,7 +189,7 @@ class Node:
 
     def get_child_at_position(self, position):
         """
-        Return child node at certain position.
+        Get child node at certain position.
 
         :param int position: Position to get the child node from
         """

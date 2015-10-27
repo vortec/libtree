@@ -1,7 +1,7 @@
-.. _publicapi-node:
+.. _node:
 
-Node class
-==========
+Node object
+===========
 
 .. automodule:: libtree.node
    :members:
