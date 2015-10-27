@@ -95,12 +95,12 @@ with tree() as transaction:
 
 Documentation
 =============
-The **full documentation** including **API reference** and **database model**
+The full documentation including API reference and database model
 description can be found at
 **[ReadTheDocs.org](https://libtree.readthedocs.org/en/latest/)**.
 
 
 Authors
 =======
-**libtree** is written and maintained by **Fabian Kochem** for **CaT Concepts
-and Training GmbH**.
+**libtree** is written and maintained by Fabian Kochem for CaT Concepts
+and Training GmbH.
