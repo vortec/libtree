@@ -71,11 +71,11 @@ class NodeData(object):
 
     def __repr__(self):
         if 'title' in self.properties:
-            ret = '<NodeData id={!r}, title={!r}>'
+            ret = "<NodeData id={!r}, title='{!s}'>"
             return ret.format(self.id, self.properties['title'])
         else:
-            ret = '<NodeData id={!r}, parent={!r}, position={!r}>'
-            return ret.format(self.id, self.parent, self.position)
+            ret = '<NodeData id={!r}>'
+            return ret.format(self.id, self.parent)
 
     @property
     def id(self):

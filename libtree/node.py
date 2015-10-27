@@ -47,7 +47,7 @@ class Node:
 
     def __repr__(self):
         if 'title' in self.properties:
-            ret = '<Node id={!r}, title={!s}>'
+            ret = "<Node id={!r}, title='{!s}'>"
             return ret.format(self.id, self.properties['title'])
         else:
             ret = '<Node id={!r}>'
@@ -60,6 +60,9 @@ class Node:
             nd_other = core.get_node(self._cursor, other.id)
             return nd_self.to_dict() == nd_other.to_dict()
         return False
+
+    def __hash__(self):
+        return hash('<Node {}>'.format(self.id))
 
     def __len__(self):
         """ Return amount of child nodes. """

@@ -6,7 +6,7 @@ from libtree.core.node_data import NodeData
 
 def test_basic_representation():
     node = NodeData(11, 22)
-    assert repr(node) == "<NodeData id=11, parent=22, position=None>"
+    assert repr(node) == "<NodeData id=11>"
 
 
 def test_title_representation():

@@ -105,8 +105,8 @@ class Transaction:
         :param dict query: The dictionary to search for
         """
         ret = set()
-        for _node in core.get_nodes_by_property_dict(self.cursor, query):
-            node = self.node_factory(self, _node.id)
+        for _nd in core.get_nodes_by_property_dict(self.cursor, query):
+            node = self.node_factory(self, _nd.id)
             ret.add(node)
         return ret
 
@@ -118,8 +118,8 @@ class Transaction:
         :param str key: The key to search for
         """
         ret = set()
-        for _node in core.get_nodes_by_property_key(self.cursor, key):
-            node = self.node_factory(self, _node.id)
+        for _nd in core.get_nodes_by_property_key(self.cursor, key):
+            node = self.node_factory(self, _nd.id)
             ret.add(node)
         return ret
 
@@ -132,7 +132,7 @@ class Transaction:
         :param object value: The exact value to sarch for
         """
         ret = set()
-        for _node in core.get_nodes_by_property_value(self.cursor, key, value):
-            node = self.node_factory(self, _node.id)
+        for _nd in core.get_nodes_by_property_value(self.cursor, key, value):
+            node = self.node_factory(self, _nd.id)
             ret.add(node)
         return ret

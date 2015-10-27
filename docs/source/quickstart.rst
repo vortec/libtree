@@ -49,7 +49,7 @@ interactive Python interpreter of your choice to start working with
         # Print entire tree
         transaction.print_tree()
         # Output:
-        # <NodeData id=1, parent=None, position=0>
+        # <NodeData id=1, parent=None>
         #   <NodeData id=2, title='Binary folder'>
         #   <NodeData id=4, title='Config folder'>
         #     <NodeData id=5, title='Hosts file'>
