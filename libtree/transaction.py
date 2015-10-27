@@ -99,37 +99,37 @@ class Transaction:
 
     def get_nodes_by_property_dict(self, query):
         """
-        Get a list of nodes which have all key/value pairs of ``query``
+        Get a set of nodes which have all key/value pairs of ``query``
         in their properties. Inherited properties are not considered.
 
         TODO: make set
 
         :param dict query: The dictionary to search for
         """
-        ret = []
+        ret = set()
         for _node in core.get_nodes_by_property_dict(self.cursor, query):
             node = self.node_factory(self, _node.id)
-            ret.append(node)
+            ret.add(node)
         return ret
 
     def get_nodes_by_property_key(self, key):
         """
-        Get a list of nodes which have a property named ``key`` in their
+        Get a set of nodes which have a property named ``key`` in their
         properties. Inherited properties are not considered.
 
         TODO: make set
 
         :param str key: The key to search for
         """
-        ret = []
+        ret = set()
         for _node in core.get_nodes_by_property_key(self.cursor, key):
             node = self.node_factory(self, _node.id)
-            ret.append(node)
+            ret.add(node)
         return ret
 
     def get_nodes_by_property_value(self, key, value):
         """
-        Get a list of nodes which have a property ``key`` with value
+        Get a set of nodes which have a property ``key`` with value
         ``value``. Inherited properties are not considered.
 
         TODO: make set
@@ -137,8 +137,8 @@ class Transaction:
         :param str key: The key to search for
         :param object value: The exact value to sarch for
         """
-        ret = []
+        ret = set()
         for _node in core.get_nodes_by_property_value(self.cursor, key, value):
             node = self.node_factory(self, _node.id)
-            ret.append(node)
+            ret.add(node)
         return ret
