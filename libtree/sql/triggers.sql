@@ -39,45 +39,17 @@ RETURNS TRIGGER AS
 $BODY$
 BEGIN
 
-  DELETE FROM
-    nodes
-  WHERE
-    id IN
-      (
-        SELECT
-          node
-        FROM
-          ancestors
-        WHERE
-          ancestor=OLD.id
-      );
+    DELETE FROM nodes AS t1 USING ancestors AS t2
+        WHERE t2."ancestor"=OLD.id AND t1."id" = t2."node";
 
-  DELETE FROM
-    ancestors
-  WHERE
-    node IN
-      (
-        SELECT
-          node
-        FROM
-          ancestors
-        WHERE
-          ancestor=OLD.id
-        UNION
-          SELECT OLD.id
-      )
-  OR
-    ancestor IN
-      (
-        SELECT
-          node
-        FROM
-          ancestors
-        WHERE
-          ancestor=OLD.id
-        UNION
-          SELECT OLD.id
-      );
+    DELETE FROM ancestors AS t1 USING ancestors AS t2
+        WHERE t2."ancestor"=OLD.id AND t1."node" = t2."node";
+
+    DELETE FROM ancestors AS t1 USING ancestors AS t2
+        WHERE t2."ancestor"=OLD.id AND t1."ancestor" = t2."node";
+
+    DELETE FROM ancestors
+        WHERE node = OLD.id OR ancestor=OLD.id;
 
   RETURN OLD;
 
