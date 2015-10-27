@@ -35,14 +35,14 @@ class Node:
     """
     __slots__ = [
         '_cursor',
-        'id',
-        'transaction'
+        '_Node__id',
+        '_transaction'
     ]
 
     def __init__(self, transaction, id):
-        self.transaction = transaction
-        self.id = id
+        self.__id = id
 
+        self._transaction = transaction
         self._cursor = transaction.cursor
 
     def __repr__(self):
@@ -69,6 +69,11 @@ class Node:
         return int(core.get_children_count(self._cursor, self.id))
 
     @property
+    def id(self):
+        """ Database ID """
+        return self.__id
+
+    @property
     def node_data(self):
         """
         Get a :class:`libtree.core.node_data.NodeData` object for
@@ -79,7 +84,7 @@ class Node:
     @property
     def parent(self):
         """ Get parent node. """
-        return Node(self.transaction, self.node_data.parent)
+        return Node(self._transaction, self.node_data.parent)
 
     @property
     def position(self):
@@ -101,7 +106,7 @@ class Node:
         """ Get list of immediate child nodes. """
         ret = []
         for _id in core.get_child_ids(self._cursor, self.id):
-            node = Node(self.transaction, _id)
+            node = Node(self._transaction, _id)
             ret.append(node)
         return ret
 
@@ -110,7 +115,7 @@ class Node:
         """ Get list of ancestor nodes. """
         ret = []
         for _id in core.get_ancestor_ids(self._cursor, self.id):
-            node = Node(self.transaction, _id)
+            node = Node(self._transaction, _id)
             ret.append(node)
         return ret
 
@@ -119,7 +124,7 @@ class Node:
         """ Get list of descendant nodes. """
         ret = []
         for _id in core.get_descendant_ids(self._cursor, self.id):
-            node = Node(self.transaction, _id)
+            node = Node(self._transaction, _id)
             ret.append(node)
         return ret
 
@@ -141,7 +146,7 @@ class Node:
         """
         node_data = core.insert_node(self._cursor, self.id, properties,
                                      position=position, auto_position=True)
-        return Node(self.transaction, node_data.id)
+        return Node(self._transaction, node_data.id)
 
     def move(self, target, position=-1):
         """
