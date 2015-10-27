@@ -16,11 +16,6 @@ def test_it_takes_a_connection_pool(dsn):
     assert Tree(pool=pool).pool is pool
 
 
-def test_it_takes_a_table_prefix():
-    prefix = 'vortec_'
-    assert Tree(pool=Mock(), prefix=prefix).prefix == prefix
-
-
 def test_it_requires_either_connection_or_pool():
     with pytest.raises(TypeError):
         Tree()
