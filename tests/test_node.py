@@ -24,9 +24,17 @@ def test_it_compares_other_nodes(trans, nd1, nd2):
     assert node1a != node2
 
 
-def test_it_wont_compared_other_types(trans, nd1, nd2):
+def test_it_wont_compare_other_types(trans, nd1, nd2):
     node = Node(trans, nd1.id)
     assert node != nd1
+
+
+def test_hash(trans, nd1, nd2):
+    node1a = Node(trans, nd1.id)
+    node1b = Node(trans, nd1.id)
+    node2 = Node(trans, nd2.id)
+    assert hash(node1a) == hash(node1b)
+    assert hash(node1a) != hash(node2)
 
 
 def test_get_parent(trans, nd2_1_1, nd2_leaf):
