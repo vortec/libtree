@@ -9,7 +9,7 @@ class Node:
     Representation of a tree node and entrypoint for local tree
     operations.
 
-    Its a thin wrapper around the underlaying core functions. It does
+    It's a thin wrapper around the underlaying core functions. It does
     not contain any data besides the database ID and must therefore
     query the database every time the value of an attribute like
     ``parent`` has been requested. This decision has been made to avoid
