@@ -99,6 +99,7 @@ Query the tree
 If you want to get a ``Node`` object, you can easily get one by querying
 for the ID::
 
+    >>> title = transaction.get_node(2)
     >>> title.properties
     {'content': 'libtree', 'title': 'title'}
 
