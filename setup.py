@@ -46,7 +46,7 @@ setup(
     version='1.0.0',
     author='Fabian Kochem',
     author_email='fabian.kochem@concepts-and-training.de',
-    description='Postgres-based library to handle and persist wide trees',
+    description='Python Tree Library',
     url='https://github.com/conceptsandtraining/libtree',
 
     # Dependencies
