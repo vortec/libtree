@@ -6,18 +6,16 @@ $BODY$
 BEGIN
   IF NEW.parent IS NOT NULL THEN
 
-    INSERT INTO
-      ancestors
-      (node, ancestor)
-
-      SELECT
-        NEW.id, ancestor
-      FROM
-        ancestors
-      WHERE
-        node=NEW.parent
-      UNION
-        SELECT NEW.id, NEW.parent;
+    INSERT INTO ancestors
+                (node,
+                 ancestor)
+    SELECT NEW.id,
+           ancestor
+    FROM   ancestors
+    WHERE  node = NEW.parent
+    UNION
+    SELECT NEW.id,
+           NEW.parent;
   END IF;
 
   RETURN NEW;
@@ -39,17 +37,24 @@ RETURNS TRIGGER AS
 $BODY$
 BEGIN
 
-    DELETE FROM nodes AS t1 USING ancestors AS t2
-        WHERE t2."ancestor"=OLD.id AND t1."id" = t2."node";
+  DELETE FROM nodes AS t1
+  USING  ancestors AS t2
+  WHERE  t2."ancestor" = OLD.id
+         AND t1."id" = t2."node";
 
-    DELETE FROM ancestors AS t1 USING ancestors AS t2
-        WHERE t2."ancestor"=OLD.id AND t1."node" = t2."node";
+  DELETE FROM ancestors AS t1
+  USING  ancestors AS t2
+  WHERE  t2."ancestor" = OLD.id
+         AND t1."node" = t2."node";
 
-    DELETE FROM ancestors AS t1 USING ancestors AS t2
-        WHERE t2."ancestor"=OLD.id AND t1."ancestor" = t2."node";
+  DELETE FROM ancestors AS t1
+  USING  ancestors AS t2
+  WHERE  t2."ancestor" = OLD.id
+         AND t1."ancestor" = t2."node";
 
-    DELETE FROM ancestors
-        WHERE node = OLD.id OR ancestor=OLD.id;
+  DELETE FROM ancestors
+  WHERE  node = OLD.id
+          OR ancestor = OLD.id;
 
   RETURN OLD;
 
@@ -72,69 +77,40 @@ CREATE OR REPLACE FUNCTION
   $BODY$
   BEGIN
 
-    DELETE FROM
-      ancestors
-    WHERE
-      ancestor
-    IN
-      (
-        SELECT
-          ancestor
-        FROM
-          ancestors
-        WHERE
-          node=NEW.id
-        )
-    AND
-      node
-    IN
-      (
-        SELECT
-          node
-        FROM
-          ancestors
-        WHERE
-          ancestor=NEW.id
-        OR
-          node=NEW.id
-        );
+    DELETE FROM ancestors
+    WHERE  ancestor IN (SELECT ancestor
+                        FROM   ancestors
+                        WHERE  node = NEW.id)
+           AND node IN (SELECT node
+                        FROM   ancestors
+                        WHERE  ancestor = NEW.id
+                                OR node = NEW.id);
 
-    INSERT INTO
-      ancestors
-    SELECT
-      sub.node, par.ancestor
-    FROM
-      ancestors AS sub
-    JOIN
-      (
-        SELECT
-          ancestor
-        FROM
-          ancestors
-        WHERE
-          node=NEW.parent
-        UNION SELECT NEW.parent
-      ) AS par
-    ON TRUE
-    WHERE
-      sub.ancestor = NEW.id
-    OR
-      sub.node = NEW.id;
+    INSERT INTO ancestors
+    SELECT sub.node,
+           par.ancestor
+    FROM   ancestors AS sub
+           JOIN (SELECT ancestor
+                 FROM   ancestors
+                 WHERE  node = NEW.parent
+                 UNION
+                 SELECT NEW.parent) AS par
+             ON true
+    WHERE  sub.ancestor = NEW.id
+            OR sub.node = NEW.id;
 
     IF NEW.parent IS NOT NULL THEN
 
-      INSERT INTO
-        ancestors
-        (node, ancestor)
-
-        SELECT
-          NEW.id, ancestor
-        FROM
-          ancestors
-        WHERE
-          node=NEW.parent
-        UNION
-          SELECT NEW.id, NEW.parent;
+      INSERT INTO ancestors
+                  (node,
+                   ancestor)
+      SELECT NEW.id,
+             ancestor
+      FROM   ancestors
+      WHERE  node = NEW.parent
+      UNION
+      SELECT NEW.id,
+             NEW.parent;
     END IF;
 
     RETURN NEW;
