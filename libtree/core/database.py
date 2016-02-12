@@ -42,3 +42,25 @@ def is_compatible_postgres_version(cur):
     result = cur.fetchone()['server_version']
     server_version = tuple(map(int, result.split('.')))
     return server_version >= REQUIRED_POSTGRES_VERSION
+
+
+def make_dsn_from_env(env):
+    """
+    Make DSN string from libpq environment variables.
+    """
+    ret = []
+    mapping = {
+        'PGHOST': 'host',
+        'PGPORT': 'port',
+        'PGUSER': 'user',
+        'PGPASSWORD': 'password',
+        'PGDATABASE': 'dbname'
+    }
+
+    for env_name in ('PGHOST', 'PGPORT', 'PGUSER', 'PGPASSWORD', 'PGDATABASE'):
+        value = env.get(env_name)
+        if value:
+            dsn_name = mapping[env_name]
+            ret.append('{}={}'.format(dsn_name, value))
+
+    return ' '.join(ret)
