@@ -6,12 +6,12 @@ from mock import Mock
 import pytest
 
 
-def test_it_takes_a_connection(dsn):
+def test_it_takes_a_connection():
     conn = Mock()
     assert Tree(connection=conn).connection is conn
 
 
-def test_it_takes_a_connection_pool(dsn):
+def test_it_takes_a_connection_pool():
     pool = Mock()
     assert Tree(pool=pool).pool is pool
 

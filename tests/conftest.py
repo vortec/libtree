@@ -1,18 +1,11 @@
 # Copyright (c) 2015 Fabian Kochem
 
 
-try:
-    from libtree.config import config
-except ImportError:
-    config = {
-        'postgres': {
-            'test_details': 'dbname=test_libtree user=postgres'
-        }
-    }
-
 from libtree import Node, Transaction
+from libtree.core.database import make_dsn_from_env
 from libtree.core.query import get_node
 from libtree.core.tree import insert_node
+import os
 import pytest
 
 try:
@@ -51,12 +44,8 @@ def get_or_create_nd(cur, parent, properties, *args, **kwargs):
 
 
 @pytest.fixture(scope='module')
-def dsn():
-    return config['postgres']['test_details']
-
-
-@pytest.fixture(scope='module')
-def trans(request, dsn):
+def trans(request):
+    dsn = make_dsn_from_env(os.environ)
     connection = psycopg2.connect(dsn)
     transaction = Transaction(connection, Node)
 
