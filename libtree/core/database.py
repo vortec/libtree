@@ -4,7 +4,7 @@
 import os
 
 
-REQUIRED_POSTGRES_VERSION = (9, 4, 0)
+REQUIRED_POSTGRES_VERSION = (9, 5, 0)
 
 
 def create_schema(cur):
