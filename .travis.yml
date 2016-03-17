@@ -6,11 +6,25 @@ python:
     - "3.5"
     - "pypy"
     - "pypy3"
-services:
-    - postgresql
-addons:
-    postgresql: "9.5"
+
+# Travis doesn't support PostgreSQL 9.5 yet:
+#services:
+#    - postgresql
+#addons:
+#    postgresql: "9.5"
+
+# Custom PostgreSQL 9.5:
+sudo: required
+before_install:
+    - wget https://gist.github.com/petere/5893799/raw/apt.postgresql.org.sh
+    - wget https://gist.github.com/petere/6023944/raw/pg-travis-test.sh
+    - sudo sh ./apt.postgresql.org.sh
+env:
+    - PGVERSION=9.5
+
+
 before_script:
+    - bash ./pg-travis-test.sh  # Install PostgreSQL 9.5
     - psql -c 'create database test_libtree;' -U postgres
 install:
     - pip install .
