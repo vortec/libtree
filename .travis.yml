@@ -24,7 +24,7 @@ before_install:
 
 
 before_script:
-    - psql -c 'create database test_libtree;' -U postgres
+    - psql -c 'create database test_libtree;' -U postgres -h localhost
 install:
     - pip install .
     - pip install coveralls pytest-cov
