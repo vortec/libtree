@@ -8,7 +8,7 @@ from mock import Mock
 
 def test_is_compatible_postgres_version():
     cur = Mock()
-    cur.fetchone.return_value = {'server_version': '9.4.1'}
+    cur.fetchone.return_value = {'server_version': '9.5.0'}
     assert is_compatible_postgres_version(cur) is True
 
     cur.fetchone.return_value = {'server_version': '9.3.8'}
