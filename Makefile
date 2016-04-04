@@ -10,12 +10,12 @@ acceptance:
 	behave tests/features
 
 style:
-	flake8 --show-source libtree
-	flake8 --show-source --ignore=F811,F821 tests
+	flake8 --show-source --ignore=E731 libtree
+	flake8 --show-source --ignore=E731,F811,F821 tests
 
 style-verbose:
-	flake8 -v --show-source libtree
-	flake8 -v --show-source --ignore=F811,F821 tests
+	flake8 -v --show-source --ignore=E731 libtree
+	flake8 -v --show-source --ignore=E731,F811,F821 tests
 
 docs:
 	make -C docs html

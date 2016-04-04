@@ -22,10 +22,10 @@ def print_tree(cur, start_node=None, indent='  ', _level=0):
     if start_node is None:
         start_node = get_root_node(cur)
 
-    print('{}{}'.format(indent*_level, start_node))  # noqa
+    print('{}{}'.format(indent * _level, start_node))  # noqa
 
     for child in list(get_children(cur, start_node)):
-        print_tree(cur, child, indent=indent, _level=_level+1)
+        print_tree(cur, child, indent=indent, _level=_level + 1)
 
 
 def insert_node(cur, parent, properties=None, position=None,
