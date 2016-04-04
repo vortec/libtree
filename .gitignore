@@ -4,7 +4,7 @@
 */.DS_Store
 */__pycache__
 junit/
-.cache
+.cache/
 .coverage
 .eggs
 .DS_Store
