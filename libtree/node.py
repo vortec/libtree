@@ -111,6 +111,11 @@ class Node:
         return ret
 
     @property
+    def has_children(self):
+        """ Return whether immediate children exist. """
+        return core.get_children_count(self._cursor, self.id) > 0
+
+    @property
     def ancestors(self):
         """ Get list of ancestor nodes. """
         ret = []

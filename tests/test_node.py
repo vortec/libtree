@@ -64,6 +64,13 @@ def test_get_children(trans, nd2, nd2_1):
     assert node.children == children
 
 
+def test_has_children(trans, nd2, nd2_leaf):
+    node = Node(trans, nd2.id)
+    node2_leaf = Node(trans, nd2_leaf.id)
+    assert node.has_children
+    assert not node2_leaf.has_children
+
+
 def test_get_ancestors(trans, root, nd2, nd2_1):
     node = Node(trans, nd2_1.id)
     ancestors = [Node(trans, nd2.id), Node(trans, root.id)]
