@@ -89,7 +89,7 @@ def test_get_root_node(mock):
 def test_insert_root_node(mock):
     transaction = Transaction(Mock(), Mock())
     transaction.insert_root_node()
-    mock.assert_called_with(transaction.cursor, None)
+    mock.assert_called_with(transaction.cursor, None, None)
 
 
 @patch.object(core, 'get_node')

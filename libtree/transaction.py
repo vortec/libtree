@@ -85,7 +85,7 @@ class Transaction:
         :param dict properties: Inheritable key/value pairs
                                 (see :ref:`core-properties`)
         """
-        node_id = core.insert_node(self.cursor, properties).id
+        node_id = core.insert_node(self.cursor, None, properties).id
         return self.node_factory(self, node_id)
 
     def get_node(self, node_id):
