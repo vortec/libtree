@@ -2,6 +2,7 @@
 
 
 from libtree.core.node_data import NodeData
+from libtree import exceptions
 from libtree.utils import vectorize_nodes
 
 
@@ -36,7 +37,7 @@ def get_root_node(cur):
     result = cur.fetchone()
 
     if result is None:
-        raise ValueError('No root node.')
+        raise exceptions.NoRootNode()
     else:
         return NodeData(**result)
 
@@ -63,7 +64,7 @@ def get_node(cur, id):
     result = cur.fetchone()
 
     if result is None:
-        raise ValueError('Node does not exist.')
+        raise exceptions.NodeNotFound(id)
     else:
         return NodeData(**result)
 

@@ -8,6 +8,7 @@ from libtree.core.positioning import (ensure_free_position,
                                       shift_positions)
 from libtree.core.query import (get_children, get_descendant_ids, get_node,
                                 get_root_node)
+from libtree import exceptions
 
 
 def print_tree(cur, start_node=None, indent='  ', _level=0):
@@ -123,7 +124,7 @@ def change_parent(cur, node, new_parent, position=None, auto_position=True):
     """
     new_parent_id = int(new_parent)
     if new_parent_id in get_descendant_ids(cur, node):
-        raise ValueError('Cannot move node into its own subtree.')
+        raise exceptions.CantMoveIntoOwnSubtree()
 
     # Can't run set_position() here because the node hasn't been moved yet,
     # must do it manually

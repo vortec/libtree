@@ -4,6 +4,7 @@
 from libtree.core.tree import change_parent, delete_node, insert_node
 from libtree.core.query import (get_ancestor_ids, get_child_ids, get_children,
                                 get_descendant_ids, get_node)
+from libtree import exceptions
 from pdb import set_trace as trace  # noqa
 import pytest
 
@@ -106,7 +107,7 @@ def test_change_parent(cur, root, nd1, nd2, nd2_1, nd2_1_1,
 
 
 def test_change_parent_dont_move_into_own_subtree(cur, nd1, nd2_1):
-    with pytest.raises(ValueError):
+    with pytest.raises(exceptions.CantMoveIntoOwnSubtree):
         change_parent(cur, nd1, nd2_1)
 
 
@@ -131,7 +132,7 @@ def test_delete_node(cur, nd1, nd2_1, nd2_1_1, nd2_leaf):
     delete_node(cur, nd2_1_1, auto_position=False)
 
     # Deleted node doesn't exist anymore
-    with pytest.raises(ValueError):
+    with pytest.raises(exceptions.NodeNotFound):
         get_node(cur, nd2_1_1.id)
 
     # nd2-1 has no children and no descendants

@@ -5,17 +5,18 @@ from libtree.core.query import (get_ancestors, get_child_ids, get_children,
                                 get_children_count, get_descendants,
                                 get_descendant_ids, get_node, get_root_node,
                                 get_tree_size)
+from libtree import exceptions
 import libtree
 import pytest
 
 
 def test_get_root_node_non_existing(cur):
-    with pytest.raises(ValueError):
+    with pytest.raises(exceptions.NoRootNode):
         get_root_node(cur)
 
 
 def test_get_node_non_existing(cur):
-    with pytest.raises(ValueError):
+    with pytest.raises(exceptions.NodeNotFound):
         get_node(cur, 1)
 
 
