@@ -84,7 +84,10 @@ class Node:
     @property
     def parent(self):
         """ Get parent node. """
-        return Node(self._transaction, self.node_data.parent)
+        parent = self.node_data.parent
+        if parent is not None:
+            return Node(self._transaction, self.node_data.parent)
+        return None
 
     @property
     def position(self):

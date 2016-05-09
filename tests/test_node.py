@@ -43,6 +43,10 @@ def test_get_parent(trans, nd2_1_1, nd2_leaf):
     assert parent.id == nd2_1_1.id
 
 
+def test_get_parent_returns_none_for_root(trans, root):
+    assert Node(trans, root.id).parent is None
+
+
 def test_get_position(trans, nd3):
     node = Node(trans, nd3.id)
     assert node.position == nd3.position
