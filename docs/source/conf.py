@@ -51,7 +51,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'libtree'
-copyright = '2015, Fabian Kochem'
+copyright = '2016, Fabian Kochem'
 author = 'Fabian Kochem'
 
 # The version info for the project you're documenting, acts as replacement for

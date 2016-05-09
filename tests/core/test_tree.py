@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Fabian Kochem
+# Copyright (c) 2016 Fabian Kochem
 
 
 from libtree.core.tree import change_parent, delete_node, insert_node

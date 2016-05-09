@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Fabian Kochem
+# Copyright (c) 2016 Fabian Kochem
 
 
 from contextlib import contextmanager
