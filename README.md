@@ -84,12 +84,12 @@ with tree() as transaction:
     # Print entire tree
     transaction.print_tree()
     # Output:
-    # <NodeData id=1, parent=None, position=0>
-    #   <NodeData id=2, title='Binary folder'>
-    #   <NodeData id=4, title='Config folder'>
-    #     <NodeData id=5, title='Hosts file'>
-    #     <NodeData id=6, title='Password file'>
-    #     <NodeData id=3, title='Bash executable'>
+    # <NodeData id='0301770b-fe53-4447-88cc-87ce313e8d9a'>
+    #   <NodeData id='726241b7-d1d0-4f50-8db4-1f45e133b52c', title='Binary folder'>
+    #   <NodeData id='1afce8e3-975a-4daa-93e7-88d879c05224', title='Config folder'>
+    #     <NodeData id='4db559b8-97b0-4b67-ad69-20644fcc3cfe', title='Hosts file'>
+    #     <NodeData id='8f458921-d6db-4f34-8ee4-211c15e78471', title='Bash executable'>
+    #     <NodeData id='4312a7bf-53c9-4c14-80a3-5f7dd385b25c', title='Password file'>
 ```
 
 

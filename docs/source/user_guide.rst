@@ -15,7 +15,7 @@ Next, start a Python interpreter, import libtree and create a
 `psycopg2` connection. After that, you can install libtree::
 
     $ python
-    Python 3.4.2 (default, Nov 12 2014, 10:43:21)
+    Python 3.5.0 (default, Oct 12 2015, 13:41:59)
     >>> from libtree import Tree
     >>> import psycopg2
     >>> connection = psycopg2.connect("dbname=test_tree user=vortec")
@@ -53,45 +53,45 @@ Now, you can create some nodes::
 This should render as a nice, DOM-like tree::
 
     >>> transaction.print_tree()
-    <NodeData id=1>
-      <NodeData id=2, title='title'>
-      <NodeData id=3, title='head'>
-      <NodeData id=4, title='body'>
-        <NodeData id=5, title='h2'>
+    <NodeData id=..>
+      <NodeData id=.., title='title'>
+      <NodeData id=.., title='head'>
+      <NodeData id=.., title='body'>
+        <NodeData id=.., title='h2'>
 
 But do you spot the mistake? In HTML, a ``<title>`` tag goes beneath the
 ``<head>`` tag, so let's move it::
 
     >>> title.move(head)
     >>> transaction.print_tree()
-    <NodeData id=1>
-      <NodeData id=3, title='head'>
-        <NodeData id=2, title='title'>
-      <NodeData id=4, title='body'>
-        <NodeData id=5, title='h2'>
+    <NodeData id=..>
+      <NodeData id=.., title='head'>
+        <NodeData id=.., title='title'>
+      <NodeData id=.., title='body'>
+        <NodeData id=.., title='h2'>
 
 And you also forgot the ``<h1>`` node, let's insert it before ``<h2>``::
 
     >>> body.insert_child({'title': 'h1', 'content': 'Welcome'}, position=0)
-    <Node id=6, title='h1'>
+    <Node id=.., title='h1'>
     >>> transaction.print_tree()
-    <NodeData id=1>
-      <NodeData id=3, title='head'>
-        <NodeData id=2, title='title'>
-      <NodeData id=4, title='body'>
-        <NodeData id=6, title='h1'>
-        <NodeData id=5, title='h2'>
+    <NodeData id=..>
+      <NodeData id=.., title='head'>
+        <NodeData id=.., title='title'>
+      <NodeData id=.., title='body'>
+        <NodeData id=.., title='h1'>
+        <NodeData id=.., title='h2'>
 
 Since you know the ID, you can easily delete nodes without a ``Node``
 object::
 
     >>> h2.delete()
     >>> transaction.print_tree()
-    <NodeData id=1>
-      <NodeData id=3, title='head'>
-        <NodeData id=2, title='title'>
-      <NodeData id=4, title='body'>
-        <NodeData id=6, title='h1'>
+    <NodeData id=..>
+      <NodeData id=.., title='head'>
+        <NodeData id=.., title='title'>
+      <NodeData id=.., title='body'>
+        <NodeData id=.., title='h1'>
     >>> transaction.commit()
 
 Query the tree
@@ -99,27 +99,27 @@ Query the tree
 If you want to get a ``Node`` object, you can easily get one by querying
 for the ID::
 
-    >>> title = transaction.get_node(2)
+    >>> title = transaction.get_node('1afce8e3-975a-4daa-93e7-88d879c05224')
     >>> title.properties
     {'content': 'libtree', 'title': 'title'}
 
 You can get the immediate children of a node::
 
     >>> html.children
-    [<Node id=3, title='head'>, <Node id=4, title='body'>]
+    [<Node id=.., title='head'>, <Node id=..
 
 You can get all nodes that have a certain property key set:
 
     >>> transaction.get_nodes_by_property_key('content')
-    {<Node id=6, title='h1'>, <Node id=2, title='title'>}
+    {<Node id=.., title='h1'>, <Node id=.., title='title'>}
 
 Or ask for nodes that have a certain property value set::
 
     >>> transaction.get_nodes_by_property_value('content', 'Welcome')
-    {<Node id=6, title='h1'>}
+    {<Node id=.., title='h1'>}
 
 If you have a node, you can output the path from the root node to it
 too::
 
     >>> h1.ancestors
-    [<Node id=1>, <Node id=4, title='body'>]
+    [<Node id=..>, <Node id=.., title='body'>]
