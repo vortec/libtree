@@ -28,7 +28,7 @@ class Node:
 
     :param transaction: Transaction object
     :type transaction: Transaction
-    :param int id: Database node ID
+    :param uuid4 id: Database node ID
     .. automethod:: __len__
     .. automethod:: __eq__
 
@@ -121,19 +121,19 @@ class Node:
     @property
     def ancestors(self):
         """ Get list of ancestor nodes. """
-        ret = []
+        ret = set()
         for _id in core.get_ancestor_ids(self._cursor, self.id):
             node = Node(self._transaction, _id)
-            ret.append(node)
+            ret.add(node)
         return ret
 
     @property
     def descendants(self):
         """ Get list of descendant nodes. """
-        ret = []
+        ret = set()
         for _id in core.get_descendant_ids(self._cursor, self.id):
             node = Node(self._transaction, _id)
-            ret.append(node)
+            ret.add(node)
         return ret
 
     def delete(self):

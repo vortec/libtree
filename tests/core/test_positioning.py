@@ -7,6 +7,7 @@ from libtree.core.positioning import (ensure_free_position,
                                       swap_node_positions)
 from libtree.core.query import get_children, get_node, get_node_at_position
 from libtree.core.tree import change_parent, delete_node, insert_node
+import uuid
 from pdb import set_trace as trace  # noqa
 import pytest
 
@@ -39,7 +40,7 @@ def test_find_highest_position(cur, root):
 
 
 def test_find_highest_position_non_existing_node(cur):
-    assert find_highest_position(cur, -1) == -1
+    assert find_highest_position(cur, str(uuid.uuid4())) == -1
 
 
 def test_shift_positions_to_the_right(cur, root, nd1, nd2, nd3):
@@ -65,7 +66,7 @@ def test_get_node_at_position_non_existing(cur, root, nd3):
     with pytest.raises(ValueError):
         get_node_at_position(cur, root, -1)
     with pytest.raises(ValueError):
-        get_node_at_position(cur, -1, 1)
+        get_node_at_position(cur, str(uuid.uuid4()), 1)
 
 
 def test_swap_node_positions(cur, nd1, nd2):

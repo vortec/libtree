@@ -42,11 +42,11 @@ class NodeData(object):
     def __init__(self, id=None, parent=None, position=None, properties=None):
         self.__id = None
         if id is not None:
-            self.__id = int(id)
+            self.__id = id
 
         self.__parent = None
         if parent is not None:
-            self.__parent = int(parent)
+            self.__parent = parent
 
         self.__position = None
         if position is not None:
@@ -57,7 +57,7 @@ class NodeData(object):
         else:
             self.__properties = {}
 
-    def __int__(self):
+    def __str__(self):
         return self.id
 
     def to_dict(self):

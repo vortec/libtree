@@ -2,6 +2,7 @@
 
 
 import json
+import uuid
 from libtree.core.node_data import NodeData
 from libtree.core.positioning import (ensure_free_position,
                                       find_highest_position,
@@ -30,14 +31,14 @@ def print_tree(cur, start_node=None, indent='  ', _level=0):
 
 
 def insert_node(cur, parent, properties=None, position=None,
-                auto_position=True):
+                auto_position=True, id=None):
     """
     Create a ``Node`` object, insert it into the tree and then return
     it.
 
     :param parent: Reference to its parent node. If `None`, this will
                    be the root node.
-    :type parent: Node or int
+    :type parent: Node or uuid4
     :param dict properties: Inheritable key/value pairs
                             (see :ref:`core-properties`)
     :param int position: Position in between siblings. If 0, the node
@@ -47,10 +48,14 @@ def insert_node(cur, parent, properties=None, position=None,
                          If `auto_position` is disabled, this is just a
                          value.
     :param bool auto_position: See :ref:`core-positioning`
+    :param uuid4 id: Use this UUID4.
     """
+    if id is None:
+        id = str(uuid.uuid4())
+
     parent_id = None
     if parent is not None:
-        parent_id = int(parent)
+        parent_id = parent.id
 
     if properties is None:
         properties = {}
@@ -65,17 +70,13 @@ def insert_node(cur, parent, properties=None, position=None,
     sql = """
         INSERT INTO
           nodes
-          (parent, position, properties)
+          (id, parent, position, properties)
         VALUES
-          (%s, %s, %s);
+          (%s, %s, %s, %s);
     """
-    cur.execute(sql, (parent_id, position, json.dumps(properties)))
+    cur.execute(sql, (id, parent_id, position, json.dumps(properties)))
 
-    cur.execute("SELECT LASTVAL();")
-    id = cur.fetchone()['lastval']
-    node = NodeData(id, parent_id, position, properties)
-
-    return node
+    return NodeData(id, parent_id, position, properties)
 
 
 def delete_node(cur, node, auto_position=True):
@@ -83,10 +84,10 @@ def delete_node(cur, node, auto_position=True):
     Delete node and its subtree.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     :param bool auto_position: See :ref:`core-positioning`
     """
-    id = int(node)
+    id = str(node)
 
     # Get Node object if integer (ID) was passed
     if auto_position and type(node) != NodeData:
@@ -111,9 +112,9 @@ def change_parent(cur, node, new_parent, position=None, auto_position=True):
     ``ValueError`` if ``new_parent`` is inside ``node`` s subtree.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     :param new_parent: Reference to the new parent node
-    :type new_parent: Node or int
+    :type new_parent: Node or uuid4
     :param int position: Position in between siblings. If 0, the node
                          will be inserted at the beginning of the
                          parents children. If -1, the node will be
@@ -122,7 +123,7 @@ def change_parent(cur, node, new_parent, position=None, auto_position=True):
                          value.
     :param bool auto_position: See :ref:`core-positioning`.
     """
-    new_parent_id = int(new_parent)
+    new_parent_id = str(new_parent)
     if new_parent_id in get_descendant_ids(cur, node):
         raise exceptions.CantMoveIntoOwnSubtree()
 
@@ -143,9 +144,9 @@ def change_parent(cur, node, new_parent, position=None, auto_position=True):
         WHERE
           id=%s;
     """
-    cur.execute(sql, (new_parent_id, position, int(node)))
+    cur.execute(sql, (new_parent_id, position, str(node)))
 
-    if type(node) == int:
+    if type(node) == str:
         node = get_node(cur, node)
 
     kwargs = node.to_dict()

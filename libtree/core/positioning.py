@@ -63,7 +63,7 @@ def ensure_free_position(cur, node, position):
     children of ``node``.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     :param int position:
     """
     try:
@@ -81,10 +81,10 @@ def find_highest_position(cur, node):
     Return highest, not occupied position in the children of ``node``.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     """
     if node is not None:
-        id = int(node)
+        id = str(node)
     else:
         id = None
 
@@ -110,7 +110,7 @@ def set_position(cur, node, position, auto_position=True):
     Set ``position`` for ``node``.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     :param int position: Position in between siblings. If 0, the node
                          will be inserted at the beginning of the
                          parents children. If -1, the node will be
@@ -120,8 +120,8 @@ def set_position(cur, node, position, auto_position=True):
     :param bool auto_position: See :ref:`core-positioning`
     """
     if auto_position:
-        id = int(node)
-        if type(node) == int:
+        id = str(node)
+        if type(node) == str:
             node = get_node(cur, id)
 
         if type(position) == int and position >= 0:
@@ -129,7 +129,7 @@ def set_position(cur, node, position, auto_position=True):
         else:
             position = find_highest_position(cur, node.parent) + 1
     else:
-        id = int(node)
+        id = str(node)
 
     sql = """
         UPDATE
@@ -139,7 +139,7 @@ def set_position(cur, node, position, auto_position=True):
         WHERE
           id=%s;
     """
-    cur.execute(sql, (position, int(node)))
+    cur.execute(sql, (position, str(node)))
     return position
 
 
@@ -148,13 +148,13 @@ def shift_positions(cur, node, position, offset):
     Shift all children of ``node`` at ``position`` by ``offset``.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     :param int position:
     :param int offset: Positive value for right shift, negative value
                        for left shift
     """
     if node is not None:
-        id = int(node)
+        id = str(node)
     else:
         id = None
 
@@ -183,9 +183,9 @@ def swap_node_positions(cur, node1, node2):
     Swap positions of ``node1`` and ``node2``.
 
     :param node1:
-    :type node1: Node or int
+    :type node1: Node or uuid4
     :param node2:
-    :type node2: Node or int
+    :type node2: Node or uuid4
     """
     set_position(cur, node1, node2.position, auto_position=False)
     set_position(cur, node2, node1.position, auto_position=False)

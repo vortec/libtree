@@ -72,12 +72,12 @@ def get_inherited_properties(cur, node):
     of keys will be combined.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     :rtype: dict
     """
     ret = {}
-    id = int(node)
-    if type(node) == int:
+    id = str(node)
+    if type(node) == str:
         node = get_node(cur, id)
 
     ancestors = list(get_ancestors(cur, id))
@@ -95,7 +95,7 @@ def get_inherited_property_value(cur, node, key):
     Get the inherited value for a single property key.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     :param key: str
     """
     return get_inherited_properties(cur, node)[key]
@@ -107,14 +107,14 @@ def set_properties(cur, node, new_properties):
     Return ``NodeData`` object with updated properties.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     :param new_properties: dict
     """
     if type(new_properties) != dict:
         raise TypeError('Only dictionaries are supported.')
 
-    id = int(node)
-    if type(node) == int:
+    id = str(node)
+    if type(node) == str:
         node = get_node(cur, id)
 
     sql = """
@@ -125,7 +125,7 @@ def set_properties(cur, node, new_properties):
         WHERE
           id=%s;
     """
-    cur.execute(sql, (json.dumps(new_properties), int(node)))
+    cur.execute(sql, (json.dumps(new_properties), str(node)))
 
     kwargs = node.to_dict()
     kwargs['properties'] = new_properties
@@ -138,14 +138,14 @@ def update_properties(cur, node, new_properties):
     Return ``NodeData`` object with updated properties.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     :param new_properties: dict
     """
     if type(new_properties) != dict:
         raise TypeError('Only dictionaries are supported.')
 
-    id = int(node)
-    if type(node) == int:
+    id = str(node)
+    if type(node) == str:
         node = get_node(cur, id)
 
     properties = node.properties.copy()
@@ -159,12 +159,12 @@ def set_property_value(cur, node, key, value):
     Return ``NodeData`` object with updated properties.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     :param key: str
     :param value: object
     """
-    id = int(node)
-    if type(node) == int:
+    id = str(node)
+    if type(node) == str:
         node = get_node(cur, id)
 
     properties = node.properties.copy()

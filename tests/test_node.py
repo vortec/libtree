@@ -7,12 +7,12 @@ from mock import patch
 
 def test_basic_representation(trans, root):
     node = Node(trans, root.id)
-    assert repr(node) == '<Node id={}>'.format(root.id, root.position)
+    assert repr(node) == '<Node id=\'{}\'>'.format(root.id, root.position)
 
 
 def test_title_representation(trans, nd1):
     node = Node(trans, nd1.id)
-    expected = "<Node id={}, title='Node 1'>".format(nd1.id)
+    expected = "<Node id=\'{}\', title='Node 1'>".format(nd1.id)
     assert repr(node) == expected
 
 
@@ -77,13 +77,13 @@ def test_has_children(trans, nd2, nd2_leaf):
 
 def test_get_ancestors(trans, root, nd2, nd2_1):
     node = Node(trans, nd2_1.id)
-    ancestors = [Node(trans, nd2.id), Node(trans, root.id)]
+    ancestors = {Node(trans, nd2.id), Node(trans, root.id)}
     assert node.ancestors == ancestors
 
 
 def test_get_descendants(trans, nd2_1, nd2_1_1, nd2_leaf):
     node = Node(trans, nd2_1.id)
-    descendants = [Node(trans, nd2_1_1.id), Node(trans, nd2_leaf.id)]
+    descendants = {Node(trans, nd2_1_1.id), Node(trans, nd2_leaf.id)}
     assert node.descendants == descendants
 
 

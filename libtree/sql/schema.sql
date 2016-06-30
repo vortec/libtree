@@ -1,7 +1,7 @@
 CREATE TABLE ancestors
   (
-     node     INTEGER NOT NULL,
-     ancestor INTEGER NOT NULL,
+     node     UUID NOT NULL,
+     ancestor UUID NOT NULL,
      CONSTRAINT idx UNIQUE (node, ancestor)
   ) with ( oids=FALSE );
 
@@ -11,8 +11,8 @@ CREATE INDEX idx_node ON ancestors USING btree (node);
 
 CREATE TABLE nodes
   (
-     id         SERIAL NOT NULL,
-     parent     INTEGER,
+     id         UUID NOT NULL,
+     parent     UUID,
      "position" SMALLINT DEFAULT NULL,
      properties JSONB NOT NULL,
      CONSTRAINT "primary" PRIMARY KEY (id)

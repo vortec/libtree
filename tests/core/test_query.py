@@ -6,6 +6,7 @@ from libtree.core.query import (get_ancestors, get_child_ids, get_children,
                                 get_descendant_ids, get_node, get_root_node,
                                 get_tree_size)
 from libtree import exceptions
+import uuid
 import libtree
 import pytest
 
@@ -17,7 +18,7 @@ def test_get_root_node_non_existing(cur):
 
 def test_get_node_non_existing(cur):
     with pytest.raises(exceptions.NodeNotFound):
-        get_node(cur, 1)
+        get_node(cur, str(uuid.uuid4()))
 
 
 def test_get_root_node(cur, root, nd1, nd2, nd2_1, nd2_1_1, nd3):
@@ -81,14 +82,14 @@ def test_get_ancestors(cur, root, nd2, nd2_1):
 
 def test_get_ancestors(cur, root, nd2, nd2_1, nd2_1_1, nd2_leaf):
     expected = {root.id, nd2.id, nd2_1.id, nd2_1_1.id}
-    ids = set(map(int, get_ancestors(cur, nd2_leaf, sort=False)))
+    ids = set(map(str, get_ancestors(cur, nd2_leaf, sort=False)))
     assert ids == expected
 
 
 def test_get_ancestors_returns_correct_order(cur, root, nd2, nd2_1,
                                              nd2_1_1, nd2_leaf):
     expected = [root.id, nd2.id, nd2_1.id, nd2_1_1.id]
-    ids = list(map(int, get_ancestors(cur, nd2_leaf, sort=True)))
+    ids = list(map(str, get_ancestors(cur, nd2_leaf, sort=True)))
     assert ids == expected
 
 

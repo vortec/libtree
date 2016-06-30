@@ -47,11 +47,8 @@ def get_node(cur, id):
     Return ``NodeData`` object for given ``id``. Raises ``ValueError``
     if ID doesn't exist.
 
-    :param int id: Database ID
+    :param uuid4 id: Database ID
     """
-    if type(id) != int:
-        raise TypeError('Need numerical id.')
-
     sql = """
         SELECT
           *
@@ -60,6 +57,9 @@ def get_node(cur, id):
         WHERE
           id = %s;
     """
+    if type(id) != str:
+        raise TypeError('ID must be type string (UUID4).')
+
     cur.execute(sql, (id, ))
     result = cur.fetchone()
 
@@ -74,7 +74,7 @@ def get_node_at_position(cur, node, position):
     Return node at ``position`` in the children of ``node``.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     :param int position:
     """
     sql = """
@@ -88,7 +88,7 @@ def get_node_at_position(cur, node, position):
         position=%s
     """
 
-    cur.execute(sql, (int(node), position))
+    cur.execute(sql, (str(node), position))
     result = cur.fetchone()
 
     if result is None:
@@ -103,7 +103,7 @@ def get_children(cur, node):
     immediate child.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     """
     sql = """
         SELECT
@@ -115,7 +115,7 @@ def get_children(cur, node):
         ORDER BY
           position;
     """
-    cur.execute(sql, (int(node), ))
+    cur.execute(sql, (str(node), ))
     for result in cur:
         yield NodeData(**result)
 
@@ -125,7 +125,7 @@ def get_child_ids(cur, node):
     Return an iterator that yields the ID of every immediate child.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     """
     sql = """
         SELECT
@@ -137,9 +137,9 @@ def get_child_ids(cur, node):
         ORDER BY
           position;
     """
-    cur.execute(sql, (int(node), ))
+    cur.execute(sql, (str(node), ))
     for result in cur:
-        yield int(result['id'])
+        yield str(result['id'])
 
 
 def get_children_count(cur, node):
@@ -147,7 +147,7 @@ def get_children_count(cur, node):
     Get amount of immediate children.
 
     :param node: Node
-    :type node: Node or int
+    :type node: Node or uuid4
     """
     sql = """
       SELECT
@@ -157,7 +157,7 @@ def get_children_count(cur, node):
       WHERE
         parent=%s;
     """
-    cur.execute(sql, (int(node), ))
+    cur.execute(sql, (str(node), ))
     result = cur.fetchone()
     return result['count']
 
@@ -168,7 +168,7 @@ def get_ancestors(cur, node, sort=True):
     element while traversing from ``node`` to the root node.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     :param bool sort: Start with closest node and end with root node.
                       (default: True)
     """
@@ -185,7 +185,7 @@ def get_ancestors(cur, node, sort=True):
         WHERE
           ancestors.node=%s;
     """
-    cur.execute(sql, (int(node), ))
+    cur.execute(sql, (str(node), ))
 
     if sort:
         make_node = lambda r: NodeData(**r)
@@ -202,7 +202,7 @@ def get_ancestor_ids(cur, node):
     traversing from ``node`` to the root node.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     """
     # TODO: add sort parameter
     sql = """
@@ -213,9 +213,9 @@ def get_ancestor_ids(cur, node):
         WHERE
           node=%s;
     """
-    cur.execute(sql, (int(node), ))
+    cur.execute(sql, (str(node), ))
     for result in cur:
-        yield int(result['ancestor'])
+        yield str(result['ancestor'])
 
 
 def get_descendants(cur, node):
@@ -224,7 +224,7 @@ def get_descendants(cur, node):
     traversing from ``node`` to the root node.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     """
     sql = """
         SELECT
@@ -238,7 +238,7 @@ def get_descendants(cur, node):
         WHERE
           ancestors.ancestor=%s;
     """
-    cur.execute(sql, (int(node), ))
+    cur.execute(sql, (str(node), ))
     for result in cur:
         yield NodeData(**result)
 
@@ -251,7 +251,7 @@ def get_descendant_ids(cur, node):
     objects.
 
     :param node:
-    :type node: Node or int
+    :type node: Node or uuid4
     """
     sql = """
         SELECT
@@ -261,6 +261,6 @@ def get_descendant_ids(cur, node):
         WHERE
           ancestor=%s;
     """
-    cur.execute(sql, (int(node), ))
+    cur.execute(sql, (str(node), ))
     for result in cur:
-        yield int(result['node'])
+        yield str(result['node'])
