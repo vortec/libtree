@@ -10,12 +10,6 @@ def test_it_takes_a_connection():
     assert Transaction(conn, Mock()).connection is conn
 
 
-def test_it_disables_autocommit():
-    conn = Mock()
-    transaction = Transaction(conn, Mock())
-    assert transaction.connection.autocommit is False
-
-
 def test_it_creates_a_cursor():
     conn = Mock()
     Transaction(conn, Mock())
