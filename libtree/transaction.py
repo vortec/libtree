@@ -23,7 +23,6 @@ class Transaction:
     :param object node_factory: Factory class for creating node objects
     """
     def __init__(self, connection, node_factory):
-        connection.autocommit = False  # we handle transactions manually
         self.connection = connection
         self.cursor = connection.cursor(cursor_factory=RealDictCursor)
         self.node_factory = node_factory
