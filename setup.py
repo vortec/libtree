@@ -43,7 +43,7 @@ else:
 
 setup(
     name='libtree',
-    version='4.0.0',
+    version='4.0.1',
     author='Fabian Kochem',
     author_email='fabian.kochem@concepts-and-training.de',
     description='Python Tree Library',
