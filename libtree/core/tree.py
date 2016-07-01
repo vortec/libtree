@@ -48,7 +48,8 @@ def insert_node(cur, parent, properties=None, position=None,
                          If `auto_position` is disabled, this is just a
                          value.
     :param bool auto_position: See :ref:`core-positioning`
-    :param uuid4 id: Use this UUID4.
+    :param uuid4 id: Use this ID instead of automatically generating
+                     one.
     """
     if id is None:
         id = str(uuid.uuid4())

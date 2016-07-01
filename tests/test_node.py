@@ -93,7 +93,7 @@ def test_insert_child(mock, trans, cur):
     properties = {'type': 'new_child'}
     node.insert_child(properties)
     mock.assert_called_with(cur, node.id, properties, position=-1,
-                            auto_position=True)
+                            auto_position=True, id=None)
 
 
 @patch.object(core, 'delete_node')

@@ -140,7 +140,7 @@ class Node:
         """ Delete node and its subtree. """
         return core.delete_node(self._cursor, self.id)
 
-    def insert_child(self, properties=None, position=-1):
+    def insert_child(self, properties=None, position=-1, id=None):
         """
         Create a child node and return it.
 
@@ -151,9 +151,12 @@ class Node:
                              the parents children. If -1, the node will
                              be inserted the the end of the parents
                              children.
+        :param uuid4 id: Use this ID instead of automatically generating
+                         one.
         """
         node_data = core.insert_node(self._cursor, self.id, properties,
-                                     position=position, auto_position=True)
+                                     position=position, auto_position=True,
+                                     id=id)
         return Node(self._transaction, node_data.id)
 
     def move(self, target, position=-1):
