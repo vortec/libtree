@@ -57,7 +57,7 @@ def get_node(cur, id):
         WHERE
           id = %s;
     """
-    if type(id) != str:
+    if not isinstance(id, str):
         raise TypeError('ID must be type string (UUID4).')
 
     cur.execute(sql, (id, ))

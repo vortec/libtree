@@ -52,7 +52,7 @@ class NodeData(object):
         if position is not None:
             self.__position = int(position)
 
-        if type(properties) == dict:
+        if isinstance(properties, dict):
             self.__properties = properties
         else:
             self.__properties = {}

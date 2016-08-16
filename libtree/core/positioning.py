@@ -121,10 +121,10 @@ def set_position(cur, node, position, auto_position=True):
     """
     if auto_position:
         id = str(node)
-        if type(node) == str:
+        if isinstance(node, str):
             node = get_node(cur, id)
 
-        if type(position) == int and position >= 0:
+        if isinstance(position, int) and position >= 0:
             ensure_free_position(cur, node.parent, position)
         else:
             position = find_highest_position(cur, node.parent) + 1

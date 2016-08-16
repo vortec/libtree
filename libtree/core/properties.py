@@ -77,7 +77,7 @@ def get_inherited_properties(cur, node):
     """
     ret = {}
     id = str(node)
-    if type(node) == str:
+    if isinstance(node, str):
         node = get_node(cur, id)
 
     ancestors = list(get_ancestors(cur, id))
@@ -110,11 +110,11 @@ def set_properties(cur, node, new_properties):
     :type node: Node or uuid4
     :param new_properties: dict
     """
-    if type(new_properties) != dict:
+    if not isinstance(new_properties, dict):
         raise TypeError('Only dictionaries are supported.')
 
     id = str(node)
-    if type(node) == str:
+    if isinstance(node, str):
         node = get_node(cur, id)
 
     sql = """
@@ -141,11 +141,11 @@ def update_properties(cur, node, new_properties):
     :type node: Node or uuid4
     :param new_properties: dict
     """
-    if type(new_properties) != dict:
+    if not isinstance(new_properties, dict):
         raise TypeError('Only dictionaries are supported.')
 
     id = str(node)
-    if type(node) == str:
+    if isinstance(node, str):
         node = get_node(cur, id)
 
     properties = node.properties.copy()
@@ -164,7 +164,7 @@ def set_property_value(cur, node, key, value):
     :param value: object
     """
     id = str(node)
-    if type(node) == str:
+    if isinstance(node, str):
         node = get_node(cur, id)
 
     properties = node.properties.copy()

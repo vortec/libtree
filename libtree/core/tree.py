@@ -63,7 +63,7 @@ def insert_node(cur, parent, properties=None, position=None,
 
     # Can't run set_position() because the node doesn't exist yet
     if auto_position:
-        if type(position) == int and position >= 0:
+        if isinstance(position, int) and position >= 0:
             ensure_free_position(cur, parent, position)
         else:
             position = find_highest_position(cur, parent) + 1
@@ -91,7 +91,7 @@ def delete_node(cur, node, auto_position=True):
     id = str(node)
 
     # Get Node object if integer (ID) was passed
-    if auto_position and type(node) != NodeData:
+    if auto_position and not isinstance(node, NodeData):
         node = get_node(cur, id)
 
     sql = """
@@ -131,7 +131,7 @@ def change_parent(cur, node, new_parent, position=None, auto_position=True):
     # Can't run set_position() here because the node hasn't been moved yet,
     # must do it manually
     if auto_position:
-        if type(position) == int and position >= 0:
+        if isinstance(position, int) and position >= 0:
             ensure_free_position(cur, new_parent_id, position)
         else:
             position = find_highest_position(cur, new_parent_id) + 1
@@ -147,7 +147,7 @@ def change_parent(cur, node, new_parent, position=None, auto_position=True):
     """
     cur.execute(sql, (new_parent_id, position, str(node)))
 
-    if type(node) == str:
+    if isinstance(node, str):
         node = get_node(cur, node)
 
     kwargs = node.to_dict()
