@@ -59,8 +59,8 @@ class Tree:
         self.pool = pool
 
     @contextmanager
-    def __call__(self):
-        transaction = self.make_transaction()
+    def __call__(self, *args, **kwargs):
+        transaction = self.make_transaction(*args, **kwargs)
         connection = transaction.connection
 
         try:
@@ -73,7 +73,7 @@ class Tree:
             if self.pool is not None:
                 self.pool.putconn(connection)
 
-    def make_transaction(self):
+    def make_transaction(self, *args, **kwargs):
         """
         Get a new transaction object using a connection from the pool
         or the manually assigned one.
