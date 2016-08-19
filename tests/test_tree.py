@@ -1,7 +1,7 @@
 # Copyright (c) 2016 Fabian Kochem
 
 
-from libtree import Transaction, Tree
+from libtree import ReadOnlyTransaction, ReadWriteTransaction, Tree
 from mock import Mock
 import pytest
 
@@ -40,11 +40,18 @@ def test_get_connection_returns_connection_from_pool():
     assert pool.getconn.called
 
 
-def test_make_transaction_returns_a_transaction_object():
+def test_make_transaction_returns_a_read_only_transaction_object():
     conn = Mock()
     tree = Tree(connection=conn)
     transaction = tree.make_transaction()
-    assert transaction.__class__ == Transaction
+    assert transaction.__class__ == ReadOnlyTransaction
+
+
+def test_make_transaction_returns_a_read_write_transaction_object():
+    conn = Mock()
+    tree = Tree(connection=conn)
+    transaction = tree.make_transaction(write=True)
+    assert transaction.__class__ == ReadWriteTransaction
 
 
 def test_returned_transaction_uses_assigned_transaction_object():

@@ -3,7 +3,7 @@
 
 from contextlib import contextmanager
 from libtree.node import Node
-from libtree.transaction import Transaction
+from libtree.transactions import ReadOnlyTransaction, ReadWriteTransaction
 
 
 class Tree:
@@ -82,14 +82,19 @@ class Tree:
         else:
             return self.pool.getconn()
 
-    def make_transaction(self, *args, **kwargs):
+    def make_transaction(self, write=False):
         """
         Get a new transaction object using a connection from the pool
         or the manually assigned one.
-        """
-        _connection = self.get_connection()
 
-        return Transaction(_connection, self.node_factory)
+        :param bool write: Enable write access (default: False)
+        """
+        connection = self.get_connection()
+
+        if write:
+            return ReadWriteTransaction(connection, self.node_factory)
+        else:
+            return ReadOnlyTransaction(connection, self.node_factory)
 
     def close(self):
         """

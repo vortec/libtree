@@ -12,7 +12,7 @@ from psycopg2.extras import RealDictCursor
 from libtree import core
 
 
-class Transaction:
+class ReadWriteTransaction:
     """
     Representation of a database transaction and entrypoint for global
     tree operations.
@@ -135,3 +135,18 @@ class Transaction:
             node = self.node_factory(self, _nd.id)
             ret.add(node)
         return ret
+
+
+class ReadOnlyTransaction(ReadWriteTransaction):
+    """
+    Representation of a read-only database transaction and entrypoint
+    for global tree operations.
+
+    :param connection: Postgres connection object. Its ``autocommit``
+                       attribute will be set to ``False``.
+    :type connection: Connection
+    :param object node_factory: Factory class for creating node objects
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.connection.set_session(readonly=True)

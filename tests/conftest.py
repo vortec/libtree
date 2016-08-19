@@ -1,7 +1,7 @@
 # Copyright (c) 2016 Fabian Kochem
 
 
-from libtree import Node, Transaction
+from libtree import Node, ReadWriteTransaction
 from libtree.core.database import make_dsn_from_env
 from libtree.core.query import get_node
 from libtree.core.tree import insert_node
@@ -47,7 +47,7 @@ def get_or_create_nd(cur, parent, properties, *args, **kwargs):
 def trans(request):
     dsn = make_dsn_from_env(os.environ)
     connection = psycopg2.connect(dsn)
-    transaction = Transaction(connection, Node)
+    transaction = ReadWriteTransaction(connection, Node)
 
     try:
         transaction.uninstall()
