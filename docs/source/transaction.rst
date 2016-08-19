@@ -1,7 +1,7 @@
 .. _transaction:
 
-Transaction object
-==================
+Transaction objects
+===================
 
-.. automodule:: libtree.transaction
+.. automodule:: libtree.transactions
    :members:

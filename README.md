@@ -35,6 +35,12 @@ Install **libtree** directly via ``pip``:
 $ pip install libtree
 ```
 
+Upgrading
+=========
+We respect [semantic versioning](http://semver.org/). Please read the
+[CHANGELOG](https://github.com/conceptsandtraining/libtree/blob/master/CHANGELOG)
+to find out which breaking changes we made!
+
 
 Quickstart
 ==========
@@ -51,7 +57,7 @@ connection = psycopg2.connect("dbname=test_tree user=vortec")
 tree = Tree(connection)
 
 # Start working with libtree inside a database transaction
-with tree() as transaction:
+with tree(write=True) as transaction:
 
     # Create tables
     transaction.install()

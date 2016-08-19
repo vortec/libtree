@@ -16,7 +16,7 @@ interactive Python interpreter of your choice to start working with
     tree = Tree(connection)
 
     # Start working with libtree inside a database transaction
-    with tree() as transaction:
+    with tree(write=True) as transaction:
 
         # Create tables
         transaction.install()

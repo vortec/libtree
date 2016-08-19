@@ -19,12 +19,12 @@ Next, start a Python interpreter, import libtree and create a
     >>> from libtree import Tree
     >>> import psycopg2
     >>> connection = psycopg2.connect("dbname=test_tree user=vortec")
-    >>> transaction = Tree(connection).make_transaction()
+    >>> transaction = Tree(connection).make_transaction(write=True)
     >>> transaction.install()
     >>> transaction.commit()
 
-The ``transaction`` object represents a database transaction and must be
-passed to every function when you want to query or modify the tree.
+The ``transaction`` objects represent a database transaction and must be
+passed to every function whenever you want to query or modify the tree.
 Running ``install()`` creates the SQL tables and must only be executed
 if you haven't done so before. Executing ``commit()`` writes the changes
 you made to the database. If you want to discard the changes, run
@@ -33,11 +33,14 @@ you made to the database. If you want to discard the changes, run
 For more convenience, you can use the auto-committing context manager::
 
     >>> tree = Tree(connection)
-    >>> with tree() as transaction:
+    >>> with tree(write=True) as transaction:
     ...     transaction.install()
 
 When the context manager leaves it will commit the transaction to the
 database. If an exception occurs, it will rollback automatically.
+
+If you want to modify the database, you must pass ``write=True`` to the
+context manager. The default behaviour is read-only.
 
 Modify the tree
 ---------------
