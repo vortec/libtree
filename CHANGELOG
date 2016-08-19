@@ -1,7 +1,9 @@
 5.0.0
 -----
 * [BREAKING] Remove Transaction class and replace it by ReadOnlyTransaction
-  and ReadWriteTransaction.
+  and ReadWriteTransaction. To migrate your code please pass write=True
+  when creating a transaction via context manager. Example:
+  with tree(write=True) as transaction: ...
 
 4.0.2
 -----
