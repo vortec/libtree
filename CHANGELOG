@@ -1,0 +1,23 @@
+5.0.0
+-----
+* [BREAKING] Remove Transaction class and replace it by ReadOnlyTransaction
+  and ReadWriteTransaction.
+
+4.0.2
+-----
+* [FIX] Subclasses of type 'str' are now accepted as IDs
+
+4.0.1
+-----
+* [FEATURE] Custom UUID4s can be passed to Node.insert_child()
+
+4.0.0
+-----
+* [BREAKING] Require PostgreSQL 9.5
+* [BREAKING] Replace integer IDs with UUID4 strings
+
+3.0.0
+-----
+* [BREAKING] Native Python exceptions have been replaced by custom ones
+* [FEATURE] Add 'has_children' property for Node objects
+* [FIX] Accessing the 'parent' property of a root object now returns None
