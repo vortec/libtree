@@ -26,6 +26,20 @@ def test_it_cant_deal_with_both_connection_and_pool():
         Tree(connection=Mock(), pool=Mock())
 
 
+def test_get_connection_returns_the_assigned_one():
+    conn = Mock()
+    tree = Tree(connection=conn)
+    assert tree.get_connection() is conn
+
+
+def test_get_connection_returns_connection_from_pool():
+    pool, conn = Mock(), Mock()
+    pool.getconn.return_value = conn
+    tree = Tree(pool=pool)
+    assert tree.get_connection() is conn
+    assert pool.getconn.called
+
+
 def test_make_transaction_returns_a_transaction_object():
     conn = Mock()
     tree = Tree(connection=conn)

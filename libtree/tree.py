@@ -73,15 +73,21 @@ class Tree:
             if self.pool is not None:
                 self.pool.putconn(connection)
 
+    def get_connection(self):
+        """
+        Return a connection from the pool or the manually assigned one.
+        """
+        if self.pool is None:
+            return self.connection
+        else:
+            return self.pool.getconn()
+
     def make_transaction(self, *args, **kwargs):
         """
         Get a new transaction object using a connection from the pool
         or the manually assigned one.
         """
-        if self.pool is None:
-            _connection = self.connection
-        else:
-            _connection = self.pool.getconn()
+        _connection = self.get_connection()
 
         return Transaction(_connection, self.node_factory)
 
