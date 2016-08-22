@@ -134,6 +134,13 @@ def test_set_properties(mock, trans, cur):
     mock.assert_called_with(cur, node.id, {'foo': 'bar'})
 
 
+@patch.object(core, 'update_properties')
+def test_update_properties(mock, trans, cur):
+    node = Node(trans, 1)
+    node.update_properties({'foo': 'bar'})
+    mock.assert_called_with(cur, node.id, {'foo': 'bar'})
+
+
 @patch.object(core, 'set_position')
 def test_set_position(mock, trans, cur):
     node = Node(trans, 1)

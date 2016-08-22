@@ -193,6 +193,14 @@ class Node:
         """
         core.set_properties(self._cursor, self.id, properties)
 
+    def update_properties(self, properties):
+        """
+        Set properties.
+
+        :param dict properties: Property dictionary
+        """
+        core.update_properties(self._cursor, self.id, properties)
+
     def set_position(self, new_position):
         """
         Set position.
