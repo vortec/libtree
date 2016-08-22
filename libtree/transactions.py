@@ -26,6 +26,7 @@ class ReadWriteTransaction(object):
         self.connection = connection
         self.cursor = connection.cursor(cursor_factory=RealDictCursor)
         self.node_factory = node_factory
+        self.connection.set_session(readonly=False)
 
     def commit(self):
         """
@@ -147,6 +148,8 @@ class ReadOnlyTransaction(ReadWriteTransaction):
     :type connection: Connection
     :param object node_factory: Factory class for creating node objects
     """
-    def __init__(self, *args, **kwargs):
-        super(ReadOnlyTransaction, self).__init__(*args, **kwargs)
-        self.connection.set_session(readonly=True)
+    def __init__(self, connection, node_factory):
+        self.connection = connection
+        self.cursor = connection.cursor(cursor_factory=RealDictCursor)
+        self.node_factory = node_factory
+        self.connection.set_session(readonly=False)
