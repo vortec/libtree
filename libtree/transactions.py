@@ -152,4 +152,4 @@ class ReadOnlyTransaction(ReadWriteTransaction):
         self.connection = connection
         self.cursor = connection.cursor(cursor_factory=RealDictCursor)
         self.node_factory = node_factory
-        self.connection.set_session(readonly=False)
+        self.connection.set_session(readonly=True)

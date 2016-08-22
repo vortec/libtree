@@ -16,6 +16,12 @@ def test_it_sets_read_only_mode():
     conn.set_session.assert_called_with(readonly=True)
 
 
+def test_it_sets_read_write_mode():
+    conn = Mock()
+    ReadWriteTransaction(conn, Mock())
+    conn.set_session.assert_called_with(readonly=False)
+
+
 def test_it_creates_a_cursor():
     conn = Mock()
     ReadWriteTransaction(conn, Mock())
