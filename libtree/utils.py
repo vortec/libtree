@@ -2,6 +2,25 @@
 
 
 import collections
+from copy import deepcopy
+
+
+def recursive_dict_merge(left, right, first_run=True):
+    """
+    Merge ``right`` into ``left`` and return a new dictionary.
+    """
+    if first_run is True:
+        left = deepcopy(left)
+
+    for key in right:
+        if key in left:
+            if isinstance(left[key], dict) and isinstance(right[key], dict):
+                recursive_dict_merge(left[key], right[key], False)
+            else:
+                left[key] = right[key]
+        else:
+            left[key] = right[key]
+    return left
 
 
 def vectorize_nodes(*nodes):
