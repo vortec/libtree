@@ -5,6 +5,7 @@ import json
 
 from libtree.core.node_data import NodeData
 from libtree.core.query import get_ancestors, get_node
+from libtree.utils import recursive_dict_merge
 
 
 def get_nodes_by_property_dict(cur, query):
@@ -100,6 +101,36 @@ def get_inherited_property_value(cur, node, key):
     :param key: str
     """
     return get_inherited_properties(cur, node)[key]
+
+
+def get_recursive_properties(cur, node):
+    """
+    Get the entire inherited and recursively merged property dictionary.
+
+    To calculate this, the trees path from root node till ``node`` will
+    be traversed. For each level, the property dictionary will be merged
+    into the previous one. This is a recursive merge, so all dictionary
+    levels will be combined.
+
+    :param node:
+    :type node: Node or uuid4
+    :rtype: dict
+    """
+    ret = {}
+    id = str(node)
+    if isinstance(node, str):
+        node = get_node(cur, id)
+
+    ancestors = list(get_ancestors(cur, id))
+
+    for ancestor in ancestors:
+        recursive_dict_merge(ret, ancestor.properties, create_copy=False)
+        print(ret)
+        # ret.update(ancestor.properties)
+
+    recursive_dict_merge(ret, node.properties, create_copy=False)
+
+    return ret
 
 
 def set_properties(cur, node, new_properties):

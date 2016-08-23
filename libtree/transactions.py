@@ -9,6 +9,7 @@ else:
     compat.register()
 
 from psycopg2.extras import RealDictCursor
+
 from libtree import core
 
 

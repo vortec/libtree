@@ -105,6 +105,11 @@ class Node:
         return core.get_inherited_properties(self._cursor, self.id)
 
     @property
+    def recursive_properties(self):
+        """ Get inherited property dictionary. """
+        return core.get_recursive_properties(self._cursor, self.id)
+
+    @property
     def children(self):
         """ Get list of immediate child nodes. """
         ret = []

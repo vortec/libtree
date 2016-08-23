@@ -127,6 +127,13 @@ def test_get_inherited_properties(mock, trans, cur):
     mock.assert_called_with(cur, node.id)
 
 
+@patch.object(core, 'get_recursive_properties')
+def test_get_inherited_properties(mock, trans, cur):
+    node = Node(trans, 1)
+    node.recursive_properties
+    mock.assert_called_with(cur, node.id)
+
+
 @patch.object(core, 'set_properties')
 def test_set_properties(mock, trans, cur):
     node = Node(trans, 1)

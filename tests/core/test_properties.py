@@ -8,7 +8,7 @@ from libtree.core.properties import (get_inherited_properties,
                                      get_nodes_by_property_dict,
                                      get_nodes_by_property_key,
                                      get_nodes_by_property_value,
-                                     set_properties,
+                                     get_recursive_properties, set_properties,
                                      set_property_value, update_properties)
 
 
@@ -75,6 +75,43 @@ def test_get_inherited_properties_multiple_inheritance(cur, nd2_1_1):
         'list': [{'def': 4}]
     }
     assert get_inherited_properties(cur, nd2_1_1) == expected
+
+
+def test_get_recursive_properties_no_inheritance(cur, root):
+    expected = {
+        'type': 'root',
+        'boolean': False,
+        'integer': 1,
+        'dict': {'key': 'value'},
+        'list': [{'abc': 2}]
+    }
+    assert get_recursive_properties(cur, root) == expected
+
+
+def test_get_recursive_properties_simple_inheritance(cur, nd2):
+    expected = {
+        'title': 'Node 2',
+        'type': 'nd2',
+        'boolean': True,
+        'foo': 'bar',
+        'integer': 1,
+        'dict': {'key': 'value', 'another key': 'another value'},
+        'list': [{'abc': 2}]
+    }
+    assert get_recursive_properties(cur, nd2) == expected
+
+
+def test_get_recursive_properties_multiple_inheritance(cur, nd2_1_1):
+    expected = {
+        'title': 'Node 2-1-1',
+        'type': 'nd2_1_1',
+        'boolean': False,
+        'integer': 1,
+        'foo': 'bar',
+        'dict': {'key': 'yet another value', 'another key': 'another value'},
+        'list': [{'def': 4}]
+    }
+    assert get_recursive_properties(cur, str(nd2_1_1)) == expected
 
 
 def test_update_properties(cur, root):
