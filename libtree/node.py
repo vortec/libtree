@@ -106,7 +106,9 @@ class Node:
 
     @property
     def recursive_properties(self):
-        """ Get inherited property dictionary. """
+        """
+        Get inherited and recursively merged property dictionary.
+        """
         return core.get_recursive_properties(self._cursor, self.id)
 
     @property
