@@ -125,8 +125,6 @@ def get_recursive_properties(cur, node):
 
     for ancestor in ancestors:
         recursive_dict_merge(ret, ancestor.properties, create_copy=False)
-        print(ret)
-        # ret.update(ancestor.properties)
 
     recursive_dict_merge(ret, node.properties, create_copy=False)
 
