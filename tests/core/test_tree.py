@@ -27,7 +27,9 @@ def test_insert_node_sets_properties(root):
     assert root.properties == {
         'type': 'root',
         'boolean': False,
-        'integer': 1
+        'integer': 1,
+        'dict': {'key': 'value'},
+        'list': [{'abc': 2}]
     }
 
 

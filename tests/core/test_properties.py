@@ -43,7 +43,9 @@ def test_get_inherited_properties_no_inheritance(cur, root):
     expected = {
         'type': 'root',
         'boolean': False,
-        'integer': 1
+        'integer': 1,
+        'dict': {'key': 'value'},
+        'list': [{'abc': 2}]
     }
     assert get_inherited_properties(cur, root) == expected
 
@@ -54,7 +56,9 @@ def test_get_inherited_properties_simple_inheritance(cur, nd2):
         'type': 'nd2',
         'boolean': True,
         'foo': 'bar',
-        'integer': 1
+        'integer': 1,
+        'dict': {'another key': 'another value'},
+        'list': [{'abc': 2}]
     }
     assert get_inherited_properties(cur, nd2.id) == expected
 
@@ -65,7 +69,9 @@ def test_get_inherited_properties_multiple_inheritance(cur, nd2_1_1):
         'type': 'nd2_1_1',
         'boolean': False,
         'integer': 1,
-        'foo': 'bar'
+        'foo': 'bar',
+        'dict': {'another key': 'another value'},
+        'list': [{'abc': 2}]
     }
     assert get_inherited_properties(cur, nd2_1_1) == expected
 

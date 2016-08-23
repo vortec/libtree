@@ -76,7 +76,9 @@ def root(cur):
     props = {
         'type': 'root',
         'boolean': False,
-        'integer': 1
+        'integer': 1,
+        'dict': {'key': 'value'},
+        'list': [{'abc': 2}]
     }
     return get_or_create_nd(cur, None, auto_position=False, properties=props)
 
@@ -97,7 +99,8 @@ def nd2(cur, root):
         'type': 'nd2',
         'title': 'Node 2',
         'boolean': True,
-        'foo': 'bar'
+        'foo': 'bar',
+        'dict': {'another key': 'another value'}
     }
     return get_or_create_nd(cur, root, position=5, auto_position=False,
                             properties=props)
