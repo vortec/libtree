@@ -1,3 +1,8 @@
+5.2.0
+-----
+* [FEATURE] Add Node.recursive_properties, which contains the recursively
+  merged property dictionary of all ancestors and itself.
+
 5.1.0
 -----
 * [FEATURE] Add Node.update_properties()
