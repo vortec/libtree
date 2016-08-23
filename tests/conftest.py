@@ -120,7 +120,8 @@ def nd3(cur, root):
 def nd2_1(cur, nd2):
     props = {
         'type': 'nd2_1',
-        'title': 'Node 2-1'
+        'title': 'Node 2-1',
+        'dict': {'key': 'yet another value'}
     }
     return get_or_create_nd(cur, nd2, auto_position=False,
                             properties=props)
@@ -131,7 +132,8 @@ def nd2_1_1(cur, nd2_1):
     props = {
         'type': 'nd2_1_1',
         'title': 'Node 2-1-1',
-        'boolean': False
+        'boolean': False,
+        'list': [{'def': 4}]
     }
     return get_or_create_nd(cur, nd2_1, auto_position=False,
                             properties=props)

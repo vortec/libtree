@@ -70,8 +70,8 @@ def test_get_inherited_properties_multiple_inheritance(cur, nd2_1_1):
         'boolean': False,
         'integer': 1,
         'foo': 'bar',
-        'dict': {'another key': 'another value'},
-        'list': [{'abc': 2}]
+        'dict': {'key': 'yet another value'},
+        'list': [{'def': 4}]
     }
     assert get_inherited_properties(cur, nd2_1_1) == expected
 
