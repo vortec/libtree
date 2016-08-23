@@ -128,7 +128,7 @@ def test_get_inherited_properties(mock, trans, cur):
 
 
 @patch.object(core, 'get_recursive_properties')
-def test_get_inherited_properties(mock, trans, cur):
+def test_get_recursive_properties(mock, trans, cur):
     node = Node(trans, 1)
     node.recursive_properties
     mock.assert_called_with(cur, node.id)
