@@ -2,6 +2,7 @@
 
 
 from contextlib import contextmanager
+
 from libtree.node import Node
 from libtree.transactions import ReadOnlyTransaction, ReadWriteTransaction
 

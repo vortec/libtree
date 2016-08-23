@@ -1,14 +1,15 @@
 # Copyright (c) 2016 Fabian Kochem
 
 
+import pytest
+
 from libtree.core.properties import (get_inherited_properties,
                                      get_inherited_property_value,
                                      get_nodes_by_property_dict,
                                      get_nodes_by_property_key,
                                      get_nodes_by_property_value,
-                                     set_properties, set_property_value,
-                                     update_properties)
-import pytest
+                                     set_properties,
+                                     set_property_value, update_properties)
 
 
 def test_get_nodes_by_property_dict(cur, root):

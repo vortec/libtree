@@ -1,9 +1,10 @@
 # Copyright (c) 2016 Fabian Kochem
 
 
+from mock import Mock
+
 from libtree.core.database import (is_compatible_postgres_version,
                                    make_dsn_from_env)
-from mock import Mock
 
 
 def test_is_compatible_postgres_version():

@@ -1,15 +1,16 @@
 # Copyright (c) 2016 Fabian Kochem
 
 
-from libtree.core.positioning import (ensure_free_position,
-                                      find_highest_position,
-                                      set_position, shift_positions,
-                                      swap_node_positions)
-from libtree.core.query import get_children, get_node, get_node_at_position
-from libtree.core.tree import change_parent, delete_node, insert_node
 import uuid
 from pdb import set_trace as trace  # noqa
+
 import pytest
+
+from libtree.core.positioning import (ensure_free_position,
+                                      find_highest_position, set_position,
+                                      shift_positions, swap_node_positions)
+from libtree.core.query import get_children, get_node, get_node_at_position
+from libtree.core.tree import change_parent, delete_node, insert_node
 
 
 def test_set_position(cur, root):

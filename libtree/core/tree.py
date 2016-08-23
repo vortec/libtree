@@ -3,13 +3,13 @@
 
 import json
 import uuid
+
+from libtree import exceptions
 from libtree.core.node_data import NodeData
 from libtree.core.positioning import (ensure_free_position,
-                                      find_highest_position,
-                                      shift_positions)
+                                      find_highest_position, shift_positions)
 from libtree.core.query import (get_children, get_descendant_ids, get_node,
                                 get_root_node)
-from libtree import exceptions
 
 
 def print_tree(cur, start_node=None, indent='  ', _level=0):

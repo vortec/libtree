@@ -3,7 +3,6 @@
 
 import os
 
-
 REQUIRED_POSTGRES_VERSION = (9, 5, 0)
 
 

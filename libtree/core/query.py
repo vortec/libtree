@@ -1,8 +1,8 @@
 # Copyright (c) 2016 Fabian Kochem
 
 
-from libtree.core.node_data import NodeData
 from libtree import exceptions
+from libtree.core.node_data import NodeData
 from libtree.utils import vectorize_nodes
 
 

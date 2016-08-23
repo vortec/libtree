@@ -1,14 +1,16 @@
 # Copyright (c) 2016 Fabian Kochem
 
 
-from libtree.core.query import (get_ancestors, get_child_ids, get_children,
-                                get_children_count, get_descendants,
-                                get_descendant_ids, get_node, get_root_node,
-                                get_tree_size)
-from libtree import exceptions
 import uuid
-import libtree
+
 import pytest
+
+import libtree
+from libtree import exceptions
+from libtree.core.query import (get_ancestors, get_child_ids, get_children,
+                                get_children_count, get_descendant_ids,
+                                get_descendants, get_node, get_root_node,
+                                get_tree_size)
 
 
 def test_get_root_node_non_existing(cur):

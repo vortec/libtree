@@ -1,9 +1,10 @@
 # Copyright (c) 2016 Fabian Kochem
 
 
+import json
+
 from libtree.core.node_data import NodeData
 from libtree.core.query import get_ancestors, get_node
-import json
 
 
 def get_nodes_by_property_dict(cur, query):

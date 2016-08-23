@@ -1,12 +1,14 @@
 # Copyright (c) 2016 Fabian Kochem
 
 
-from libtree.core.tree import change_parent, delete_node, insert_node
+from pdb import set_trace as trace  # noqa
+
+import pytest
+
+from libtree import exceptions
 from libtree.core.query import (get_ancestor_ids, get_child_ids, get_children,
                                 get_descendant_ids, get_node)
-from libtree import exceptions
-from pdb import set_trace as trace  # noqa
-import pytest
+from libtree.core.tree import change_parent, delete_node, insert_node
 
 
 def test_insert_root_node_with_auto_position(cur):
