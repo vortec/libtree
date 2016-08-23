@@ -5,11 +5,11 @@ import collections
 from copy import deepcopy
 
 
-def recursive_dict_merge(left, right, first_run=True):
+def recursive_dict_merge(left, right, create_copy=True):
     """
     Merge ``right`` into ``left`` and return a new dictionary.
     """
-    if first_run is True:
+    if create_copy is True:
         left = deepcopy(left)
 
     for key in right:
