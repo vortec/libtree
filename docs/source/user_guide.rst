@@ -5,7 +5,7 @@ User Guide
 
 Database Connection
 -------------------
-To start working with `libtree`, make sure PostgreSQL 9.4 is running. If
+To start working with `libtree`, make sure PostgreSQL 9.5 is running. If
 you don't have a database yet, create one now::
 
     $ createdb libtree
