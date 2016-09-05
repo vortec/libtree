@@ -1,7 +1,7 @@
 6.0.0
 -----
 * [BREAKING] Node.ancestors and core.query.get_ancestors() now return
-  type list instead of set. The resulting list is ordered bottom-up.
+  their results ordered bottom-up.
 
 5.2.0
 -----
