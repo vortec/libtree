@@ -128,15 +128,15 @@ class Node:
     @property
     def ancestors(self):
         """ Get list of ancestor nodes. """
-        ret = set()
+        ret = []
         for _id in core.get_ancestor_ids(self._cursor, self.id):
             node = Node(self._transaction, _id)
-            ret.add(node)
+            ret.append(node)
         return ret
 
     @property
     def descendants(self):
-        """ Get list of descendant nodes. """
+        """ Get set of descendant nodes. """
         ret = set()
         for _id in core.get_descendant_ids(self._cursor, self.id):
             node = Node(self._transaction, _id)
