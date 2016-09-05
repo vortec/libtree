@@ -82,7 +82,7 @@ def test_get_ancestors(cur, root, nd2, nd2_1):
     assert ancestors[1].id == nd2.id
 
 
-def test_get_ancestors(cur, root, nd2, nd2_1, nd2_1_1, nd2_leaf):
+def test_get_ancestor_ids(cur, root, nd2, nd2_1, nd2_1_1, nd2_leaf):
     expected = {root.id, nd2.id, nd2_1.id, nd2_1_1.id}
     ids = set(map(str, get_ancestors(cur, nd2_leaf, sort=False)))
     assert ids == expected

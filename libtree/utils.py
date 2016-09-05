@@ -28,12 +28,12 @@ def vectorize_nodes(*nodes):
         nodes = nodes[0]
 
     ret = []
-    parents = {node.parent: node for node in nodes}
+    parents = {str(node.parent): node for node in nodes}
 
     last_parent = None
     for _ in range(len(parents)):
-        node = parents[last_parent]
+        node = parents[str(last_parent)]
         ret.append(node)
-        last_parent = node.id
+        last_parent = node
 
     return ret

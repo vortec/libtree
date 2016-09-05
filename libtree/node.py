@@ -1,7 +1,7 @@
 # Copyright (c) 2016 Fabian Kochem
 
 
-from libtree import core
+from libtree import core, utils
 
 
 class Node:
@@ -132,7 +132,7 @@ class Node:
         for _id in core.get_ancestor_ids(self._cursor, self.id):
             node = Node(self._transaction, _id)
             ret.append(node)
-        return ret
+        return utils.vectorize_nodes(ret)[::-1]
 
     @property
     def descendants(self):

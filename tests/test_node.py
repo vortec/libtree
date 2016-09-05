@@ -75,7 +75,7 @@ def test_has_children(trans, nd2, nd2_leaf):
     assert not node2_leaf.has_children
 
 
-def test_get_ancestors(trans, root, nd2, nd2_1):
+def test_get_ancestors_bottom_up(trans, root, nd2, nd2_1):
     node = Node(trans, nd2_1.id)
     ancestors = [Node(trans, nd2.id), Node(trans, root.id)]
     assert node.ancestors == ancestors
