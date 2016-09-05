@@ -132,7 +132,7 @@ class Node:
         for node in core.get_ancestors(self._cursor, self.id, sort=True):
             node = Node(self._transaction, node.id)
             ret.append(node)
-        return ret
+        return utils.vectorize_nodes(ret)[::-1]
 
     @property
     def descendants(self):
