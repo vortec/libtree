@@ -1,3 +1,8 @@
+6.0.0
+-----
+* [BREAKING] Node.ancestors and core.query.get_ancestors() now return
+  type list instead of set. The resulting list is ordered bottom-up.
+
 5.2.0
 -----
 * [FEATURE] Add Node.recursive_properties, which contains the recursively

@@ -164,13 +164,14 @@ def get_children_count(cur, node):
 
 def get_ancestors(cur, node, sort=True):
     """
-    Return an iterator that yields a ``NodeData`` object of every
-    element while traversing from ``node`` to the root node.
+    Return an iterator which yields a ``NodeData`` object for every
+    node in the hierarchy chain from ``node`` to root node.
 
     :param node:
     :type node: Node or uuid4
     :param bool sort: Start with closest node and end with root node.
-                      (default: True)
+                      (default: True). Set to False if order is
+                      unimportant.
     """
     # TODO: benchmark if vectorize_nodes() or WITH RECURSIVE is faster
     sql = """
@@ -189,7 +190,7 @@ def get_ancestors(cur, node, sort=True):
 
     if sort:
         make_node = lambda r: NodeData(**r)
-        for node in vectorize_nodes(map(make_node, cur)):
+        for node in vectorize_nodes(map(make_node, cur))[::-1]:
             yield node
     else:
         for result in cur:

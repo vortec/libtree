@@ -84,7 +84,7 @@ def get_inherited_properties(cur, node):
 
     ancestors = list(get_ancestors(cur, id))
 
-    for ancestor in ancestors:
+    for ancestor in ancestors[::-1]:  # Go top down
         ret.update(ancestor.properties)
 
     ret.update(node.properties)
@@ -123,7 +123,7 @@ def get_recursive_properties(cur, node):
 
     ancestors = list(get_ancestors(cur, id))
 
-    for ancestor in ancestors:
+    for ancestor in ancestors[::-1]:  # Go top down
         recursive_dict_merge(ret, ancestor.properties, create_copy=False)
 
     recursive_dict_merge(ret, node.properties, create_copy=False)

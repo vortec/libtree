@@ -78,20 +78,20 @@ def test_get_children_count(cur, root):
 def test_get_ancestors(cur, root, nd2, nd2_1):
     ancestors = list(get_ancestors(cur, nd2_1))
     assert len(ancestors) == 2
-    assert ancestors[0].id == root.id
-    assert ancestors[1].id == nd2.id
-
-
-def test_get_ancestors(cur, root, nd2, nd2_1, nd2_1_1, nd2_leaf):
-    expected = {root.id, nd2.id, nd2_1.id, nd2_1_1.id}
-    ids = set(map(str, get_ancestors(cur, nd2_leaf, sort=False)))
-    assert ids == expected
+    assert ancestors[0].id == nd2.id
+    assert ancestors[1].id == root.id
 
 
 def test_get_ancestors_returns_correct_order(cur, root, nd2, nd2_1,
                                              nd2_1_1, nd2_leaf):
-    expected = [root.id, nd2.id, nd2_1.id, nd2_1_1.id]
+    expected = [nd2_1_1.id, nd2_1.id, nd2.id, root.id]
     ids = list(map(str, get_ancestors(cur, nd2_leaf, sort=True)))
+    assert ids == expected
+
+
+def test_get_ancestor_ids(cur, root, nd2, nd2_1, nd2_1_1, nd2_leaf):
+    expected = {root.id, nd2.id, nd2_1.id, nd2_1_1.id}
+    ids = set(map(str, get_ancestors(cur, nd2_leaf, sort=False)))
     assert ids == expected
 
 

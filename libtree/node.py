@@ -1,7 +1,7 @@
 # Copyright (c) 2016 Fabian Kochem
 
 
-from libtree import core
+from libtree import core, utils
 
 
 class Node:
@@ -127,10 +127,10 @@ class Node:
 
     @property
     def ancestors(self):
-        """ Get list of ancestor nodes. """
+        """ Get bottom-up ordered list of ancestor nodes. """
         ret = []
-        for _id in core.get_ancestor_ids(self._cursor, self.id):
-            node = Node(self._transaction, _id)
+        for node in core.get_ancestors(self._cursor, self.id, sort=True):
+            node = Node(self._transaction, node.id)
             ret.append(node)
         return ret
 
