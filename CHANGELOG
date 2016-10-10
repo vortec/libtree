@@ -1,3 +1,7 @@
+6.0.1
+-----
+* [FIX] Check whether libtree is installed when calling install()
+
 6.0.0
 -----
 * [BREAKING] Node.ancestors and core.query.get_ancestors() now return
