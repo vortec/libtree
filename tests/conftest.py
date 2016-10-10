@@ -49,10 +49,8 @@ def trans(request):
     connection = psycopg2.connect(dsn)
     transaction = ReadWriteTransaction(connection, Node)
 
-    try:
+    if transaction.is_installed():
         transaction.uninstall()
-    except:
-        pass
 
     node_ids.clear()
     transaction.install()

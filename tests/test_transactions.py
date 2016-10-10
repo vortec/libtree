@@ -47,13 +47,27 @@ def test_is_compatible_postgres_version(mock):
     mock.assert_called_with(transaction.cursor)
 
 
+@patch.object(core, 'is_installed', return_value=False)
 @patch.object(core, 'create_schema')
 @patch.object(core, 'create_triggers')
-def test_install(mock1, mock2):
+def test_install(mock1, mock2, mock3):
     transaction = ReadWriteTransaction(Mock(), Mock())
     transaction.install()
     mock1.assert_called_with(transaction.cursor)
     mock2.assert_called_with(transaction.cursor)
+    mock3.assert_called()
+
+
+@patch.object(core, 'is_installed', return_value=True)
+@patch.object(core, 'create_schema')
+@patch.object(core, 'create_triggers')
+def test_install_already_installed(mock1, mock2, mock3):
+    transaction = ReadWriteTransaction(Mock(), Mock())
+    transaction.install()
+
+    assert mock1.not_called()
+    assert mock2.not_called()
+    mock3.assert_called()
 
 
 @patch.object(core, 'drop_tables')

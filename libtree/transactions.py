@@ -52,10 +52,21 @@ class ReadWriteTransaction(object):
         """
         return core.is_compatible_postgres_version(self.cursor)
 
+    def is_installed(self):
+        """ Check whether `libtree` is installed. """
+        return core.is_installed(self.cursor)
+
     def install(self):
-        """ Create tables and trigger functions in database. """
+        """
+        Create tables and trigger functions in database.
+        Return `False` if `libtree` was already installed, other `True`.
+        """
+        if self.is_installed():
+            return False
+
         core.create_schema(self.cursor)
         core.create_triggers(self.cursor)
+
         return True
 
     def uninstall(self):

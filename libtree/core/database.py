@@ -43,6 +43,11 @@ def is_compatible_postgres_version(cur):
     return server_version >= REQUIRED_POSTGRES_VERSION
 
 
+def is_installed(cur):
+    """ Check whether libtree tables exist. """
+    return (table_exists(cur, 'nodes') and table_exists(cur, 'ancestors'))
+
+
 def make_dsn_from_env(env):
     """
     Make DSN string from libpq environment variables.
@@ -63,3 +68,22 @@ def make_dsn_from_env(env):
             ret.append('{}={}'.format(dsn_name, value))
 
     return ' '.join(ret)
+
+
+def table_exists(cur, table_name, schema='public'):
+    """ Check if given table name exists. """
+    sql = """
+      SELECT EXISTS (
+        SELECT
+          1
+        FROM
+          information_schema.tables
+        WHERE
+          table_schema = %s
+        AND
+          table_name = %s
+      );
+    """
+    cur.execute(sql, (schema, table_name))
+    result = cur.fetchone()
+    return result['exists'] is True
