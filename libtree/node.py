@@ -3,6 +3,10 @@
 
 from libtree import core, utils
 
+from redis import Redis
+
+redis = Redis()
+
 
 class Node:
     """
@@ -79,12 +83,26 @@ class Node:
         Get a :class:`libtree.core.node_data.NodeData` object for
         current node ID from database.
         """
-        return core.get_node(self._cursor, self.id)
+        redis.incr('node.node_data')
+        # self._transaction._node_cache[self.id] = 0
+        # return core.get_node(self._cursor, self.id)
+
+        node_data = self._transaction._node_cache.get(self.id, None)
+
+        if node_data is None:
+            node_data = core.get_node(self._cursor, self.id)
+            self._transaction._node_cache[self.id] = node_data
+            redis.incr('node.node_data.miss')
+        else:
+            redis.incr('node.node_data.hit')
+
+        return node_data
 
     @property
     def parent(self):
         """ Get parent node. """
         parent = self.node_data.parent
+        redis.incr('node.parent')
         if parent is not None:
             return Node(self._transaction, self.node_data.parent)
         return None
@@ -92,16 +110,19 @@ class Node:
     @property
     def position(self):
         """ Get position in between sibling nodes. """
+        redis.incr('node.position')
         return self.node_data.position
 
     @property
     def properties(self):
         """ Get property dictionary. """
+        redis.incr('node.properties')
         return self.node_data.properties
 
     @property
     def inherited_properties(self):
         """ Get inherited property dictionary. """
+        redis.incr('node.inherited_properties')
         return core.get_inherited_properties(self._cursor, self.id)
 
     @property
@@ -109,6 +130,7 @@ class Node:
         """
         Get inherited and recursively merged property dictionary.
         """
+        redis.incr('node.recursive_properties')
         return core.get_recursive_properties(self._cursor, self.id)
 
     @property
@@ -123,12 +145,14 @@ class Node:
     @property
     def has_children(self):
         """ Return whether immediate children exist. """
+        redis.incr('node.has_children')
         return core.get_children_count(self._cursor, self.id) > 0
 
     @property
     def ancestors(self):
         """ Get bottom-up ordered list of ancestor nodes. """
         ret = []
+        redis.incr('node.ancestors')
         for node in core.get_ancestors(self._cursor, self.id, sort=True):
             node = Node(self._transaction, node.id)
             ret.append(node)
@@ -138,6 +162,7 @@ class Node:
     def descendants(self):
         """ Get set of descendant nodes. """
         ret = set()
+        redis.incr('node.descendants')
         for _id in core.get_descendant_ids(self._cursor, self.id):
             node = Node(self._transaction, _id)
             ret.add(node)
@@ -145,6 +170,7 @@ class Node:
 
     def delete(self):
         """ Delete node and its subtree. """
+        del self._transaction._node_cache[self.id]
         return core.delete_node(self._cursor, self.id)
 
     def insert_child(self, properties=None, position=-1, id=None):
@@ -180,6 +206,7 @@ class Node:
                              be inserted the the end of the parents
                              children.
         """
+        del self._transaction._node_cache[self.id]
         core.change_parent(self._cursor, self.id, target.id,
                            position=position, auto_position=True)
 
@@ -190,6 +217,7 @@ class Node:
         :param other: Node to swap the position with
         :type other: Node
         """
+        del self._transaction._node_cache[self.id]
         core.swap_node_positions(self._cursor, self.id, other.id)
 
     def set_properties(self, properties):
@@ -198,6 +226,7 @@ class Node:
 
         :param dict properties: Property dictionary
         """
+        del self._transaction._node_cache[self.id]
         core.set_properties(self._cursor, self.id, properties)
 
     def update_properties(self, properties):
@@ -206,6 +235,7 @@ class Node:
 
         :param dict properties: Property dictionary
         """
+        del self._transaction._node_cache[self.id]
         core.update_properties(self._cursor, self.id, properties)
 
     def set_position(self, new_position):
@@ -218,6 +248,7 @@ class Node:
                              be inserted the the end of the parents
                              children.
         """
+        del self._transaction._node_cache[self.id]
         core.set_position(self._cursor, self.id, new_position,
                           auto_position=True)
 

@@ -5,6 +5,10 @@ from libtree import exceptions
 from libtree.core.node_data import NodeData
 from libtree.utils import vectorize_nodes
 
+from redis import Redis
+
+redis = Redis()
+
 
 def get_tree_size(cur):
     """
@@ -59,6 +63,8 @@ def get_node(cur, id):
     """
     if not isinstance(id, str):
         raise TypeError('ID must be type string (UUID4).')
+
+    redis.incr('core.get_node')
 
     cur.execute(sql, (id, ))
     result = cur.fetchone()
@@ -115,6 +121,7 @@ def get_children(cur, node):
         ORDER BY
           position;
     """
+    redis.incr('core.get_children')
     cur.execute(sql, (str(node), ))
     for result in cur:
         yield NodeData(**result)
@@ -137,6 +144,7 @@ def get_child_ids(cur, node):
         ORDER BY
           position;
     """
+    redis.incr('core.get_child_ids')
     cur.execute(sql, (str(node), ))
     for result in cur:
         yield str(result['id'])
@@ -157,6 +165,7 @@ def get_children_count(cur, node):
       WHERE
         parent=%s;
     """
+    redis.incr('core.get_children_count')
     cur.execute(sql, (str(node), ))
     result = cur.fetchone()
     return result['count']
@@ -174,6 +183,7 @@ def get_ancestors(cur, node, sort=True):
                       unimportant.
     """
     # TODO: benchmark if vectorize_nodes() or WITH RECURSIVE is faster
+    redis.incr('core.get_ancestors')
     sql = """
         SELECT
           nodes.*
@@ -214,6 +224,7 @@ def get_ancestor_ids(cur, node):
         WHERE
           node=%s;
     """
+    redis.incr('core.get_ancestor_ids')
     cur.execute(sql, (str(node), ))
     for result in cur:
         yield str(result['ancestor'])
@@ -239,6 +250,7 @@ def get_descendants(cur, node):
         WHERE
           ancestors.ancestor=%s;
     """
+    redis.incr('core.get_descendants')
     cur.execute(sql, (str(node), ))
     for result in cur:
         yield NodeData(**result)
@@ -262,6 +274,7 @@ def get_descendant_ids(cur, node):
         WHERE
           ancestor=%s;
     """
+    redis.incr('core.get_descendant_ids')
     cur.execute(sql, (str(node), ))
     for result in cur:
         yield str(result['node'])

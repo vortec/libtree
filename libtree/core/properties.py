@@ -7,6 +7,10 @@ from libtree.core.node_data import NodeData
 from libtree.core.query import get_ancestors, get_node
 from libtree.utils import recursive_dict_merge
 
+from redis import Redis
+
+redis = Redis()
+
 
 def get_nodes_by_property_dict(cur, query):
     """
@@ -77,6 +81,7 @@ def get_inherited_properties(cur, node):
     :type node: Node or uuid4
     :rtype: dict
     """
+    redis.incr('properties.get_inherited_properties')
     ret = {}
     id = str(node)
     if isinstance(node, str):
@@ -116,6 +121,7 @@ def get_recursive_properties(cur, node):
     :type node: Node or uuid4
     :rtype: dict
     """
+    redis.incr('properties.get_recursive_properties')
     ret = {}
     id = str(node)
     if isinstance(node, str):
@@ -140,6 +146,7 @@ def set_properties(cur, node, new_properties):
     :type node: Node or uuid4
     :param new_properties: dict
     """
+    redis.incr('properties.set_properties')
     if not isinstance(new_properties, dict):
         raise TypeError('Only dictionaries are supported.')
 
@@ -171,6 +178,7 @@ def update_properties(cur, node, new_properties):
     :type node: Node or uuid4
     :param new_properties: dict
     """
+    redis.incr('properties.update_properties')
     if not isinstance(new_properties, dict):
         raise TypeError('Only dictionaries are supported.')
 

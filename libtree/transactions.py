@@ -11,6 +11,10 @@ else:
 from psycopg2.extras import RealDictCursor
 
 from libtree import core
+from redis import Redis
+
+redis = Redis()
+redis.flushall()
 
 
 class ReadWriteTransaction(object):
@@ -28,6 +32,8 @@ class ReadWriteTransaction(object):
         self.cursor = connection.cursor(cursor_factory=RealDictCursor)
         self.node_factory = node_factory
         self.connection.set_session(readonly=False)
+        self._node_cache = {}
+        redis.incr('transactions')
 
     def commit(self):
         """
@@ -107,6 +113,8 @@ class ReadWriteTransaction(object):
         :param int node_id: Database ID
         """
         node_id = core.get_node(self.cursor, node_id).id
+        redis.incr('get_node')
+        redis.sadd('requested_nodes', str(node_id))
         return self.node_factory(self, node_id)
 
     def get_nodes_by_property_dict(self, query):
@@ -165,3 +173,5 @@ class ReadOnlyTransaction(ReadWriteTransaction):
         self.cursor = connection.cursor(cursor_factory=RealDictCursor)
         self.node_factory = node_factory
         self.connection.set_session(readonly=True)
+        self._node_cache = {}
+        redis.incr('transactions')
